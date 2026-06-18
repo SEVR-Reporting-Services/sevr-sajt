@@ -8,7 +8,7 @@ härifrån när vi bygger sidor – istället för att blanda om allt varje gån
 säljsektioner; vi lånar formen och budskapet, inte varumärket.
 
 **Källor:** `[ACC]` = accountec.se/ai-co-worker · `[FIG]` = Figma SEVR Flow ·
-`[WEBB]` = SEVR_Insights_Webbcopy · `[V3]` = Accountec-Reports V3 · `[TAXXA]` = taxxa.ai (Watson-referens).
+`[WEBB]` = SEVR_Insights_Webbcopy · `[V3]` = Accountec-Reports V3 · `[TAXXA]` = taxxa.ai (Vatsson-referens).
 
 Många sektioner **överlappar** mellan källor (samma funktion, olika ord) – de är
 hopslagna och källorna listade. Limma inte dubletter på varandra.
@@ -24,8 +24,8 @@ områdena stort; underfunktionerna "antyds" (tabs/ikoner/lista) – inte utblås
 Rapporter, kommentarer, budget, prognos, likviditet, reskontra, Fråga AI.
 → Underfunktioner = de 8 produktfunktionerna i DEL 3.
 
-### Område B — Watson (regelverket)
-Vårt regelverk-svar. Internt arbetsnamn **Watson** (sv. "Watt-son"). Funktionellt
+### Område B — Vatsson (regelverket)
+Vårt regelverk-svar. Internt arbetsnamn **Vatsson** (sv. "Watt-son"). Funktionellt
 nära **Taxxa** (taxxa.ai) – vi har använt och vidareutvecklat idén.
 → Underfunktioner = DEL 4 (live-sök, egna dokument, källhänvisning, flerstegs-resonemang).
 
@@ -34,8 +34,8 @@ Agenter som arbetar inuti kärnprocesserna (avstämning, kontering, bokslut, mom
 → Lista i DEL 5. Visas kort: ikon + en rad per agent. Status bekräftas med Bartek.
 
 **Hur det visas på startsidan (förslag):**
-En stor sektion per område. Watson och Agenter kan vara **en sektion med 3 tabs/växlare**
-(Planering · Watson · Agenter), där varje tab visar 3–5 underfunktioner som ikoner +
+En stor sektion per område. Vatsson och Agenter kan vara **en sektion med 3 tabs/växlare**
+(Planering · Vatsson · Agenter), där varje tab visar 3–5 underfunktioner som ikoner +
 kort text. Detaljerna bor på en egen **Funktioner-sida** (DEL 7) – så blir startsidan
 ren men revisorn kan ändå se exakt vad hen får.
 
@@ -151,15 +151,15 @@ Källa `[ACC][FIG][Funktioner-saljande.md]`. Varje funktion ska ha **egen bild/i
 
 ---
 
-## DEL 4 – Watson (Område B) – underfunktioner
-Källa `[TAXXA]` (referens vi byggt vidare på). Watson = regelverket.
+## DEL 4 – Vatsson (Område B) – underfunktioner
+Källa `[TAXXA]` (referens vi byggt vidare på). Vatsson = regelverket.
 
 1. **Live-sökning i regelverket** – söker realtidskällor (myndigheter, Skatteverket, EU) – inte bara träningsdata.
 2. **Egna dokument ("Forge")** – ladda upp avtal, PM, riktlinjer, kundhistorik; indexeras säkert ihop med publika regler = en sanningskälla.
 3. **Källhänvisning / verifierbarhet** – varje svar med klickbar källa och sidnummer. Ingen black box.
 4. **Flerstegs-resonemang (agent)** – bryter ner komplexa frågor i steg, verifierar fakta i varje steg (DBA, SINK, CRS, DAC7, transfer pricing).
 
-> Presentation: en stor "Watson"-sektion. 3–4 underfunktioner som ikoner/små kort. Ev. tab-växlare. Inte utblåst.
+> Presentation: en stor "Vatsson"-sektion. 3–4 underfunktioner som ikoner/små kort. Ev. tab-växlare. Inte utblåst.
 
 ---
 
@@ -190,9 +190,9 @@ Korta. Ikon + en rad var. Bekräfta status med Bartek innan publik.
 - **Start:** S1, S2, S19, S17, Produktmodell (3 områden m. tabs), S6, S7, S5, S10, S11, S12.
 - **För byråer:** S1, S15, S13, S8, S4 (8 funktioner), S5, S18, S16, S7, pris, S10, S11, S12.
 - **För företag:** S1, problem, "Er digitala CFO", S5, koncern, S7, pris, S11, S12.
-- **Watson (egen sida el. sektion):** Watson-hero + DEL 4.
+- **Vatsson (egen sida el. sektion):** Vatsson-hero + DEL 4.
 - **Funktioner (egen sida):** DEL 3 + DEL 4 + DEL 5 – full lista, för revisorn som vill se allt.
 - **Vision:** manifest, 80/20, 3 områden, varför det spelar roll.
 - **Pris:** byrå 19 kr/kund + credits · företag från 799 kr.
 
-> Öppna flaggor: egna omdömen (S10), riktiga siffror (S16/S18 "est."), agent-status (DEL 5), Watson publikt namn.
+> Öppna flaggor: egna omdömen (S10), riktiga siffror (S16/S18 "est."), agent-status (DEL 5), Vatsson publikt namn.

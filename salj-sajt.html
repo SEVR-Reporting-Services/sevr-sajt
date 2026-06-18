@@ -75,8 +75,15 @@
 </style>
 </head>
 <body>
+<div id="vswitch" style="position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;gap:3px;background:#fff;border:1px solid #ddd;border-radius:9px;padding:4px;box-shadow:0 3px 12px rgba(0,0,0,.14);font-family:-apple-system,BlinkMacSystemFont,sans-serif">
+<a href="version-0/index.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V0</a>
+<a href="index.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V1</a>
+<a href="prototyp-v2.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V2</a>
+<a href="salj-sajt.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V3</a>
+</div>
+<script>(function(){var f=(location.pathname.split('/').pop()||'index.html');document.querySelectorAll('#vswitch a').forEach(function(a){if(a.getAttribute('href')===f){a.style.background='#1a1a1a';a.style.color='#fff';}});})();</script>
 <header><div class="c nav">
-  <span class="brand" onclick="show('home')">SEVR INSIGHTS <span style="font-size:10px;letter-spacing:.1em;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-weight:600;vertical-align:middle">HORMOZI · GRAND SLAM</span></span>
+  <span class="brand" onclick="show('home')">SEVR INSIGHTS <span style="font-size:10px;letter-spacing:.1em;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-weight:600;vertical-align:middle">V3 · HORMOZI “GRAND SLAM”</span></span>
   <nav class="links" id="links"></nav>
   <button class="btn p" onclick="show('demo')">Boka demo</button>
 </div></header>

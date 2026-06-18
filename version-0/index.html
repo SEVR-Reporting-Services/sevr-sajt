@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>SEVR Insights — AI som gör grovjobbet i ekonomin</title>
+<meta name="description" content="SEVR Insights analyserar, kommenterar och rådger — för redovisningsbyråer och för företag. Du granskar och bedömer. AI:n gör jobbet.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=11">
+</head>
+<body>
+
+<svg class="svgdefs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 16l3-4 3 2 4-6"/></symbol>
+<symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3c4 5 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 2-6 6-11z"/></symbol>
+<symbol id="i-receipt" viewBox="0 0 24 24"><path d="M5 3v18l2-1 2 1 2-1 2 1 2-1 2 1V3l-2 1-2-1-2 1-2-1-2 1z"/><path d="M9 8h6M9 12h6"/></symbol>
+<symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M18.4 18.4l-2.1-2.1M7.7 7.7 5.6 5.6"/></symbol>
+<symbol id="i-stack" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5zM3 13l9 5 9-5M3 18l9 5 9-5"/></symbol>
+</svg>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" data-route="hem" aria-label="SEVR Insights — hem"><span class="mk">◳</span>SEVR Insights</a>
+    <nav class="menu" aria-label="Huvudmeny">
+      <a data-route="hem" class="active">Hem</a>
+      <a data-route="vision">Vision</a>
+      <a data-route="byra">För byråer</a>
+      <a data-route="foretag">För företag</a>
+      <a data-route="pris">Pris</a>
+    </nav>
+    <div class="nav-right">
+      <div class="switcher">
+        <button class="sw-btn" aria-haspopup="true" aria-expanded="false">Designer <svg class="ic-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="sw-menu" role="menu" aria-label="Designer och sidor">
+          <div class="sw-group">Stilar</div>
+          <a href="index.html" role="menuitem" class="sw-cur">Gradient · SEVR Bridge</a>
+          <a href="pirsch.html" role="menuitem">Pirsch · papper</a>
+          <div class="sw-group">Sidor</div>
+          <a href="index.html" role="menuitem">Hem</a>
+          <a href="index.html#vision" role="menuitem">Vision</a>
+          <a href="index.html#byra" role="menuitem">För byråer</a>
+          <a href="index.html#foretag" role="menuitem">För företag</a>
+          <a href="index.html#pris" role="menuitem">Pris</a>
+        </div>
+      </div>
+      <a class="btn btn-lilac nav-cta">Boka demo</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= HEM ================= -->
+<div id="hem" class="route show">
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-head">
+      <span class="pill pill-lilac">AI-plattformen för ekonomer</span>
+      <h1>AI som gör grovjobbet i ekonomin</h1>
+      <p class="lead">SEVR Insights analyserar, kommenterar och rådger — för redovisningsbyråer och för företag. Du granskar och bedömer. AI:n gör jobbet.</p>
+      <div class="cta">
+        <a class="btn btn-lilac">Boka en demo</a>
+        <a class="btn btn-dark">Se hur det fungerar <svg class="ic-sm"><use href="#i-arrow"/></svg></a>
+      </div>
+      <ul class="trust">
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> Byggd för byrå</li>
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> GDPR-säkert — ingen modellträning</li>
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> Analys på sekunder</li>
+      </ul>
+    </div>
+
+    <div class="preview">
+      <div class="hero-tabs">
+        <span class="tab active">Smart Assist</span>
+        <span class="tab">Likviditet</span>
+        <span class="tab">Bokslut</span>
+        <span class="tab">Tillväxt</span>
+      </div>
+      <div class="mock">
+        <div class="mock-top"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="mock-label">SEVR Insights · Översikt</span></div>
+        <div class="mock-grid">
+          <div class="kpi"><div class="l">Omsättning</div><div class="v">4,82 Mkr</div><div class="t up">▲ 12% R12</div></div>
+          <div class="kpi"><div class="l">Bruttovinst</div><div class="v">38,4%</div><div class="t up">▲ 2,1 pp</div></div>
+          <div class="kpi"><div class="l">EBITDA</div><div class="v">612 tkr</div><div class="t up">▲ 8%</div></div>
+          <div class="kpi"><div class="l">Likviditet</div><div class="v">287 tkr</div><div class="t dn">▼ moms 25:e</div></div>
+        </div>
+        <div class="chartcard">
+          <div class="chartcard-top"><span class="cc-title">Omsättning · rullande 12 mån</span><span class="cc-legend"><i class="dot-b"></i>Utfall <i class="dot-d"></i>Prognos</span></div>
+          <svg class="linechart" viewBox="0 0 320 96" preserveAspectRatio="none" role="img" aria-label="Linjediagram: omsättning ökar över 12 månader med prognos">
+            <line x1="0" y1="24" x2="320" y2="24"/><line x1="0" y1="48" x2="320" y2="48"/><line x1="0" y1="72" x2="320" y2="72"/>
+            <path class="area" d="M0,78 L29,72 58,74 87,60 116,64 145,46 174,52 203,34 232,40 L232,96 L0,96 Z"/>
+            <path class="line" d="M0,78 L29,72 58,74 87,60 116,64 145,46 174,52 203,34 232,40"/>
+            <path class="line dash" d="M232,40 L261,33 290,28 319,18"/>
+            <circle class="pt" cx="232" cy="40" r="3.5"/>
+          </svg>
+        </div>
+        <div class="askbar"><svg class="ic-sm light"><use href="#i-msg"/></svg> Fråga AI: ”Varför är kassan tight trots vinst?”<span class="d"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band-soft">
+  <div class="wrap center">
+    <span class="pill pill-bone">Funktioner</span>
+    <h2>Det här kan SEVR Insights</h2>
+    <p class="sec-sub">En plattform som täcker hela kedjan — från rådata till färdigt råd.</p>
+    <div class="bento">
+
+      <!-- Budget & prognos — forecast chart (wide) -->
+      <article class="fcard wide">
+        <div class="fcard-text">
+          <div class="ic-wrap"><svg class="ic"><use href="#i-chart"/></svg></div>
+          <h3>Budget &amp; prognos</h3>
+          <p>Budget Wizard läser historiska trender och föreslår en realistisk budget — med prognos och osäkerhetsspann.</p>
+        </div>
+        <div class="fcard-ui">
+          <div class="ui-head"><span class="ui-title">Resultatprognos · 2026</span><span class="badge-b">+8,4% est.</span></div>
+          <svg class="linechart tall" viewBox="0 0 440 150" preserveAspectRatio="none" role="img" aria-label="Prognosdiagram: utfall och prognos med osäkerhetsspann">
+            <line x1="0" y1="37" x2="440" y2="37"/><line x1="0" y1="75" x2="440" y2="75"/><line x1="0" y1="113" x2="440" y2="113"/>
+            <path class="band" d="M250,70 L300,60 350,52 400,40 440,30 L440,66 L400,72 350,80 300,86 250,90 Z"/>
+            <path class="area" d="M0,108 L50,100 100,104 150,84 200,90 250,80 L250,150 L0,150 Z"/>
+            <path class="line" d="M0,108 L50,100 100,104 150,84 200,90 250,80"/>
+            <path class="line dash" d="M250,80 L300,73 350,66 400,56 440,48"/>
+            <circle class="pt" cx="250" cy="80" r="4"/>
+          </svg>
+          <div class="ui-foot"><span><i class="dot-b"></i>Utfall</span><span><i class="dot-d"></i>Prognos</span><span><i class="dot-band"></i>Spann</span></div>
+        </div>
+      </article>
+
+      <!-- Likviditet — cashflow + kommande -->
+      <article class="fcard">
+        <div class="ic-wrap"><svg class="ic"><use href="#i-drop"/></svg></div>
+        <h3>Likviditet i realtid</h3>
+        <p>Se kassakrisen innan den slår till.</p>
+        <div class="fcard-ui">
+          <svg class="areachart" viewBox="0 0 240 64" preserveAspectRatio="none" aria-label="Kassaflöde senaste perioden">
+            <path class="area soft" d="M0,40 L34,30 68,44 102,26 136,38 170,20 204,34 240,16 L240,64 L0,64 Z"/>
+            <path class="line" d="M0,40 L34,30 68,44 102,26 136,38 170,20 204,34 240,16"/>
+          </svg>
+          <ul class="oblist">
+            <li><span class="ob-dot warn"></span>Moms <span class="ob-date">25 jun</span><span class="ob-amt">−142 tkr</span></li>
+            <li><span class="ob-dot err"></span>Lön <span class="ob-date">25 jun</span><span class="ob-amt">−310 tkr</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Reskontra — aging bars -->
+      <article class="fcard">
+        <div class="ic-wrap"><svg class="ic"><use href="#i-receipt"/></svg></div>
+        <h3>Reskontra</h3>
+        <p>Vilka kunder binder kapitalet.</p>
+        <div class="fcard-ui">
+          <div class="aging">
+            <div class="age-row"><span class="age-lbl">0–30 d</span><span class="age-bar"><i style="width:78%"></i></span><span class="age-amt">412 tkr</span></div>
+            <div class="age-row"><span class="age-lbl">31–60 d</span><span class="age-bar"><i class="mid" style="width:46%"></i></span><span class="age-amt">238 tkr</span></div>
+            <div class="age-row"><span class="age-lbl">61–90+ d</span><span class="age-bar"><i class="bad" style="width:22%"></i></span><span class="age-amt">96 tkr</span></div>
+          </div>
+          <div class="ui-total">Bundet kapital <strong>746 tkr</strong></div>
+        </div>
+      </article>
+
+      <!-- Rapporter — report doc mock -->
+      <article class="fcard">
+        <div class="ic-wrap"><svg class="ic"><use href="#i-file"/></svg></div>
+        <h3>Rapporter på sekunder</h3>
+        <p>VD-rapport med AI-kommentar.</p>
+        <div class="fcard-ui">
+          <div class="doc">
+            <div class="doc-top"><span class="doc-title">VD-rapport · maj</span><span class="badge-ai">AI</span></div>
+            <span class="skl w90"></span><span class="skl w70"></span><span class="skl w80"></span>
+            <div class="doc-note">”Bruttomarginalen stärktes 2,1 pp — drivet av prishöjningen i mars.”</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Personalisering — client profile -->
+      <article class="fcard">
+        <div class="ic-wrap"><svg class="ic"><use href="#i-user"/></svg></div>
+        <h3>Personalisering</h3>
+        <p>AI lär känna varje kund.</p>
+        <div class="fcard-ui">
+          <div class="client"><span class="client-ava">VL</span><div><strong>Volvo Lastbilar AB</strong><span>Tillverkning · 42 anst.</span></div></div>
+          <div class="segs"><span class="seg-chip">Bransch</span><span class="seg-chip">Säsong</span><span class="seg-chip">Marginalfokus</span></div>
+          <div class="prof-bar"><span class="prof-lbl">Profil komplett</span><span class="prof-track"><i style="width:86%"></i></span><span class="prof-pct">86%</span></div>
+        </div>
+      </article>
+
+      <!-- Fråga AI — chat with inline chart (wide, highlight) -->
+      <article class="fcard wide hl">
+        <div class="fcard-text">
+          <div class="ic-wrap"><svg class="ic"><use href="#i-msg"/></svg></div>
+          <h3>Fråga AI — din digitala CFO</h3>
+          <p>Ställ fria frågor mot kundens data och få analys, diagram och konkreta åtgärder — direkt.</p>
+        </div>
+        <div class="fcard-ui chat-ui">
+          <div class="cu-q">Vilka tre kostnadsposter växer snabbast i år?</div>
+          <div class="cu-a">
+            <div class="cu-a-txt">Tre poster sticker ut mot R12:</div>
+            <div class="minibars">
+              <div class="mb"><span class="mb-l">Frakt</span><span class="mb-t"><i style="width:88%"></i></span><span class="mb-v">+24%</span></div>
+              <div class="mb"><span class="mb-l">Konsulter</span><span class="mb-t"><i style="width:64%"></i></span><span class="mb-v">+17%</span></div>
+              <div class="mb"><span class="mb-l">Licenser</span><span class="mb-t"><i style="width:40%"></i></span><span class="mb-v">+11%</span></div>
+            </div>
+            <div class="cu-actions"><span class="cu-act">Skapa åtgärdsplan</span><span class="cu-act">Exportera</span></div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap center">
+    <span class="pill pill-lilac">Fråga AI</span>
+    <h2>Exempel från verkligheten</h2>
+    <div class="chatwin">
+      <div class="cw-bar">
+        <span class="cw-dot"></span><span class="cw-dot"></span><span class="cw-dot"></span>
+        <span class="cw-ctx"><svg class="ic-sm"><use href="#i-msg"/></svg> Fråga AI · <strong>Volvo Lastbilar AB</strong></span>
+        <span class="cw-live"><i></i>Live data</span>
+      </div>
+      <div class="thread">
+        <div class="msg-row right"><div class="bubble user">Har vi råd med ett inköp på 200 000 kr och pengar kvar till moms &amp; lön?</div></div>
+        <div class="msg-row left"><div class="bubble ai">Nej, inte som läget ser ut nu. Inköpet är inte stort i sig, men i ett läge där moms + lön redan är ett stort utflöde och kassan är nära noll blir det fel timing.</div></div>
+        <div class="msg-row right"><div class="bubble user">Vi har hög omsättning och positivt resultat men ändå tight kassa. Varför?</div></div>
+        <div class="msg-row left"><div class="bubble ai">Resultat är inte samma sak som pengar på kontot. Kapital binds i kundfordringar och ofakturerat arbete.
+          <div class="bub-chart">
+            <div class="bc-row"><span class="bc-l">Kundfordringar</span><span class="bc-t"><i style="width:82%"></i></span><span class="bc-v">+540 tkr</span></div>
+            <div class="bc-row"><span class="bc-l">Ofakturerat</span><span class="bc-t"><i style="width:54%"></i></span><span class="bc-v">+295 tkr</span></div>
+            <div class="bc-row"><span class="bc-l">Moms + lön</span><span class="bc-t"><i class="neg" style="width:70%"></i></span><span class="bc-v">−452 tkr</span></div>
+          </div>
+        </div></div>
+      </div>
+      <div class="cw-input"><span class="cw-ph">Fråga om kassaflöde, marginal, budget …</span><span class="cw-send"><svg class="ic-sm light"><use href="#i-arrow"/></svg></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="band-soft">
+  <div class="wrap center">
+    <span class="pill pill-bone">Plattformsbredd</span>
+    <h2>Agenter kör hela byråns kärnprocesser</h2>
+    <p class="sec-sub">Specialiserade agenter tar grovjobbet. Konsulten validerar och levererar.</p>
+    <div class="board">
+      <div class="board-head"><span>Agent</span><span>Status</span><span>Granskning</span></div>
+      <div class="board-row"><span class="ag"><span class="ag-ic">B</span>Bokföring</span><span class="st klar">Klar</span><span class="rev"><svg class="ic-sm"><use href="#i-check"/></svg> Godkänd</span></div>
+      <div class="board-row"><span class="ag"><span class="ag-ic">A</span>Avstämning</span><span class="st klar">Klar</span><span class="rev"><svg class="ic-sm"><use href="#i-check"/></svg> Godkänd</span></div>
+      <div class="board-row"><span class="ag"><span class="ag-ic">M</span>Moms</span><span class="st pag"><i class="spin"></i>Pågår</span><span class="rev muted">Väntar</span></div>
+      <div class="board-row"><span class="ag"><span class="ag-ic">L</span>Lön</span><span class="st pag"><i class="spin"></i>Pågår</span><span class="rev muted">Väntar</span></div>
+      <div class="board-row"><span class="ag"><span class="ag-ic">R</span>Reskontra</span><span class="st ko">I kö</span><span class="rev muted">—</span></div>
+      <div class="board-row"><span class="ag"><span class="ag-ic">Bo</span>Bokslut</span><span class="st ko">I kö</span><span class="rev muted">—</span></div>
+      <div class="board-foot"><span class="bf-prog"><i style="width:64%"></i></span><span class="bf-txt">4 av 6 processer klara · konsult validerar</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap center">
+    <span class="pill pill-lilac">Du är experten</span>
+    <h2>AI gör analysen. Du gör bedömningen.</h2>
+    <p class="sec-sub">Istället för timmar på en resultaträkning får du ett genomarbetat underlag på sekunder. Du behåller omdömet och kundrelationen.</p>
+    <div class="analysis">
+      <aside class="an-side">
+        <span class="an-app"><span class="mk-sm">◳</span>SEVR Insights</span>
+        <span class="an-nav active"><svg class="ic-sm"><use href="#i-msg"/></svg> Fråga AI</span>
+        <span class="an-nav"><svg class="ic-sm"><use href="#i-chart"/></svg> Rapporter</span>
+        <span class="an-nav"><svg class="ic-sm"><use href="#i-drop"/></svg> Likviditet</span>
+        <span class="an-nav"><svg class="ic-sm"><use href="#i-receipt"/></svg> Reskontra</span>
+      </aside>
+      <div class="an-main">
+        <div class="an-q"><span class="an-q-ava">VD</span>Hur ska jag tänka kring intäkter för att gå break-even i Q2?</div>
+        <div class="an-ans">
+          <div class="an-ans-head"><span class="badge-ai">AI-analys</span><span class="an-conf">Säkerhet: hög</span></div>
+          <p class="an-ans-p">Break-even kräver <strong>3,9 Mkr</strong> i kvartalsintäkt vid nuvarande täckningsgrad (41%). Det motsvarar ca <strong>1 240 fakturerbara timmar</strong>.</p>
+          <div class="an-cols">
+            <div class="an-stat"><span class="an-stat-l">Break-even</span><span class="an-stat-v">3,9 Mkr</span></div>
+            <div class="an-stat"><span class="an-stat-l">Nuläge Q2</span><span class="an-stat-v">3,1 Mkr</span></div>
+            <div class="an-stat"><span class="an-stat-l">Gap</span><span class="an-stat-v dn">−0,8 Mkr</span></div>
+          </div>
+          <svg class="an-chart" viewBox="0 0 380 80" preserveAspectRatio="none" aria-label="Intäkt mot break-even-linje per månad i Q2">
+            <line class="goal" x1="0" y1="22" x2="380" y2="22"/>
+            <g class="cols">
+              <rect x="20" y="46" width="70" height="34"/><rect x="120" y="38" width="70" height="42"/><rect x="220" y="28" width="70" height="52"/><rect x="320" y="18" width="50" height="62" class="hit"/>
+            </g>
+          </svg>
+          <div class="an-actions"><span class="btn-mini primary">Skapa åtgärdsplan</span><span class="btn-mini">Skapa VD-rapport</span><span class="btn-mini">Exportera PDF</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band-soft">
+  <div class="wrap center">
+    <span class="pill pill-bone">Kunder</span>
+    <h2>En väldigt omtyckt produkt</h2>
+    <div class="grid g3 quotes">
+      <div class="card quote"><p class="q">”Vi gick från sifferleverans till rådgivning — utan att anställa fler.”</p><div class="who"><span class="ava"></span><div><strong>SEVR-kund</strong><span>Redovisningsbyrå · placeholder</span></div></div></div>
+      <div class="card quote"><p class="q">”Likviditetssvackan syns innan den slår till. Kunderna älskar det.”</p><div class="who"><span class="ava ava2"></span><div><strong>SEVR-kund</strong><span>Byrå · placeholder</span></div></div></div>
+      <div class="card quote"><p class="q">”VD-rapporten tar 30 sekunder. Förr en halv arbetsdag.”</p><div class="who"><span class="ava"></span><div><strong>SEVR-kund</strong><span>Byrå · placeholder</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap center">
+    <span class="pill pill-lilac">Välj väg</span>
+    <h2>Vad är du ute efter?</h2>
+    <div class="split">
+      <div class="route-card lilac" data-route="byra">
+        <span class="rk">För byråer</span>
+        <h3>Skala rådgivning</h3>
+        <p>Frigör hundratals timmar per kund och år. Gör rådgivning till norm — och en ny intäktsmodell.</p>
+        <span class="go">Till byråsidan <svg class="ic-sm"><use href="#i-arrow"/></svg></span>
+      </div>
+      <div class="route-card sky" data-route="foretag">
+        <span class="rk">För företag</span>
+        <h3>En digital CFO</h3>
+        <p>Förstå er ekonomi i klartext och fatta bättre beslut — utan att anställa en controller.</p>
+        <span class="go">Till företagssidan <svg class="ic-sm"><use href="#i-arrow"/></svg></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band-soft">
+  <div class="wrap center">
+    <span class="pill pill-bone">Vanliga frågor</span>
+    <h2>Det du undrar</h2>
+    <div class="faq">
+      <div class="qa"><button>Behöver jag installera något nytt?<span class="pm">+</span></button><div class="ans"><p>Nej. SEVR Insights kopplas mot din bokföring — Fortnox via API eller en SIE-fil. Inget IT-projekt.</p></div></div>
+      <div class="qa"><button>Vilka ekonomisystem stöds?<span class="pm">+</span></button><div class="ans"><p>Fortnox via API. Övriga system via SIE-filimport — samma analyskapacitet oavsett källa.</p></div></div>
+      <div class="qa"><button>Ersätter AI:n konsulten?<span class="pm">+</span></button><div class="ans"><p>Aldrig. AI:n gör analysen, du gör bedömningen. Kombinationen av datadriven precision och mänskligt omdöme skapar värdet.</p></div></div>
+      <div class="qa"><button>Är datan säker?<span class="pm">+</span></button><div class="ans"><p>All data hanteras enligt GDPR inom Sverige och EU. Vi tränar aldrig AI-modeller på er data.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="band-dark">
+      <h2>Redo att gå från siffror till råd?</h2>
+      <p>Boka en kostnadsfri demo så visar vi SEVR Insights med riktig data.</p>
+      <a class="btn btn-lilac">Boka en demo</a>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ================= VISION ================= -->
+<div id="vision" class="route">
+
+<!-- 1 · Hero (manifesto, single H1, left-aligned) -->
+<section class="hero vision-hero">
+  <div class="wrap">
+    <div class="vision-lead">
+      <span class="pill pill-lilac">Vår vision</span>
+      <h1>Redovisningsekonomen — entreprenörens bästa vän.</h1>
+      <p class="lead">SEVR finns för att lyfta redovisningsekonomen. Vi låter AI sköta det tråkiga, repetitiva arbetet — så att du kan lägga din tid och ditt omdöme där det verkligen gör skillnad: hos kunden.</p>
+      <div class="cta"><a class="btn btn-lilac">Boka en 30-minuters demo</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · Belief -->
+<section>
+  <div class="wrap prose">
+    <h2>Det här tror vi på</h2>
+    <p>Redovisningsekonomen är en av de viktigaste personerna i en entreprenörs liv. Det är hen som ser sanningen i siffrorna, som vet när något är på väg åt fel håll och som kan göra att pengarna räcker längre.</p>
+    <p>Ändå går det mesta av dagen åt till annat. Att tanka ut data. Hämta rapporter. Validera. Stänga böcker manuellt. Tid som aldrig når kunden.</p>
+    <p class="emphasis">Det vill vi ändra på.</p>
+  </div>
+</section>
+
+<!-- 3 · Vision statement (pull-quote band) -->
+<section class="band-soft">
+  <div class="wrap center vstatement">
+    <blockquote class="pullquote">Att göra redovisningsekonomen till entreprenörens bästa vän.</blockquote>
+    <p class="sec-sub">Vi sänker pucken i högsäsong och jämnar ut arbetet över året, så att din vardag blir mer förutsägbar — och din rådgivning mer värd.</p>
+    <svg class="peak" viewBox="0 0 640 120" preserveAspectRatio="none" role="img" aria-label="Illustration: arbetstoppar i högsäsong jämnas ut till en jämn linje över året">
+      <line class="base" x1="0" y1="78" x2="640" y2="78"/>
+      <path class="peakline" d="M0,70 L40,28 80,96 120,30 160,92 200,44 240,74 280,56 320,72 360,66 400,76 440,72 480,77 520,75 560,78 600,77 640,78"/>
+    </svg>
+  </div>
+</section>
+
+<!-- 4 · Människa och maskin (80/20) -->
+<section>
+  <div class="wrap hm">
+    <div class="hm-text">
+      <span class="pill pill-lilac">Människa och maskin</span>
+      <h2 class="left">AI tar 80 %. Du tar de 20 % som avgör.</h2>
+      <p>AI gör ungefär 80 % av jobbet: hämtar data, bearbetar den, validerar den och förbereder leveransen.</p>
+      <p>De sista 20 % gör du. Det är omdömet — och det går inte att automatisera. En människa måste alltid granska underlaget innan det går till kund.</p>
+      <p><strong>Human in the loop, hela vägen.</strong> Inte AI istället för dig. AI som arbetar för dig.</p>
+    </div>
+    <div class="hm-viz">
+      <div class="split8020" role="img" aria-label="AI gör 80 procent av arbetet. Du gör de 20 procent som kräver omdöme.">
+        <div class="seg ai" style="width:80%"><span class="seg-pct">80 %</span></div>
+        <div class="seg human" style="width:20%"><span class="seg-pct">20 %</span></div>
+      </div>
+      <div class="split-legend">
+        <div class="sl"><span class="sl-dot ai"></span>AI — det repetitiva</div>
+        <div class="sl"><span class="sl-dot human"></span><strong>Du — omdömet.</strong> Det som avgör.</div>
+      </div>
+      <p class="hm-note">Människa granskar alltid underlaget innan det går till kund.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · Hur vi gör det (3 pillars) -->
+<section class="band-soft">
+  <div class="wrap center">
+    <span class="pill pill-bone">Tre delar</span>
+    <h2>Hur vi gör det</h2>
+    <div class="grid g3">
+      <article class="card pillar">
+        <div class="ic-wrap"><svg class="ic"><use href="#i-stack"/></svg></div>
+        <h3>Rapportering som skalar</h3>
+        <p>Period, månad, kvartal och bokslut — levererat snabbt till många, inte en i taget. Ta fram vilket nyckeltal du vill och spara det för alltid, för hela kundstocken eller en hel bransch. Många e-handelsbolag, SaaS-bolag eller bostadsrättsföreningar? Skala på det.</p>
+        <span class="outcome-tag">Leverera till många på en gångs tid</span>
+      </article>
+      <article class="card pillar">
+        <div class="ic-wrap"><svg class="ic"><use href="#i-shield"/></svg></div>
+        <h3>Regelverk du kan lita på</h3>
+        <p>Få svar på regelfrågor direkt — och se exakt var svaret kommer ifrån. Vi kombinerar hela regelverket med din kunds egen data, så att svaren blir både snabba och möjliga att verifiera. Vill du stärka ett underlag laddar du upp egna dokument och ger AI:n mer att gå på.</p>
+        <span class="outcome-tag">Svar du kan verifiera</span>
+      </article>
+      <article class="card pillar">
+        <div class="ic-wrap"><svg class="ic"><use href="#i-gear"/></svg></div>
+        <h3>Agenter i dina kärnprocesser</h3>
+        <p>Avstämningar, automatiska konteringar, bokslut. Agenterna arbetar inuti processerna du idag gör för hand — så att du hinner med fler kunder utan att jobba fler timmar.</p>
+        <span class="outcome-tag">Fler kunder, inte fler timmar</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · Varför det spelar roll -->
+<section>
+  <div class="wrap prose">
+    <h2>Varför det spelar roll</h2>
+    <p>När det tråkiga försvinner får du tillbaka tiden. Och tid är det som gör att du kan sälja mer, hjälpa bättre, höja kvaliteten och få bättre marginal på de kunder du redan har.</p>
+    <p>Det handlar inte om att AI är häftigt. Det handlar om vad det leder till — för dig och för entreprenören du hjälper.</p>
+    <div class="chips outcome-chips">
+      <span class="chip">Sälj mer</span><span class="chip">Hjälp bättre</span><span class="chip">Högre kvalitet</span><span class="chip">Bättre marginal</span>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · Final CTA -->
+<section>
+  <div class="wrap">
+    <div class="band-dark">
+      <h2>AI gör 80 %. Ditt omdöme gör resten.</h2>
+      <p>Vi bygger SEVR för att lyfta dig som ekonom — inte för att ersätta dig.</p>
+      <a class="btn btn-lilac">Boka en 30-minuters demo</a>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ================= FÖR BYRÅER ================= -->
+<div id="byra" class="route">
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-head">
+      <span class="pill pill-lilac">För redovisningsbyråer</span>
+      <h1>Ge byrån en AI-kollega som gör jobbet</h1>
+      <p class="lead">Agenterna tar grovjobbet i byråns kärnprocesser. Konsulterna validerar, levererar och lägger tiden där den skapar värde: hos kunden.</p>
+      <div class="cta"><a class="btn btn-lilac">Boka en demo</a><a class="btn btn-dark" data-route="hem">Se funktionerna <svg class="ic-sm"><use href="#i-arrow"/></svg></a></div>
+      <ul class="trust">
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> Per aktiv kund</li>
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> Hela byrån, ett pris</li>
+      </ul>
+    </div>
+
+    <div class="preview fresh">
+      <div class="hero-tabs">
+        <span class="tab active">Alla kunder</span>
+        <span class="tab">Att granska</span>
+        <span class="tab">Förfaller</span>
+      </div>
+      <div class="mock">
+        <div class="mock-top"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="mock-label">Byråöversikt · 48 kunder</span></div>
+        <div class="console">
+          <div class="con-row con-head"><span>Kund</span><span>Status</span><span>Likviditet</span></div>
+          <div class="con-row"><span class="con-cli"><span class="con-ava">VL</span>Volvo Lastbilar AB</span><span class="st klar">Klar</span><span class="con-spark up"><svg viewBox="0 0 60 20" preserveAspectRatio="none"><path d="M0,15 L12,12 24,14 36,8 48,9 60,3"/></svg></span></div>
+          <div class="con-row"><span class="con-cli"><span class="con-ava">NB</span>Nordic Bygg AB</span><span class="st pag"><i class="spin"></i>Pågår</span><span class="con-spark dn"><svg viewBox="0 0 60 20" preserveAspectRatio="none"><path d="M0,6 L12,8 24,7 36,12 48,11 60,16"/></svg></span></div>
+          <div class="con-row"><span class="con-cli"><span class="con-ava">GK</span>Götakök &amp; Bar</span><span class="st klar">Klar</span><span class="con-spark up"><svg viewBox="0 0 60 20" preserveAspectRatio="none"><path d="M0,14 L12,13 24,10 36,11 48,6 60,5"/></svg></span></div>
+          <div class="con-row"><span class="con-cli"><span class="con-ava">SD</span>Syd Data AB</span><span class="st ko">I kö</span><span class="con-spark"><svg viewBox="0 0 60 20" preserveAspectRatio="none"><path d="M0,10 L12,9 24,11 36,8 48,10 60,7"/></svg></span></div>
+        </div>
+        <div class="con-foot"><span class="cf-alert"><span class="ob-dot warn"></span>3 kunder med likviditetsvarning</span><span class="cf-link">Visa alla <svg class="ic-sm"><use href="#i-arrow"/></svg></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band-soft">
+  <div class="wrap center">
+    <span class="pill pill-bone">Problemet</span>
+    <h2>Rapporten tar minuter. Rådgivningen hinns aldrig med.</h2>
+    <p class="sec-sub">Över 200 timmar per kund och år försvinner i manuellt arbete. Tre krafter pressar byrån samtidigt.</p>
+    <div class="grid g3">
+      <div class="card"><h3>Fastprispress</h3><p>Den löpande redovisningen har blivit en commodity. Marginalerna krymper varje år.</p></div>
+      <div class="card"><h3>Kompetensbrist</h3><p>Svårt att hitta och behålla seniora konsulter. Byrån måste göra mer med färre.</p></div>
+      <div class="card"><h3>Kunderna vill ha mer</h3><p>Räcker pengarna? Rätt läge att investera? De vill ha svar — inte bara siffror.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap center">
+    <span class="pill pill-lilac">Två vardagar</span>
+    <h2>Konsulten har inte tid. Entreprenören saknar språket.</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Konsultens vardag</h3><p>50 kunder, löpande ska stämmas. ”Hur går det för oss?” tar en timme per kund.</p>
+        <div class="fcard-ui">
+          <div class="queue"><span class="q-lbl">Att granska idag</span><span class="q-badge">12</span></div>
+          <div class="q-item"><span class="con-ava sm">VL</span>Volvo Lastbilar<span class="q-st">1 h</span></div>
+          <div class="q-item"><span class="con-ava sm">NB</span>Nordic Bygg<span class="q-st">1 h</span></div>
+          <div class="q-item dim"><span class="con-ava sm">+10</span>fler i kö<span class="q-st">10 h</span></div>
+        </div>
+      </div>
+      <div class="card"><h3>Entreprenörens vardag</h3><p>Bra på sin verksamhet, men ekonomin är ett nödvändigt ont.</p>
+        <div class="fcard-ui">
+          <div class="conf-card">
+            <div class="conf-top"><span class="conf-l">Resultat</span><span class="conf-v up">+412 tkr</span></div>
+            <div class="conf-top"><span class="conf-l">På kontot</span><span class="conf-v dn">31 tkr</span></div>
+            <div class="conf-q">”Varför är kassan tom trots vinst?”</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bridge">Bron mellan två världar: AI:n gör analysen · du gör bedömningen · kunden får svaren</div>
+  </div>
+</section>
+
+<section class="band-soft">
+  <div class="wrap center">
+    <span class="pill pill-bone">Värdet · tid</span>
+    <h2>Veckor tillbaka. Per kund. Varje år.</h2>
+    <div class="stats">
+      <div class="stat"><div class="n">~90%<span class="e">(est.)</span></div><div class="d">tidsbesparing på rapportarbete</div></div>
+      <div class="stat"><div class="n">2×<span class="e">(est.)</span></div><div class="d">kunder per konsult</div></div>
+      <div class="stat"><div class="n">+40%<span class="e">(est.)</span></div><div class="d">merförsäljning per kund</div></div>
+    </div>
+    <div class="savings">
+      <div class="sv-head"><span class="ui-title">Tid per kund &amp; månad — rapport &amp; analys</span><span class="badge-b">−7,2 h</span></div>
+      <div class="sv-row"><span class="sv-lbl">Manuellt idag</span><span class="sv-track"><i class="manual" style="width:96%"></i></span><span class="sv-val">8,0 h</span></div>
+      <div class="sv-row"><span class="sv-lbl">Med SEVR</span><span class="sv-track"><i class="auto" style="width:10%"></i></span><span class="sv-val">0,8 h</span></div>
+      <p class="sv-note">Konsulten validerar och levererar — AI tar grovjobbet.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap two-col">
+    <div>
+      <span class="pill pill-lilac">Värdet · kundupplevelse</span>
+      <h2 class="left">Era kunder slutar vänta på svar</h2>
+    </div>
+    <p class="col-body">Varje leverans blir ett tillfälle att ge råd. Kunden får svar direkt i stället för ”jag återkommer”. Det bygger förtroende långt bortom debet och kredit — och kunder som stannar.</p>
+  </div>
+</section>
+
+<section class="band-soft">
+  <div class="wrap two-col">
+    <div>
+      <span class="pill pill-bone">Trygghet</span>
+      <h2 class="left">Kundens siffror ska inte tränas av någon annans AI</h2>
+    </div>
+    <p class="col-body">Slut på att klistra in resultat- och balansräkningar i ChatGPT eller Copilot. SEVR Insights är byggt för byrå — data inom Sverige/EU, GDPR, aldrig modellträning.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap center">
+    <span class="pill pill-lilac">Pris · byrå</span>
+    <h2>Betala för värdet — inte för inloggningar</h2>
+    <p class="sec-sub">Plattformen prissätts per kund. AI-credits köper ni till för hela byrån och delas av alla konsulter. Inga licenser per användare.</p>
+    <div class="price-row">
+      <div class="price"><div class="amt">19 kr<span class="per"> / kund / mån</span></div><ul>
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> Plattformen, per aktiv kund</li>
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> Inga licenser per användare</li>
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> Hela byrån, ett pris</li>
+      </ul></div>
+      <div class="price"><div class="amt">+ Credits</div><div class="per">delas av hela byrån</div><ul>
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> Paket 1000 – 10 000 credits</li>
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> 0–30% volymrabatt</li>
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> 30 dagars betalningsvillkor</li>
+      </ul></div>
+    </div>
+    <div class="cta-center"><a class="btn btn-lilac">Boka en demo</a></div>
+  </div>
+</section>
+</div>
+
+<!-- ================= FÖR FÖRETAG ================= -->
+<div id="foretag" class="route">
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-head">
+      <span class="pill pill-sky">För företag</span>
+      <h1>En CFO som svarar direkt — utan att anställa en</h1>
+      <p class="lead">Ert bolag har vuxit ur enkel bokföring. SEVR Insights ger beslutsstöd direkt: fråga vad som helst om er ekonomi och få svar — i klartext, med konkreta åtgärder.</p>
+      <div class="cta"><a class="btn btn-lilac">Boka en demo</a></div>
+      <ul class="trust">
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> Från 799 kr/mån</li>
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> Svar på sekunder</li>
+      </ul>
+    </div>
+
+    <div class="preview fresh">
+      <div class="hero-tabs">
+        <span class="tab active">Fråga AI</span>
+        <span class="tab">Likviditet</span>
+        <span class="tab">Koncern</span>
+      </div>
+      <div class="mock">
+        <div class="mock-top"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="mock-label">Din digitala CFO</span></div>
+        <div class="cfo-q"><span class="an-q-ava">VD</span>Klarar vi en investering på 200 tkr i juni?</div>
+        <div class="cfo-a">
+          <div class="cfo-verdict"><span class="cv-flag warn">Nej — fel timing</span><span class="cv-conf">Säkerhet: hög</span></div>
+          <div class="cfo-stats">
+            <div class="cfo-stat"><span class="cs-l">Kassa idag</span><span class="cs-v">287 tkr</span></div>
+            <div class="cfo-stat"><span class="cs-l">Moms + lön 25/6</span><span class="cs-v dn">−452 tkr</span></div>
+          </div>
+          <svg class="areachart" viewBox="0 0 280 56" preserveAspectRatio="none" aria-label="Prognos kassa juni — dyker under noll">
+            <line x1="0" y1="40" x2="280" y2="40" class="zero"/>
+            <path class="area neg" d="M0,20 L56,24 112,30 168,46 224,52 280,50 L280,56 L0,56 Z"/>
+            <path class="line warnline" d="M0,20 L56,24 112,30 168,46 224,52 280,50"/>
+          </svg>
+          <div class="cfo-tip">Vänta till efter 25:e — då återställs kassan.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band-soft">
+  <div class="wrap center">
+    <span class="pill pill-bone">Problemet</span>
+    <h2>Ni ser resultatet. Inte vad ni ska göra åt det.</h2>
+    <div class="grid g3">
+      <div class="card plain"><p>Ni ser resultatet, men inte alltid varför.</p></div>
+      <div class="card plain"><p>Likviditeten svänger — och ni märker det för sent.</p></div>
+      <div class="card plain"><p>Svaret på ekonomifrågan dröjer till nästa möte.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap center">
+    <span class="pill pill-lilac">Lösningen</span>
+    <h2>Er digitala CFO</h2>
+    <p class="sec-sub">SEVR Insights läser er ekonomi och svarar på ett språk ni förstår — analys, diagram och konkreta åtgärder, direkt. Beslutsstöd när ni behöver det, inte tre veckor senare.</p>
+    <div class="chatwin">
+      <div class="cw-bar">
+        <span class="cw-dot"></span><span class="cw-dot"></span><span class="cw-dot"></span>
+        <span class="cw-ctx"><svg class="ic-sm"><use href="#i-msg"/></svg> Fråga AI · <strong>ert bolag</strong></span>
+        <span class="cw-live"><i></i>Live data</span>
+      </div>
+      <div class="thread">
+        <div class="msg-row right"><div class="bubble user">Hur ska jag tänka kring intäkter för att gå break-even i Q2?</div></div>
+        <div class="msg-row left"><div class="bubble ai">Räkna ut break-even-intäkter (fasta kostnader / täckningsgrad), översätt till timmar, prognostisera bottom-up och avsluta med en snabb verklighetscheck.</div></div>
+        <div class="msg-row right"><div class="bubble user">Vad gör vi för att frigöra kapital? Lägg en kort plan.</div></div>
+        <div class="msg-row left"><div class="bubble ai">En plan i tre horisonter:
+          <div class="plan">
+            <div class="plan-step"><span class="ps-when">0–7 d</span><span class="ps-txt">Driv in toppfordringar · frys icke-kritiskt</span></div>
+            <div class="plan-step"><span class="ps-when">8–30 d</span><span class="ps-txt">Veckofakturering · kortare villkor · förskott</span></div>
+            <div class="plan-step"><span class="ps-when">31–90 d</span><span class="ps-txt">Sänk factoringberoendet</span></div>
+          </div>
+        </div></div>
+      </div>
+      <div class="cw-input"><span class="cw-ph">Fråga om kassaflöde, marginal, budget …</span><span class="cw-send"><svg class="ic-sm light"><use href="#i-arrow"/></svg></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="band-soft">
+  <div class="wrap center">
+    <span class="pill pill-bone">Koncern</span>
+    <h2>Driver ni en mindre koncern?</h2>
+    <p class="sec-sub">Koncernmodulen samlar och konsoliderar era bolag — beslutsstöd på koncernnivå, utan en hel ekonomiavdelning.</p>
+    <div class="koncern">
+      <div class="kc-head"><span>Bolag</span><span>Omsättning</span><span>Resultat</span><span>Likviditet</span></div>
+      <div class="kc-row"><span class="kc-cli"><span class="con-ava sm">HB</span>Holding AB</span><span>1,9 Mkr</span><span class="up">+182 tkr</span><span>340 tkr</span></div>
+      <div class="kc-row"><span class="kc-cli"><span class="con-ava sm">DR</span>Drift AB</span><span>4,2 Mkr</span><span class="up">+410 tkr</span><span>205 tkr</span></div>
+      <div class="kc-row"><span class="kc-cli"><span class="con-ava sm">FA</span>Fastighet AB</span><span>0,8 Mkr</span><span class="dn">−54 tkr</span><span>118 tkr</span></div>
+      <div class="kc-row kc-total"><span class="kc-cli">Koncern — konsoliderat</span><span>6,9 Mkr</span><span class="up">+538 tkr</span><span>663 tkr</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap center">
+    <span class="pill pill-lilac">Trygghet &amp; pris</span>
+    <h2>Er data är er — från 799 kr/mån</h2>
+    <p class="sec-sub">SEVR Insights hanterar er ekonomi enligt GDPR och använder den aldrig för att träna AI-modeller. Ett fast, förutsägbart pris — en bråkdel av vad en controller- eller CFO-tjänst kostar.</p>
+    <div class="price-single">
+      <div class="price"><div class="amt">799 kr<span class="per"> / mån</span></div><ul>
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> Fråga AI — obegränsat beslutsstöd</li>
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> Analys, diagram &amp; åtgärder i klartext</li>
+        <li><svg class="ic-tick"><use href="#i-check"/></svg> GDPR — aldrig modellträning på er data</li>
+      </ul></div>
+    </div>
+    <div class="cta-center"><a class="btn btn-lilac">Boka en demo</a></div>
+  </div>
+</section>
+</div>
+
+<!-- ================= PRIS ================= -->
+<div id="pris" class="route">
+<section class="hero hero-sub">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="pill pill-lilac">Pris</span>
+      <h1>Betala för värdet — inte för inloggningar</h1>
+      <p class="lead">Två målgrupper, två modeller. Byråer prissätts per kund med AI-credits som delas av hela teamet. Företag betalar ett fast månadspris. Inga licenser per användare.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band-soft">
+  <div class="wrap">
+    <div class="split">
+      <div class="price featured">
+        <span class="price-tag lilac">För byråer</span>
+        <div class="amt">19 kr<span class="per"> / kund / mån</span></div>
+        <p class="price-sub">Plattformen för redovisningsbyrån — prissatt per aktiv kund.</p>
+        <ul>
+          <li><svg class="ic-tick"><use href="#i-check"/></svg> Alla funktioner: rapporter, budget, likviditet, reskontra, Fråga AI</li>
+          <li><svg class="ic-tick"><use href="#i-check"/></svg> Inga licenser per användare — hela byrån, ett pris</li>
+          <li><svg class="ic-tick"><use href="#i-check"/></svg> AI-credits köps till och delas av alla konsulter</li>
+          <li><svg class="ic-tick"><use href="#i-check"/></svg> Fortnox via API eller SIE-fil</li>
+        </ul>
+        <div class="cta-center"><a class="btn btn-lilac">Boka en demo</a></div>
+      </div>
+      <div class="price">
+        <span class="price-tag bone">För företag</span>
+        <div class="amt">Från 799 kr<span class="per"> / mån</span></div>
+        <p class="price-sub">Er digitala CFO — ett fast, förutsägbart pris.</p>
+        <ul>
+          <li><svg class="ic-tick"><use href="#i-check"/></svg> Fråga AI — beslutsstöd i klartext</li>
+          <li><svg class="ic-tick"><use href="#i-check"/></svg> Analys, diagram &amp; konkreta åtgärder direkt</li>
+          <li><svg class="ic-tick"><use href="#i-check"/></svg> Koncernmodul för mindre koncerner</li>
+          <li><svg class="ic-tick"><use href="#i-check"/></svg> En bråkdel av en controller-/CFO-tjänst</li>
+        </ul>
+        <div class="cta-center"><a class="btn btn-dark">Boka en demo</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap center">
+    <span class="pill pill-lilac">AI-credits</span>
+    <h2>Credits — delas av hela byrån</h2>
+    <p class="sec-sub">Varje AI-genererad rapport, kommentar eller analys använder credits. Köp till paket när ni vill — större paket ger volymrabatt.</p>
+
+    <div class="meter">
+      <div class="meter-main">
+        <div class="meter-top"><span class="ui-title">Byråns credits · juni</span><span class="badge-b">3 010 kvar</span></div>
+        <div class="meter-track"><i style="width:60%"></i></div>
+        <div class="meter-legend"><span>1 990 av 5 000 använda</span><span>delas av 7 konsulter</span></div>
+      </div>
+      <ul class="usage">
+        <li><span class="us-ic"><svg class="ic-sm"><use href="#i-file"/></svg></span>VD-rapport · Volvo Lastbilar<span class="us-c">−12</span></li>
+        <li><span class="us-ic"><svg class="ic-sm"><use href="#i-msg"/></svg></span>Fråga AI · Nordic Bygg<span class="us-c">−3</span></li>
+        <li><span class="us-ic"><svg class="ic-sm"><use href="#i-chart"/></svg></span>Budgetprognos · Götakök<span class="us-c">−8</span></li>
+      </ul>
+    </div>
+
+    <div class="grid g4 credits">
+      <div class="card center"><div class="cred">1 000</div><p class="cred-unit">credits</p><div class="cred-off muted">ingen rabatt</div></div>
+      <div class="card center"><div class="cred">3 000</div><p class="cred-unit">credits</p><div class="cred-off">10% rabatt</div></div>
+      <div class="card center"><div class="cred">5 000</div><p class="cred-unit">credits</p><div class="cred-off">20% rabatt</div></div>
+      <div class="card center cred-featured"><div class="cred">10 000</div><p class="cred-unit">credits</p><div class="cred-off">30% rabatt</div></div>
+    </div>
+    <p class="fine">Credits aktiveras direkt vid köp och gäller så länge abonnemanget är aktivt. 30 dagars betalningsvillkor.</p>
+  </div>
+</section>
+
+<section class="band-soft">
+  <div class="wrap center">
+    <span class="pill pill-bone">Vanliga frågor om pris</span>
+    <h2>Det du undrar</h2>
+    <div class="faq">
+      <div class="qa"><button>Vad är en AI-credit?<span class="pm">+</span></button><div class="ans"><p>Varje AI-genererad kommentar, rapport eller analys använder credits. Ni köper till paket efter behov och de delas av hela byrån.</p></div></div>
+      <div class="qa"><button>Betalar vi per användare?<span class="pm">+</span></button><div class="ans"><p>Nej. Byrån betalar per aktiv kund — inga licenser per konsult. Credits delas av hela teamet.</p></div></div>
+      <div class="qa"><button>Vad kostar det för företag?<span class="pm">+</span></button><div class="ans"><p>Från 799 kr/mån för Fråga AI och beslutsstöd — en bråkdel av vad en controller- eller CFO-tjänst kostar.</p></div></div>
+      <div class="qa"><button>Finns det bindningstid?<span class="pm">+</span></button><div class="ans"><p>Credits gäller så länge abonnemanget är aktivt. 30 dagars betalningsvillkor.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="band-dark">
+      <h2>Osäker på vilken modell som passar?</h2>
+      <p>Boka en demo så går vi igenom upplägget för just er byrå eller ert bolag.</p>
+      <a class="btn btn-lilac">Boka en demo</a>
+    </div>
+  </div>
+</section>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <a class="brand" data-route="hem"><span class="mk">◳</span>SEVR Insights</a>
+      <div class="tagline">Från sifferleverans till rådgivning.</div>
+    </div>
+    <div class="links">
+      <a data-route="hem">Hem</a><a data-route="vision">Vision</a><a data-route="byra">För byråer</a><a data-route="foretag">För företag</a><a data-route="pris">Pris</a><a>Boka demo</a>
+    </div>
+  </div>
+  <div class="wrap legal">GDPR-säkert · Er data tränar aldrig någon annans AI-modell. &nbsp;·&nbsp; © 2026 SEVR Reporting Services AB</div>
+</footer>
+
+<script src="script.js?v=10"></script>
+<div id="vswitch" style="position:fixed;bottom:14px;right:14px;z-index:99999;display:flex;gap:3px;background:#fff;border:1px solid #ddd;border-radius:9px;padding:4px;box-shadow:0 3px 12px rgba(0,0,0,.14);font-family:-apple-system,sans-serif">
+<a href="index.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#fff;background:#1a1a1a;text-decoration:none">V0</a>
+<a href="../index.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V1</a>
+<a href="../prototyp-v2.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V2</a>
+<a href="../salj-sajt.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V3</a>
+</div>
+
+</body>
+</html>

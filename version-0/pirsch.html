@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SEVR Insights — papper &amp; markörpenna (Pirsch-stil)</title>
+<meta name="description" content="SEVR Insights i editorial papper-notebook-stil: kräm, bläck och en enda solgul markör.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sun:#ffda6e; --mint:#6ece9d; --cream:#f8f5ed; --ink:#000000; --graphite:#707070;
+  --line:#000000; --hair:rgba(0,0,0,.16);
+  --font:'DM Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --maxw:1160px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);font-feature-settings:"ss03","ss04";
+  background:var(--cream);color:var(--ink);
+  font-size:18px;line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+/* Typography */
+h1,h2,h3{font-weight:500;letter-spacing:-.016em;line-height:1.16}
+.display{font-size:clamp(40px,6.4vw,64px);letter-spacing:-1.02px;line-height:1.12}
+h2.display{font-size:clamp(34px,5.2vw,56px)}
+.sub{font-size:18px;color:var(--graphite);max-width:640px;line-height:1.55}
+.center{text-align:center}
+.center .sub{margin-left:auto;margin-right:auto}
+.eyebrow{font-size:14px;font-weight:500;text-transform:uppercase;letter-spacing:.286em;color:var(--graphite)}
+
+section{padding:96px 0}
+.sec-stack>*+*{margin-top:24px}
+.sec-stack{display:flex;flex-direction:column;align-items:center}
+
+/* Step badge */
+.step{display:inline-flex;align-items:stretch;border:1px solid var(--ink);border-radius:9999px;overflow:hidden;font-size:14px;font-weight:500}
+.step .num{display:grid;place-items:center;width:30px;background:var(--sun);border-right:1px solid var(--ink)}
+.step .lbl{display:flex;align-items:center;padding:7px 16px 7px 13px;text-transform:uppercase;letter-spacing:.2em}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--font);font-weight:500;font-size:16px;border:1px solid var(--ink);border-radius:24px;padding:15px 26px;cursor:pointer;transition:.15s ease;background:var(--cream);color:var(--ink)}
+.btn:hover{transform:translateY(-1px)}
+.btn-sun{background:var(--sun)}
+.btn-sun:hover{background:#ffd24d}
+.btn-ghost{background:transparent}
+.btn-ghost:hover{background:rgba(0,0,0,.04)}
+.btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.btn-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+
+/* Nav */
+.nav{border-bottom:1px solid var(--ink)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:500;font-size:19px}
+.brand .mk{width:34px;height:34px;border:1px solid var(--ink);border-radius:10px;display:grid;place-items:center;background:var(--cream);font-size:17px}
+.nav-links{display:flex;gap:6px;align-items:center}
+.nav-links a{padding:9px 14px;border-radius:9999px;font-size:15px;color:var(--graphite);transition:.15s}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a.on{color:var(--ink);border:1px solid var(--ink)}
+.nav .btn{padding:10px 18px;font-size:14px}
+.theme-dot{width:12px;height:12px;border-radius:50%;background:var(--mint);border:1px solid var(--ink)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.switcher{position:relative}
+.sw-btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--font);font-weight:500;font-size:14px;color:var(--ink);background:var(--cream);border:1px solid var(--ink);border-radius:9999px;padding:9px 16px;cursor:pointer;transition:.15s}
+.sw-btn:hover{background:rgba(0,0,0,.04)}
+.sw-btn .chev{width:15px;height:15px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:.2s}
+.switcher.open .sw-btn .chev{transform:rotate(180deg)}
+.sw-menu{position:absolute;top:calc(100% + 10px);right:0;min-width:242px;background:var(--cream);border:1px solid var(--ink);border-radius:16px;padding:8px;display:none;z-index:60}
+.switcher.open .sw-menu{display:block}
+.sw-group{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.16em;color:var(--graphite);padding:11px 12px 5px}
+.sw-menu a{display:block;padding:10px 12px;border-radius:12px;font-size:15px;color:var(--ink);transition:.12s}
+.sw-menu a:hover{background:rgba(0,0,0,.05)}
+.sw-menu a.sw-cur{background:var(--sun)}
+
+/* Hero */
+.hero{padding-top:84px;padding-bottom:72px}
+.hero .btn-row{margin-top:8px}
+.trust-line{margin-top:14px;font-size:14px;color:var(--graphite);display:flex;align-items:center;gap:9px;justify-content:center}
+.trust-line .dot{width:10px;height:10px;border-radius:50%;background:var(--mint);border:1px solid var(--ink)}
+
+/* Framed monochrome product image */
+.frame{border:1px solid var(--ink);border-radius:12px;background:var(--cream);overflow:hidden}
+.shot{margin-top:56px}
+.shot .frame{padding:0}
+.shot-bar{display:flex;align-items:center;gap:7px;padding:13px 16px;border-bottom:1px solid var(--ink)}
+.shot-bar .d{width:9px;height:9px;border-radius:50%;border:1px solid var(--ink);background:var(--cream)}
+.shot-bar .t{margin-left:8px;font-size:13px;color:var(--graphite)}
+.shot-chips{margin-left:auto;display:flex;gap:7px}
+.chip-l{font-size:12.5px;padding:5px 12px;border:1px solid var(--ink);border-radius:9999px}
+.chip-d{font-size:12.5px;padding:5px 12px;border:1px solid var(--ink);border-radius:9999px;background:var(--ink);color:var(--cream)}
+.shot-body{padding:22px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr)}
+.kpi{padding:4px 18px;border-left:1px solid var(--hair)}
+.kpi:first-child{border-left:none;padding-left:4px}
+.kpi .l{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--graphite)}
+.kpi .v{font-size:28px;font-weight:500;margin-top:6px;letter-spacing:-.02em}
+.kpi .v mark{background:var(--sun);padding:0 4px;border-radius:4px}
+.kpi .delta{font-size:13px;color:var(--graphite);margin-top:3px}
+.kpi .delta.pos{color:#1c7a4a}
+.chartwrap{margin-top:22px;border-top:1px solid var(--hair);padding-top:18px}
+.lc{display:block;width:100%;height:120px}
+.lc .axis{stroke:var(--hair);stroke-width:1}
+.lc .area{fill:rgba(0,0,0,.05)}
+.lc .line{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.lc .line.f{stroke:var(--graphite);stroke-dasharray:5 5}
+.lc .pt{fill:var(--sun);stroke:var(--ink);stroke-width:1.5}
+.ask{margin-top:18px;display:flex;align-items:center;gap:11px;border:1px solid var(--ink);border-radius:9999px;padding:13px 18px;font-size:15px;color:var(--graphite)}
+.ask svg{width:16px;height:16px;stroke:var(--ink);fill:none;stroke-width:1.7}
+.ask .go{margin-left:auto;width:30px;height:30px;border-radius:50%;background:var(--sun);border:1px solid var(--ink);display:grid;place-items:center}
+.ask .go svg{stroke:var(--ink);width:14px;height:14px}
+
+/* Logo cloud */
+.cloud{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.cloud .wrap{padding:42px 28px}
+.cloud .cap{text-align:center;font-size:14px;color:var(--graphite);margin-bottom:26px;text-transform:uppercase;letter-spacing:.2em}
+.logos{display:grid;grid-template-columns:repeat(5,1fr);gap:22px;align-items:center}
+.logo{display:flex;align-items:center;justify-content:center;gap:9px;font-size:18px;font-weight:500;color:var(--ink);opacity:.75}
+.logo .g{width:22px;height:22px;border:1px solid var(--ink);border-radius:6px;display:grid;place-items:center;font-size:12px}
+
+/* Two-up feature cards */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:56px;width:100%}
+.fcard{border:1px solid var(--ink);border-radius:24px;padding:32px;background:var(--cream);transition:.15s ease}
+.fcard:hover{background:#f4efe2}
+.fcard .ic{width:46px;height:46px;border:1px solid var(--ink);border-radius:12px;display:grid;place-items:center;margin-bottom:20px}
+.fcard .ic svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.fcard h3{font-size:24px;margin-bottom:10px}
+.fcard p{font-size:17px;color:var(--graphite);line-height:1.55}
+.fcard .mini{margin-top:22px;border:1px solid var(--ink);border-radius:12px;padding:16px;background:var(--cream)}
+
+/* mini interfaces (monochrome) */
+.mini-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:13px;color:var(--graphite)}
+.mini-head strong{color:var(--ink);font-weight:500}
+.bars{display:grid;gap:9px}
+.bar{display:flex;align-items:center;gap:11px;font-size:13px}
+.bar .bl{width:62px;color:var(--graphite);flex:none}
+.bar .bt{flex:1;height:10px;border:1px solid var(--ink);border-radius:9999px;overflow:hidden}
+.bar .bt i{display:block;height:100%;background:var(--ink)}
+.bar .bt i.hl{background:var(--sun)}
+.bar .bt i.gr{background:var(--graphite)}
+.bar .bv{width:54px;text-align:right;flex:none}
+.amini .ac{display:block;width:100%;height:64px}
+.amini .area{fill:rgba(0,0,0,.05)} .amini .line{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.oblist{list-style:none;margin-top:12px;display:grid;gap:7px;font-size:13px}
+.oblist li{display:flex;align-items:center;gap:9px}
+.oblist .d{width:8px;height:8px;border-radius:50%;border:1px solid var(--ink)}
+.oblist .amt{margin-left:auto;font-weight:500}
+.doc-lines span{display:block;height:8px;border-radius:9999px;background:rgba(0,0,0,.1);margin-bottom:8px}
+.doc-lines .w9{width:92%} .doc-lines .w7{width:72%} .doc-lines .w8{width:82%}
+.doc-q{margin-top:10px;font-size:13px;color:var(--ink);border-left:2px solid var(--sun);padding-left:11px;font-style:italic}
+
+/* Chat (Fråga AI) — monochrome */
+.chat{width:100%;max-width:760px;margin:48px auto 0;border:1px solid var(--ink);border-radius:24px;overflow:hidden}
+.chat-bar{display:flex;align-items:center;gap:8px;padding:14px 20px;border-bottom:1px solid var(--ink);font-size:14px;color:var(--graphite)}
+.chat-bar .dot{width:9px;height:9px;border-radius:50%;border:1px solid var(--ink)}
+.chat-bar strong{color:var(--ink);font-weight:500;margin-left:6px}
+.chat-bar .live{margin-left:auto;display:flex;align-items:center;gap:7px;color:var(--ink)}
+.chat-bar .live i{width:9px;height:9px;border-radius:50%;background:var(--mint);border:1px solid var(--ink)}
+.thread{padding:24px 22px;display:flex;flex-direction:column;gap:14px;text-align:left}
+.msg{max-width:84%;font-size:15px;line-height:1.5;border:1px solid var(--ink);border-radius:18px;padding:13px 17px}
+.msg.q{align-self:flex-end;background:var(--cream);border-bottom-right-radius:6px}
+.msg.a{align-self:flex-start;background:var(--cream);border-bottom-left-radius:6px}
+.msg .qa-bars{margin-top:11px;display:grid;gap:7px}
+.chat-input{display:flex;align-items:center;gap:12px;padding:15px 18px;border-top:1px solid var(--ink);font-size:15px;color:var(--graphite)}
+.chat-input .send{margin-left:auto;width:34px;height:34px;border-radius:9999px;background:var(--sun);border:1px solid var(--ink);display:grid;place-items:center}
+.chat-input .send svg{width:15px;height:15px;stroke:var(--ink);fill:none;stroke-width:1.8}
+
+/* Stats / good company */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;width:100%}
+.stat{border:1px solid var(--ink);border-radius:24px;padding:30px 26px;text-align:left}
+.stat .n{font-size:52px;font-weight:500;letter-spacing:-.03em;line-height:1}
+.stat .n small{font-size:18px;color:var(--graphite)}
+.stat .d{font-size:15px;color:var(--graphite);margin-top:10px;display:flex;align-items:center;gap:8px}
+.stat .d .dot{width:9px;height:9px;border-radius:50%;background:var(--mint);border:1px solid var(--ink);flex:none}
+
+/* Pricing */
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:56px;width:100%}
+.price{border:1px solid var(--ink);border-radius:24px;padding:34px;text-align:left;display:flex;flex-direction:column}
+.price .tag{align-self:flex-start;font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:.16em;border:1px solid var(--ink);border-radius:9999px;padding:5px 13px;margin-bottom:18px}
+.price.feat .tag{background:var(--sun)}
+.price .amt{font-size:46px;font-weight:500;letter-spacing:-.03em}
+.price .amt small{font-size:17px;color:var(--graphite);font-weight:400}
+.price .pd{font-size:16px;color:var(--graphite);margin-top:8px}
+.price ul{list-style:none;margin:20px 0 26px;display:grid;gap:12px}
+.price li{font-size:16px;display:flex;gap:11px;align-items:flex-start}
+.price li svg{width:18px;height:18px;stroke:var(--ink);fill:none;stroke-width:2;flex:none;margin-top:3px}
+.price .btn{margin-top:auto;justify-content:center}
+
+/* FAQ */
+.faq{width:100%;max-width:760px;margin:48px auto 0;border-top:1px solid var(--ink)}
+.qa{border-bottom:1px solid var(--ink)}
+.qa button{width:100%;background:none;border:none;font-family:var(--font);font-size:19px;font-weight:500;color:var(--ink);text-align:left;padding:24px 6px;display:flex;justify-content:space-between;align-items:center;gap:18px;cursor:pointer}
+.qa .pm{width:26px;height:26px;border:1px solid var(--ink);border-radius:9999px;display:grid;place-items:center;font-size:18px;font-weight:400;flex:none;transition:.2s}
+.qa.open .pm{background:var(--sun);transform:rotate(45deg)}
+.qa .ans{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.qa .ans p{padding:0 6px 24px;color:var(--graphite);font-size:17px;line-height:1.6;max-width:640px}
+
+/* CTA block */
+.cta{text-align:center}
+.cta .tile{width:60px;height:60px;border:1px solid var(--ink);border-radius:12px;display:grid;place-items:center;margin:0 auto 28px;font-size:26px;background:var(--cream)}
+.cta .display{margin-bottom:20px}
+
+/* Footer */
+footer{border-top:1px solid var(--ink)}
+footer .wrap{padding:40px 28px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+.foot-links{display:flex;gap:22px;flex-wrap:wrap;font-size:15px;color:var(--graphite)}
+.foot-links a:hover{color:var(--ink)}
+.legal{width:100%;font-size:13px;color:var(--graphite);border-top:1px solid var(--hair);padding-top:18px}
+
+/* Motion — gentle, editorial */
+.js .rv{opacity:0;transform:translateY(16px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);transition-delay:var(--d,0ms)}
+.js .rv.in{opacity:1;transform:none}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:6px}
+
+@media(prefers-reduced-motion:reduce){
+  *{transition-duration:.001ms!important;scroll-behavior:auto!important}
+  .js .rv{opacity:1!important;transform:none!important}
+}
+
+@media(max-width:820px){
+  .cards,.price-grid,.stats,.kpis{grid-template-columns:1fr}
+  .kpi{border-left:none;border-top:1px solid var(--hair);padding:14px 4px}
+  .kpi:first-child{border-top:none}
+  .logos{grid-template-columns:repeat(2,1fr);gap:18px}
+  .nav-links{display:none}
+  section{padding:64px 0}
+  .stat{padding:24px}
+}
+</style>
+</head>
+<body>
+
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 16l3-4 3 2 4-6"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3c4 5 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 2-6 6-11z"/></symbol>
+  <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M5 3v18l2-1 2 1 2-1 2 1 2-1 2 1V3l-2 1-2-1-2 1-2-1-2 1z"/><path d="M9 8h6M9 12h6"/></symbol>
+</svg>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mk">◳</span>SEVR Insights</a>
+    <nav class="nav-links" aria-label="Meny">
+      <a href="#funktioner">Funktioner</a>
+      <a href="#fraga">Fråga AI</a>
+      <a href="#pris">Pris</a>
+      <span class="theme-dot" title="Online" aria-hidden="true"></span>
+    </nav>
+    <div class="nav-right">
+      <div class="switcher">
+        <button class="sw-btn" aria-haspopup="true" aria-expanded="false">Designer <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="sw-menu" role="menu" aria-label="Designer och sidor">
+          <div class="sw-group">Stilar</div>
+          <a href="index.html" role="menuitem">Gradient · SEVR Bridge</a>
+          <a href="pirsch.html" role="menuitem" class="sw-cur">Pirsch · papper</a>
+          <div class="sw-group">Sidor</div>
+          <a href="index.html" role="menuitem">Hem</a>
+          <a href="index.html#vision" role="menuitem">Vision</a>
+          <a href="index.html#byra" role="menuitem">För byråer</a>
+          <a href="index.html#foretag" role="menuitem">För företag</a>
+          <a href="index.html#pris" role="menuitem">Pris</a>
+        </div>
+      </div>
+      <a class="btn btn-ghost">Boka demo</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap sec-stack center">
+    <span class="step rv"><span class="num">1</span><span class="lbl">AI för ekonomer</span></span>
+    <h1 class="display rv" style="--d:60ms;max-width:16ch">AI som gör grovjobbet i ekonomin</h1>
+    <p class="sub rv" style="--d:120ms">SEVR Insights analyserar, kommenterar och rådger — för redovisningsbyråer och för företag. Du granskar och bedömer. AI:n gör jobbet.</p>
+    <div class="btn-row rv" style="--d:180ms">
+      <a class="btn btn-sun">Boka en demo</a>
+      <a class="btn btn-ghost">Se hur det fungerar <svg><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="trust-line rv" style="--d:240ms"><span class="dot"></span>Byggd för byrå · GDPR-säkert · ingen modellträning</div>
+  </div>
+
+  <div class="wrap shot rv" style="--d:300ms">
+    <div class="frame">
+      <div class="shot-bar">
+        <span class="d"></span><span class="d"></span><span class="d"></span>
+        <span class="t">SEVR Insights · Översikt</span>
+        <span class="shot-chips"><span class="chip-d">Översikt</span><span class="chip-l">Likviditet</span><span class="chip-l">Reskontra</span></span>
+      </div>
+      <div class="shot-body">
+        <div class="kpis">
+          <div class="kpi"><div class="l">Omsättning</div><div class="v"><mark>4,82</mark> Mkr</div><div class="delta pos">▲ 12% R12</div></div>
+          <div class="kpi"><div class="l">Bruttovinst</div><div class="v">38,4%</div><div class="delta pos">▲ 2,1 pp</div></div>
+          <div class="kpi"><div class="l">EBITDA</div><div class="v">612 tkr</div><div class="delta pos">▲ 8%</div></div>
+          <div class="kpi"><div class="l">Likviditet</div><div class="v">287 tkr</div><div class="delta">▼ moms 25:e</div></div>
+        </div>
+        <div class="chartwrap">
+          <svg class="lc" viewBox="0 0 600 120" preserveAspectRatio="none" role="img" aria-label="Omsättning rullande 12 månader med prognos">
+            <line class="axis" x1="0" y1="40" x2="600" y2="40"/><line class="axis" x1="0" y1="80" x2="600" y2="80"/>
+            <path class="area" d="M0,96 L60,88 120,90 180,72 240,78 300,56 360,64 420,42 480,50 L480,120 L0,120 Z"/>
+            <path class="line" d="M0,96 L60,88 120,90 180,72 240,78 300,56 360,64 420,42 480,50"/>
+            <path class="line f" d="M480,50 L540,40 600,24"/>
+            <circle class="pt" cx="480" cy="50" r="4.5"/>
+          </svg>
+        </div>
+        <div class="ask"><svg><use href="#i-msg"/></svg> Fråga AI: ”Varför är kassan tight trots vinst?”<span class="go"><svg><use href="#i-arrow"/></svg></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGO CLOUD -->
+<section class="cloud" style="padding:0">
+  <div class="wrap">
+    <p class="cap">Byggd för svenska redovisningsbyråer</p>
+    <div class="logos">
+      <span class="logo rv"><span class="g">N</span>Nordrevision</span>
+      <span class="logo rv" style="--d:60ms"><span class="g">B</span>Bokfört</span>
+      <span class="logo rv" style="--d:120ms"><span class="g">S</span>Siffra&amp;Co</span>
+      <span class="logo rv" style="--d:180ms"><span class="g">R</span>Redo AB</span>
+      <span class="logo rv" style="--d:240ms"><span class="g">K</span>Kontoria</span>
+    </div>
+  </div>
+</section>
+
+<!-- FUNKTIONER -->
+<section id="funktioner">
+  <div class="wrap sec-stack center">
+    <span class="step rv"><span class="num">2</span><span class="lbl">Funktioner</span></span>
+    <h2 class="display rv" style="--d:60ms">Hela kedjan — från rådata till råd</h2>
+    <p class="sub rv" style="--d:120ms">Specialiserade agenter tar grovjobbet. Konsulten validerar och levererar. Allt på samma kräm­vita yta.</p>
+
+    <div class="cards">
+      <!-- Budget & prognos -->
+      <article class="fcard rv">
+        <div class="ic"><svg><use href="#i-chart"/></svg></div>
+        <h3>Budget &amp; prognos</h3>
+        <p>Budget Wizard läser historiska trender och föreslår en realistisk budget — med prognos och osäkerhetsspann.</p>
+        <div class="mini">
+          <div class="mini-head"><strong>Resultatprognos 2026</strong><span>+8,4% est.</span></div>
+          <svg class="ac" viewBox="0 0 320 64" preserveAspectRatio="none" style="display:block;width:100%;height:64px" aria-label="Prognoslinje">
+            <path class="area" style="fill:rgba(0,0,0,.05)" d="M0,46 L46,42 92,44 138,32 184,36 L184,64 L0,64 Z"/>
+            <path style="fill:none;stroke:#000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" d="M0,46 L46,42 92,44 138,32 184,36"/>
+            <path style="fill:none;stroke:#707070;stroke-width:2;stroke-dasharray:5 5" d="M184,36 L230,28 276,20 320,12"/>
+            <circle cx="184" cy="36" r="4" style="fill:#ffda6e;stroke:#000;stroke-width:1.5"/>
+          </svg>
+        </div>
+      </article>
+
+      <!-- Likviditet -->
+      <article class="fcard rv" style="--d:80ms">
+        <div class="ic"><svg><use href="#i-drop"/></svg></div>
+        <h3>Likviditet i realtid</h3>
+        <p>Kassaflöde, scenarier och kommande förpliktelser — se kassakrisen innan den slår till.</p>
+        <div class="mini amini">
+          <div class="mini-head"><strong>Kassaflöde</strong><span>30 dagar</span></div>
+          <svg class="ac" viewBox="0 0 320 64" preserveAspectRatio="none" aria-label="Kassaflöde">
+            <path class="area" d="M0,40 L45,30 90,44 135,26 180,38 225,20 270,34 320,18 L320,64 L0,64 Z"/>
+            <path class="line" d="M0,40 L45,30 90,44 135,26 180,38 225,20 270,34 320,18"/>
+          </svg>
+          <ul class="oblist">
+            <li><span class="d"></span>Moms · 25 jun<span class="amt">−142 tkr</span></li>
+            <li><span class="d"></span>Lön · 25 jun<span class="amt">−310 tkr</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Reskontra -->
+      <article class="fcard rv">
+        <div class="ic"><svg><use href="#i-receipt"/></svg></div>
+        <h3>Reskontra</h3>
+        <p>Vilka kunder betalar sent och hur det binder kapital — kopplat direkt till likviditeten.</p>
+        <div class="mini">
+          <div class="mini-head"><strong>Åldersfördelning</strong><span>746 tkr bundet</span></div>
+          <div class="bars">
+            <div class="bar"><span class="bl">0–30 d</span><span class="bt"><i style="width:78%"></i></span><span class="bv">412 tkr</span></div>
+            <div class="bar"><span class="bl">31–60 d</span><span class="bt"><i class="gr" style="width:46%"></i></span><span class="bv">238 tkr</span></div>
+            <div class="bar"><span class="bl">61–90+ d</span><span class="bt"><i class="hl" style="width:22%"></i></span><span class="bv">96 tkr</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Rapporter -->
+      <article class="fcard rv" style="--d:80ms">
+        <div class="ic"><svg><use href="#i-file"/></svg></div>
+        <h3>Rapporter på sekunder</h3>
+        <p>VD-rapport och resultatrapport med AI-kommentar. Det som tog timmar går nu på ett klick.</p>
+        <div class="mini">
+          <div class="mini-head"><strong>VD-rapport · maj</strong><span>AI</span></div>
+          <div class="doc-lines"><span class="w9"></span><span class="w7"></span><span class="w8"></span></div>
+          <div class="doc-q">”Bruttomarginalen stärktes 2,1 pp — drivet av prishöjningen i mars.”</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FRÅGA AI -->
+<section id="fraga">
+  <div class="wrap sec-stack center">
+    <span class="step rv"><span class="num">3</span><span class="lbl">Fråga AI</span></span>
+    <h2 class="display rv" style="--d:60ms">En digital CFO som svarar direkt</h2>
+    <p class="sub rv" style="--d:120ms">Ställ fria frågor mot kundens data och få analys, diagram och konkreta åtgärder — i klartext.</p>
+
+    <div class="chat rv" style="--d:160ms">
+      <div class="chat-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><strong>Volvo Lastbilar AB</strong><span class="live"><i></i>Live data</span></div>
+      <div class="thread">
+        <div class="msg q">Har vi råd med ett inköp på 200 000 kr och pengar kvar till moms &amp; lön?</div>
+        <div class="msg a">Nej, inte som läget ser ut nu. I ett läge där moms + lön redan är ett stort utflöde och kassan är nära noll blir det fel timing.</div>
+        <div class="msg q">Vi har hög omsättning och positivt resultat men ändå tight kassa. Varför?</div>
+        <div class="msg a">Resultat är inte samma sak som pengar på kontot. Kapital binds i kundfordringar och ofakturerat arbete.
+          <div class="qa-bars bars">
+            <div class="bar"><span class="bl">Fordringar</span><span class="bt"><i style="width:82%"></i></span><span class="bv">+540 tkr</span></div>
+            <div class="bar"><span class="bl">Ofakturerat</span><span class="bt"><i class="gr" style="width:54%"></i></span><span class="bv">+295 tkr</span></div>
+            <div class="bar"><span class="bl">Moms + lön</span><span class="bt"><i class="hl" style="width:70%"></i></span><span class="bv">−452 tkr</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input">Fråga om kassaflöde, marginal, budget …<span class="send"><svg><use href="#i-arrow"/></svg></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS / GOOD COMPANY -->
+<section>
+  <div class="wrap sec-stack center">
+    <span class="step rv"><span class="num">4</span><span class="lbl">Värdet</span></span>
+    <h2 class="display rv" style="--d:60ms">Veckor tillbaka. Per kund. Varje år.</h2>
+    <div class="stats">
+      <div class="stat rv"><div class="n">~90<small>% est.</small></div><div class="d"><span class="dot"></span>tidsbesparing på rapportarbete</div></div>
+      <div class="stat rv" style="--d:80ms"><div class="n">2×<small> est.</small></div><div class="d"><span class="dot"></span>kunder per konsult</div></div>
+      <div class="stat rv" style="--d:160ms"><div class="n">+40<small>% est.</small></div><div class="d"><span class="dot"></span>merförsäljning per kund</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIS -->
+<section id="pris">
+  <div class="wrap sec-stack center">
+    <span class="step rv"><span class="num">5</span><span class="lbl">Pris</span></span>
+    <h2 class="display rv" style="--d:60ms">Betala för värdet — inte för inloggningar</h2>
+    <p class="sub rv" style="--d:120ms">Byråer prissätts per kund med AI-credits som delas av hela teamet. Företag betalar ett fast månadspris.</p>
+
+    <div class="price-grid">
+      <article class="price feat rv">
+        <span class="tag">För byråer</span>
+        <div class="amt">19 kr<small> / kund / mån</small></div>
+        <p class="pd">Plattformen för redovisningsbyrån — prissatt per aktiv kund.</p>
+        <ul>
+          <li><svg><use href="#i-check"/></svg>Alla funktioner: rapporter, budget, likviditet, reskontra</li>
+          <li><svg><use href="#i-check"/></svg>Inga licenser per användare — hela byrån, ett pris</li>
+          <li><svg><use href="#i-check"/></svg>AI-credits delas av alla konsulter</li>
+        </ul>
+        <a class="btn btn-sun">Boka en demo</a>
+      </article>
+      <article class="price rv" style="--d:80ms">
+        <span class="tag">För företag</span>
+        <div class="amt">Från 799 kr<small> / mån</small></div>
+        <p class="pd">Er digitala CFO — ett fast, förutsägbart pris.</p>
+        <ul>
+          <li><svg><use href="#i-check"/></svg>Fråga AI — obegränsat beslutsstöd</li>
+          <li><svg><use href="#i-check"/></svg>Analys, diagram &amp; konkreta åtgärder direkt</li>
+          <li><svg><use href="#i-check"/></svg>Koncernmodul för mindre koncerner</li>
+        </ul>
+        <a class="btn btn-ghost">Boka en demo</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="wrap sec-stack center">
+    <span class="step rv"><span class="num">6</span><span class="lbl">Vanliga frågor</span></span>
+    <h2 class="display rv" style="--d:60ms">Det du undrar</h2>
+    <div class="faq rv" style="--d:120ms">
+      <div class="qa"><button>Behöver jag installera något nytt?<span class="pm">+</span></button><div class="ans"><p>Nej. SEVR Insights kopplas mot din bokföring — Fortnox via API eller en SIE-fil. Inget IT-projekt.</p></div></div>
+      <div class="qa"><button>Vilka ekonomisystem stöds?<span class="pm">+</span></button><div class="ans"><p>Fortnox via API. Övriga system via SIE-filimport — samma analyskapacitet oavsett källa.</p></div></div>
+      <div class="qa"><button>Ersätter AI:n konsulten?<span class="pm">+</span></button><div class="ans"><p>Aldrig. AI:n gör analysen, du gör bedömningen. Kombinationen av datadriven precision och mänskligt omdöme skapar värdet.</p></div></div>
+      <div class="qa"><button>Är datan säker?<span class="pm">+</span></button><div class="ans"><p>All data hanteras enligt GDPR inom Sverige och EU. Vi tränar aldrig AI-modeller på er data.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BLOCK -->
+<section class="cta">
+  <div class="wrap sec-stack">
+    <div class="tile rv">◳</div>
+    <h2 class="display rv" style="--d:60ms;max-width:18ch">Redo att gå från siffror till råd?</h2>
+    <p class="sub rv center" style="--d:120ms">Boka en kostnadsfri demo så visar vi SEVR Insights med riktig data.</p>
+    <div class="btn-row rv" style="--d:180ms"><a class="btn btn-sun">Boka en demo</a></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mk">◳</span>SEVR Insights</a>
+    <div class="foot-links">
+      <a href="#funktioner">Funktioner</a><a href="#fraga">Fråga AI</a><a href="#pris">Pris</a><a>Boka demo</a>
+    </div>
+    <div class="legal">GDPR-säkert · Er data tränar aldrig någon annans AI-modell. &nbsp;·&nbsp; © 2026 SEVR Reporting Services AB</div>
+  </div>
+</footer>
+
+<script>
+document.documentElement.classList.add('js');
+// FAQ
+document.querySelectorAll('.qa button').forEach(b=>{
+  b.setAttribute('aria-expanded','false');
+  b.addEventListener('click',()=>{
+    const open=b.parentElement.classList.toggle('open');
+    b.setAttribute('aria-expanded',open?'true':'false');
+  });
+});
+// Design / page switcher
+function closeSw(){document.querySelectorAll('.switcher.open').forEach(s=>{s.classList.remove('open');s.querySelector('.sw-btn').setAttribute('aria-expanded','false');});}
+document.querySelectorAll('.switcher').forEach(sw=>{
+  const b=sw.querySelector('.sw-btn');
+  b.addEventListener('click',e=>{e.stopPropagation();const open=!sw.classList.contains('open');closeSw();sw.classList.toggle('open',open);b.setAttribute('aria-expanded',open?'true':'false');});
+});
+document.addEventListener('click',closeSw);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSw();});
+
+// Reveal on scroll (IntersectionObserver + failsafe)
+const rv=[...document.querySelectorAll('.rv')];
+const show=e=>e.classList.add('in');
+if('IntersectionObserver'in window){
+  const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){show(e.target);io.unobserve(e.target);}}),{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+  rv.forEach(e=>io.observe(e));
+}else rv.forEach(show);
+const band=()=>{const h=innerHeight*.95;rv.forEach(e=>{if(!e.classList.contains('in')&&e.getBoundingClientRect().top<h)show(e);});};
+requestAnimationFrame(band); addEventListener('load',band);
+setTimeout(()=>rv.forEach(show),2600);
+</script>
+<div id="vswitch" style="position:fixed;bottom:14px;right:14px;z-index:99999;display:flex;gap:3px;background:#fff;border:1px solid #ddd;border-radius:9px;padding:4px;box-shadow:0 3px 12px rgba(0,0,0,.14);font-family:-apple-system,sans-serif">
+<a href="index.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#fff;background:#1a1a1a;text-decoration:none">V0</a>
+<a href="../index.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V1</a>
+<a href="../prototyp-v2.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V2</a>
+<a href="../salj-sajt.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V3</a>
+</div>
+
+</body>
+</html>
