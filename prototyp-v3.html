@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEVR – Prototyp v3 (typografisk wireframe)</title>
+<style>
+  :root{--ink:#1a1a1a;--muted:#707070;--faint:#9a9a9a;--line:#e3e3e3;--ph:#ededed;--ph2:#d8d8d8}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,sans-serif;color:var(--ink);background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .c{max-width:1000px;margin:0 auto;padding:0 32px}
+  a{color:inherit;text-decoration:none}
+  header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{font-weight:700;letter-spacing:.1em;font-size:14px;cursor:pointer}
+  .nav .links{display:flex;gap:2px}
+  .nav .links a{font-size:13px;color:var(--muted);padding:7px 12px;border-radius:6px;cursor:pointer}
+  .nav .links a:hover{color:var(--ink)}
+  .nav .links a.active{color:var(--ink);font-weight:600}
+  .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--ink);background:none;border-radius:6px;padding:11px 22px;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer}
+  .btn.solid{background:var(--ink);color:#fff}
+  .btn.link{border:0;padding:11px 4px;color:var(--muted)}
+  section{padding:72px 0;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin:0 0 16px;font-weight:500}
+  h1{font-size:52px;line-height:1.05;letter-spacing:-.025em;font-weight:600;margin:0 0 20px}
+  h2{font-size:32px;line-height:1.15;letter-spacing:-.02em;font-weight:600;margin:0 0 14px}
+  h3{font-size:17px;font-weight:600;margin:0 0 6px;letter-spacing:-.01em}
+  .subtitle{font-size:20px;line-height:1.5;color:var(--muted);font-weight:400;margin:0 0 26px}
+  p{font-size:16px;color:#333;margin:0 0 14px}
+  .small{font-size:13px;color:var(--muted)}
+  .ctas{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .grid2.flip .col-img{order:-1}
+  .imgph{background:var(--ph);border:1px solid var(--ph2);border-radius:4px;min-height:300px;display:flex;align-items:center;justify-content:center;color:var(--faint);font-size:12px;letter-spacing:.04em;position:relative}
+  .imgph::after{content:"";position:absolute;inset:10px;border:1px solid #cfcfcf}
+  .imgph.sm{min-height:180px}
+  .icon{width:30px;height:30px;border:1px solid var(--ph2);background:var(--ph);border-radius:4px;flex:0 0 30px;display:flex;align-items:center;justify-content:center;color:var(--faint);font-size:11px}
+  .rows{display:flex;flex-direction:column;gap:22px;margin-top:8px}
+  .rowi{display:flex;gap:16px;align-items:flex-start}
+  .rowi h3{margin:0 0 2px}.rowi p{margin:0;font-size:14px;color:var(--muted)}
+  .cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+  .cols4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .cols2{display:grid;grid-template-columns:repeat(2,1fr);gap:30px}
+  .item .icon{margin-bottom:14px}
+  .item h3{font-size:16px}.item p{font-size:14px;color:var(--muted);margin:0}
+  .tabs{display:flex;gap:4px;border:1px solid var(--line);border-radius:8px;padding:4px;width:fit-content;margin:0 auto 36px}
+  .tabs button{border:0;background:none;padding:9px 20px;border-radius:6px;font-size:14px;color:var(--muted);cursor:pointer;font-weight:500}
+  .tabs button.on{background:var(--ink);color:#fff}
+  .tabpane{display:none}.tabpane.on{display:block}
+  .checks{list-style:none;padding:0;margin:18px 0 0}
+  .checks li{position:relative;padding:7px 0 7px 28px;font-size:16px}
+  .checks li::before{content:"";position:absolute;left:0;top:13px;width:14px;height:1.5px;background:var(--ink)}
+  .stmt{text-align:center;max-width:740px;margin:0 auto}
+  .stmt .q{font-size:30px;line-height:1.3;letter-spacing:-.02em;font-weight:500;margin:0 0 14px}
+  .faq .q{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid var(--line);cursor:pointer;font-size:17px}
+  .faq .q span{color:var(--faint);font-weight:300;font-size:22px}
+  .faq .a{font-size:15px;color:var(--muted);padding:0 0 20px;display:none;max-width:80%}
+  .price{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .pcard{border:1px solid var(--line);border-radius:8px;padding:28px}
+  .pcard .amt{font-size:38px;font-weight:600;letter-spacing:-.02em;margin:8px 0 0}
+  .pcard .per{font-size:14px;color:var(--muted);margin-bottom:16px}
+  .cta-final{text-align:center}
+  .quote{max-width:720px;margin:0 auto;text-align:center}
+  .quote .q{font-size:22px;line-height:1.5;letter-spacing:-.01em;margin:0 0 18px}
+  .quote .av{width:44px;height:44px;border-radius:50%;background:var(--ph);border:1px solid var(--ph2);margin:0 auto 10px}
+  footer{padding:48px 0;color:var(--muted);font-size:13px}
+  .foot{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:20px}
+  .foot b{color:var(--ink);font-weight:600;display:block;margin-bottom:10px;font-size:13px}
+  .foot a{display:block;padding:4px 0;cursor:pointer}
+  .badge{font-size:10px;letter-spacing:.12em;color:var(--faint);border:1px solid var(--line);border-radius:999px;padding:3px 9px;margin-left:8px;vertical-align:middle}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr;gap:32px}.cols3,.cols4,.cols2,.price,.foot{grid-template-columns:1fr 1fr}h1{font-size:36px}.nav .links{display:none}}
+</style>
+</head>
+<body>
+<header><div class="c nav">
+  <span class="brand" onclick="show('hem')">SEVR INSIGHTS<span class="badge">V3 · TYPO</span></span>
+  <nav class="links" id="links"></nav>
+  <button class="btn solid" onclick="show('demo')">Boka demo</button>
+</div></header>
+<main id="main"></main>
+<footer><div class="c">
+  <div class="foot">
+    <div><b>SEVR INSIGHTS</b><div>Från sifferleverans till rådgivning.</div></div>
+    <div><b>Produkt</b><a onclick="show('byra')">För byråer</a><a onclick="show('foretag')">För företag</a><a onclick="show('funktioner')">Funktioner</a><a onclick="show('pris')">Pris</a></div>
+    <div><b>Företag</b><a onclick="show('vision')">Vision</a><a onclick="show('demo')">Boka demo</a><a>Kontakt</a></div>
+    <div><b>Trygghet</b><a>GDPR-säkert</a><a>Ingen modellträning</a><a>Svar med källa</a></div>
+  </div>
+  <p style="margin-top:24px;font-size:12px">© SEVR Reporting Services AB · Integritetspolicy · [org.nr platshållare]</p>
+</div></footer>
+<script>
+const I='<div class="icon"></div>';
+function hero(d){return `<section><div class="c grid2">
+  <div><div class="eyebrow">${d.eyebrow}</div><h1>${d.h1}</h1><p class="subtitle">${d.sub}</p>
+  <div class="ctas"><button class="btn solid" onclick="show('demo')">Boka demo</button><button class="btn link" onclick="show('${d.go||'funktioner'}')">${d.sec||'Se hur det fungerar →'}</button></div>
+  ${d.checks?`<ul class="checks">${d.checks.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}</div>
+  <div class="col-img"><div class="imgph">🖼 ${d.img}</div></div></div></section>`}
+function trustIcons(){return `<section><div class="c cols3">
+  <div class="rowi">${I}<div><h3>GDPR-säkert</h3><p>Tränar aldrig någon annans AI-modell.</p></div></div>
+  <div class="rowi">${I}<div><h3>Byggd för byrå</h3><p>Svensk redovisning, revision och lön.</p></div></div>
+  <div class="rowi">${I}<div><h3>Svar på sekunder</h3><p>Från data till färdig analys direkt.</p></div></div></div></section>`}
+function items(arr){return arr.map(x=>`<div class="item">${I}<h3>${x.t}</h3><p>${x.p||''}</p></div>`).join('')}
+function rows(arr){return arr.map(x=>`<div class="rowi">${I}<div><h3>${x.t}</h3><p>${x.p||''}</p></div></div>`).join('')}
+function product(d){return `<section><div class="c" style="text-align:center"><div class="eyebrow">${d.eyebrow||'Plattformen'}</div><h2>${d.h2}</h2><p class="subtitle" style="max-width:640px;margin:0 auto 30px">${d.sub}</p>
+  <div class="tabs">${d.tabs.map((t,i)=>`<button class="${i?'':'on'}" data-tab="p${i}">${t.name}</button>`).join('')}</div></div>
+  <div class="c">${d.tabs.map((t,i)=>`<div class="tabpane${i?'':' on'}" id="p${i}"><div class="cols3" style="text-align:left">${items(t.items)}</div></div>`).join('')}</div></section>`}
+function feature(d){return `<section${d.alt?' style="background:#fafafa"':''}><div class="c grid2${d.flip?' flip':''}">
+  <div><div class="eyebrow">${d.eyebrow}</div><h2>${d.h2}</h2>${d.body.map(p=>`<p>${p}</p>`).join('')}${d.checks?`<ul class="checks">${d.checks.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}</div>
+  <div class="col-img"><div class="imgph">🖼 ${d.img}</div></div></div></section>`}
+function block(d){return `<section${d.alt?' style="background:#fafafa"':''}><div class="c"><div class="eyebrow">${d.eyebrow||''}</div><h2>${d.h2}</h2>${d.sub?`<p class="subtitle">${d.sub}</p>`:''}<div class="${d.cols||'cols4'}" style="margin-top:30px">${d.rows?rows(d.items):items(d.items)}</div></div></section>`}
+function stmt(d){return `<section style="background:#fafafa"><div class="c stmt"><div class="eyebrow">${d.eyebrow}</div><div class="q">${d.q}</div>${d.p?`<p class="subtitle" style="margin:0">${d.p}</p>`:''}</div></section>`}
+function quote(){return `<section><div class="c quote"><div class="av"></div><div class="q">"[Platshållare – egen SEVR-referens med mätbar effekt, t.ex. ‘3× fler rapporter på samma tid’.]"</div><div class="small">Namn Efternamn · roll · Byrå AB</div></div></section>`}
+function faq(d){return `<section${d.alt?' style="background:#fafafa"':''}><div class="c"><h2 style="margin-bottom:20px">Vanliga frågor</h2><div class="faq">${d.items.map(f=>`<div><div class="q" onclick="var a=this.nextElementSibling;a.style.display=a.style.display==='block'?'none':'block'">${f.q}<span>+</span></div><div class="a">${f.a||'[Svar – platshållare]'}</div></div>`).join('')}</div></div></section>`}
+function pricing(d){return `<section${d.alt?' style="background:#fafafa"':''}><div class="c"><h2 style="text-align:center;margin-bottom:30px">${d.h2}</h2><div class="price">${d.items.map(c=>`<div class="pcard"><h3>${c.t}</h3><div class="amt">${c.amt}</div><div class="per">${c.per}</div><p style="font-size:14px;color:var(--muted)">${c.body}</p><div style="margin-top:18px"><button class="btn" onclick="show('demo')">Boka demo</button></div></div>`).join('')}</div></div></section>`}
+function cta(d){return `<section style="border:0"><div class="c cta-final"><h2>${d.h2}</h2><p class="subtitle" style="max-width:520px;margin:0 auto 24px">${d.p||''}</p><button class="btn solid" onclick="show('demo')">Boka demo</button><div class="small" style="margin-top:14px">30 minuter · utan kort</div></div></section>`}
+
+const A8=[{t:"Personalisering",p:"AI lär känna varje kund – bransch, intäkter, kostnader, fokus."},{t:"Planering, budget & prognos",p:"Realistisk budget och kvartalsprognos – du justerar."},{t:"Rapporter på sekunder",p:"Omsättningsgrafer, nyckeltal, rekommendationer."},{t:"Resultatrapport med kommentar",p:"Strukturerad analys – intäkt, marginal, kostnadsdrivare."},{t:"Likviditet & kassaflöde",p:"Realtid, scenarier: ‘vad händer om vi köper X?’"},{t:"Reskontra",p:"Förfallna fakturor kopplade till likviditeten."},{t:"Fråga AI – digital CFO",p:"Svar på nolltid med underlag att visa kunden."},{t:"Tryggt & GDPR-säkert",p:"Data delas aldrig, tränar ingen annans modell."}];
+const WATSON=[{t:"Live-sökning i regelverket",p:"Realtidskällor: Skatteverket, EU, myndigheter – inte bara träningsdata."},{t:"Egna dokument",p:"Ladda upp avtal, PM, kundhistorik – indexeras säkert med publika regler."},{t:"Källa & sidnummer",p:"Varje svar med klickbar källa. Ingen black box."},{t:"Flerstegs-resonemang",p:"DBA, SINK, CRS, DAC7, transfer pricing – verifierat steg för steg."}];
+const AGENTS=[{t:"Avstämning",p:"Stämmer av konton automatiskt."},{t:"Kontering",p:"Föreslår och bokför konteringar."},{t:"Bokslut",p:"Driver bokslutsprocessen."},{t:"Moms",p:"Moms periodvis."},{t:"Lön",p:"Löneunderlag."}];
+
+const P={
+ hem:[
+  ()=>hero({eyebrow:"AI-plattform för ekonomer",h1:"AI gör grovjobbet. Du gör rådgivningen.",sub:"För byråer som vill skala rådgivning – och för företag som vill förstå sin ekonomi och fatta bättre beslut.",img:"Produktskärm",checks:["80 % av jobbet sköts av AI","Ditt omdöme – de sista 20 % – stannar hos dig"]}),
+  trustIcons,
+  ()=>product({h2:"En plattform – tre områden.",sub:"Planering & rapportering, regelverket Watson, och agenter i dina kärnprocesser.",tabs:[{name:"Planering & rapport",items:A8.slice(0,6)},{name:"Watson (regelverk)",items:WATSON},{name:"Agenter",items:AGENTS}]}),
+  ()=>feature({alt:1,flip:1,eyebrow:"Du är experten",h2:"AI gör analysen. Du gör bedömningen.",body:["Istället för att lägga timmar på en resultaträkning får du ett genomarbetat underlag på sekunder. Du behåller omdömet och kundrelationen."],checks:["Smartare, snabbare rapportering","Insikter i realtid","Kunden får snabbare svar"],img:"🎬 Video / skärm"}),
+  ()=>feature({eyebrow:"Trygghet",h2:"Kundens siffror tränar aldrig någon annans AI.",body:["Idag klistrar konsulter in resultat- och balansräkningar i ChatGPT och Copilot – utan avtal, utan att veta var datan hamnar.","SEVR är byggt för byrå. Data hanteras enligt GDPR och används aldrig för att träna AI-modeller."],img:"GDPR-märke"}),
+  quote,
+  ()=>faq({alt:1,items:[{q:"Ersätter AI:n mitt arbete?",a:"Nej – din digitala kollega gör analysen, du gör bedömningen."},{q:"Vilka system stöds?",a:"Fortnox via API, övriga via SIE-fil."},{q:"Är datan säker?",a:"GDPR-säkert. Tränar aldrig någon annans modell."}]}),
+  ()=>cta({h2:"Redo att se SEVR på era siffror?",p:"Boka en kostnadsfri demo."}),
+ ],
+ byra:[
+  ()=>hero({eyebrow:"För redovisningsbyråer",h1:"Ge byrån en AI-kollega som gör jobbet.",sub:"AI tar grovjobbet i rapporter, avstämningar och regelfrågor. Du validerar och lägger tiden hos kunden.",img:"Byråvy",checks:["Jämnare arbetsbörda","Högre marginal på befintliga avtal","Skala rådgivning till hela kundstocken"]}),
+  ()=>block({eyebrow:"Känner du igen det här?",h2:"Tre krafter pressar byrån samtidigt.",cols:"cols3",items:[{t:"Fastprispress",p:"Kraven växer, priset står still."},{t:"Kompetensbrist",p:"Svårt att rekrytera och behålla."},{t:"Kunderna vill ha mer",p:"Råd, inte bara siffror."}]}),
+  ()=>feature({alt:1,eyebrow:"Två vardagar",h2:"Konsultens vardag möter entreprenörens.",body:["Konsulten vill ge råd men fastnar i datatankande. Entreprenören vill ha svar men får rapporter i efterhand.","SEVR är bron: AI tar grovjobbet, konsulten levererar råd i tid."],img:"Illustration: två vardagar"}),
+  ()=>block({eyebrow:"Så fungerar det",h2:"Från rådata till råd.",rows:1,cols:"cols4",items:[{t:"1 · Synka med Fortnox",p:"Eller ladda en SIE-fil."},{t:"2 · AI & agenter",p:"Rapporter, kommentarer, bokslut."},{t:"3 · Du validerar",p:"Du gör bedömningen."},{t:"4 · Kunden får svar",p:"Beslutsstöd och råd."}]}),
+  ()=>block({alt:1,eyebrow:"Allt assistenten gör",h2:"Åtta funktioner som ersätter tio flikar.",items:A8}),
+  ()=>feature({eyebrow:"Fråga AI",h2:"Exempel från verkligheten.",body:["\"Kvartalsprognos Q2 – hur tänka kring intäkter för break-even?\"","\"Likviditetsproblem trots hög omsättning – varför?\" → svar med 0–7 / 8–30 / 31–90 dagars plan."],img:"Chatt-exempel"}),
+  ()=>block({alt:1,eyebrow:"Affärsvärde",h2:"Veckor tillbaka. Per kund. Varje år.",cols:"cols3",items:[{t:"~2× kunder / konsult",p:"(est.)"},{t:"+100 % merförsäljning",p:"per kund (est.)"},{t:"Rapport på sekunder",p:"inte timmar"}]}),
+  ()=>pricing({h2:"Betala för värdet – inte för inloggningar.",items:[{t:"Byrå",amt:"19 kr",per:"/ kund · bekräfta",body:"AI-credits delas av hela byrån. Inga licenser per användare."},{t:"AI-credits",amt:"[paket]",per:"delas av byrån",body:"Köp till när ni vill. 30 dagars villkor."}]}),
+  quote,
+  ()=>faq({alt:1,items:[{q:"Behöver jag installera något nytt?"},{q:"Vilka ekonomisystem stöds?",a:"Fortnox via API, övriga via SIE."},{q:"Ersätter AI:n konsulten?",a:"Nej. Du är experten."}]}),
+  ()=>cta({h2:"AI gör 80 %. Ditt omdöme gör resten."}),
+ ],
+ foretag:[
+  ()=>hero({eyebrow:"För företag",h1:"En CFO som svarar direkt – utan att anställa en.",sub:"Fråga vad som helst om er ekonomi och få svar i klartext, med konkreta åtgärder.",img:"CFO-vy",go:"pris",sec:"Se priser →",checks:["Beslutsstöd direkt – inte tre veckor senare","En bråkdel av en CFO-tjänst"]}),
+  ()=>block({eyebrow:"Känner ni igen det?",h2:"Ni ser resultatet. Inte vad ni ska göra åt det.",cols:"cols3",items:[{t:"Ser inte varför",p:"Resultatet syns, inte orsaken."},{t:"Likviditet sent",p:"Svängningar märks för sent."},{t:"Svar dröjer",p:"Till nästa möte."}]}),
+  ()=>feature({alt:1,eyebrow:"Lösningen",h2:"Er digitala CFO.",body:["SEVR läser er ekonomi och svarar på ett språk ni förstår. Analys, diagram och konkreta åtgärder – direkt."],img:"Fråga AI"}),
+  ()=>block({eyebrow:"Vad ni kan göra",h2:"Fråga. Förstå. Agera.",cols:"cols3",items:[{t:"Fråga",p:"Vilken ekonomifråga som helst, i klartext."},{t:"Förstå",p:"Analys och diagram som förklarar varför."},{t:"Agera",p:"Konkreta åtgärder – direkt."}]}),
+  ()=>pricing({alt:1,h2:"Från 799 kr/mån.",items:[{t:"Företag",amt:"från 799 kr",per:"/ mån",body:"Fast pris – en bråkdel av en CFO-tjänst."},{t:"Koncern",amt:"[pris]",per:"/ mån",body:"Konsoliderat beslutsstöd för flera bolag."}]}),
+  ()=>cta({h2:"Sluta gissa. Börja veta."}),
+ ],
+ funktioner:[
+  ()=>hero({eyebrow:"Funktioner",h1:"Allt SEVR gör – på ett ställe.",sub:"För dig som vill se exakt vad du får. Tre områden, varje med sina funktioner.",img:"Funktionsöversikt",go:"demo",sec:"Boka demo →"}),
+  ()=>block({eyebrow:"Område A",h2:"Planering, rapportering & analys.",items:A8}),
+  ()=>feature({alt:1,eyebrow:"Område B · Watson",h2:"Regelverket du kan lita på.",body:["Vårt regelverk-svar – svensk redovisning, skatt, revision och lön. Källhänvisat och kopplat till bolagets egna siffror."],checks:WATSON.map(w=>w.t),img:"Watson-vy"}),
+  ()=>block({eyebrow:"Område B · Watson i detalj",h2:"Fyra delar.",cols:"cols4",items:WATSON}),
+  ()=>block({alt:1,eyebrow:"Område C · Agenter",h2:"Agenter i dina kärnprocesser.",cols:"cols3",items:AGENTS}),
+  ()=>cta({h2:"Vill du se det live?",p:"Boka en demo så går vi igenom funktionerna på era siffror."}),
+ ],
+ pris:[
+  ()=>hero({eyebrow:"Pris",h1:"Betala för värdet – inte för inloggningar.",sub:"Två prismodeller, en plattform.",img:"Pris",go:"byra",sec:"För byråer →"}),
+  ()=>pricing({alt:1,h2:"Två spår",items:[{t:"Byrå",amt:"19 kr",per:"/ kund",body:"AI-credits delas av hela byrån. [Credit-nivåer – platshållare.]"},{t:"Företag",amt:"från 799 kr",per:"/ mån",body:"Digital CFO. Fast, förutsägbart pris."}]}),
+  ()=>faq({items:[{q:"Vad är AI-credits?"},{q:"Hur delas credits i byrån?"},{q:"Betalningsvillkor?",a:"30 dagar."}]}),
+  ()=>cta({h2:"Hitta rätt plan."}),
+ ],
+ vision:[
+  ()=>hero({eyebrow:"Vision",h1:"Redovisningsekonomen – entreprenörens bästa vän.",sub:"Vi låter AI sköta det tråkiga – så att du lägger din tid och ditt omdöme där det gör skillnad: hos kunden.",img:"Ekonom i arbete",go:"funktioner",sec:"Se funktioner →"}),
+  ()=>feature({alt:1,eyebrow:"Det här tror vi på",h2:"En av de viktigaste personerna i en entreprenörs liv.",body:["Ekonomen ser sanningen i siffrorna. Ändå går dagen åt till datatankande, rapporter och validering – tid som aldrig når kunden."],checks:["Tanka ut data","Hämta rapporter","Validera","Stänga böcker manuellt"],img:"En arbetsdag"}),
+  ()=>stmt({eyebrow:"Vår vision",q:"Att göra redovisningsekonomen till entreprenörens bästa vän.",p:"Vi jämnar ut arbetet över året – mer förutsägbar vardag, mer värd rådgivning."}),
+  ()=>feature({flip:1,eyebrow:"Människa & maskin",h2:"AI gör 80 %. Ditt omdöme gör resten.",body:["AI hämtar, bearbetar och validerar. De sista 20 % – omdömet – går inte att automatisera.","Human in the loop, hela vägen."],img:"📊 80/20"}),
+  ()=>cta({h2:"Vi bygger SEVR för att lyfta dig – inte ersätta dig."}),
+ ],
+ demo:[
+  ()=>hero({eyebrow:"Boka demo",h1:"Boka en demo.",sub:"30 minuter. Se SEVR på riktiga siffror och få svar på era frågor.",img:"Kalender",go:"funktioner",sec:"Se funktioner →"}),
+  ()=>`<section style="background:#fafafa"><div class="c"><h2 style="margin-bottom:20px">Berätta lite om er</h2><div style="max-width:480px">${['Namn','E-post','Företag / byrå','Antal kunder','Meddelande'].map(f=>`<div style="height:44px;border:1px solid var(--line);border-radius:6px;margin-bottom:12px;display:flex;align-items:center;padding:0 14px;color:var(--faint);font-size:14px">${f}</div>`).join('')}<button class="btn solid">Boka demo</button></div></div></section>`,
+  ()=>faq({items:[{q:"Vad händer på demon?"},{q:"Behöver jag förbereda något?"}]}),
+ ],
+};
+const titles={byra:"För byråer",foretag:"För företag",funktioner:"Funktioner",pris:"Pris",vision:"Vision"};
+const order=["byra","foretag","funktioner","pris","vision"];
+const links=document.getElementById("links");
+order.forEach(k=>{const a=document.createElement("a");a.textContent=titles[k];a.dataset.k=k;a.onclick=()=>show(k);links.appendChild(a);});
+function show(key){
+  document.getElementById("main").innerHTML=P[key].map(f=>f()).join("");
+  document.querySelectorAll(".links a").forEach(a=>a.classList.toggle("active",a.dataset.k===key));
+  window.scrollTo(0,0);
+}
+document.getElementById("main").addEventListener("click",e=>{
+  const b=e.target.closest("[data-tab]"); if(!b)return;
+  const wrap=b.closest("section");
+  wrap.querySelectorAll("[data-tab]").forEach(x=>x.classList.toggle("on",x===b));
+  wrap.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("on",p.id===b.dataset.tab));
+});
+show("hem");
+</script>
+</body>
+</html>
