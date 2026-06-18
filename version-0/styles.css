@@ -589,8 +589,8 @@ a,button,.tab,.chip,.route-card,.qa button,[data-route]{cursor:pointer}
 /* ============ VISION (manifesto) page ============ */
 .vision-hero{padding-bottom:72px}
 .vision-hero .wrap{display:block}
-.vision-lead{max-width:18ch}
-.vision-lead h1{margin:18px 0 20px}
+.vision-lead{max-width:760px}
+.vision-lead h1{margin:18px 0 20px;max-width:16ch}
 .vision-lead .lead{max-width:60ch;font-size:20px;color:var(--ink);opacity:.82;line-height:1.5}
 .vision-lead .cta{margin-top:30px}
 
