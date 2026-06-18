@@ -1,4 +1,5 @@
 .DS_Store
+push.command
 Thumbs.db
 *.tmp
 node_modules/

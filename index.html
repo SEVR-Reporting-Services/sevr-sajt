@@ -5,18 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SEVR – Wireframe-prototyp</title>
 <style>
-  :root{
-    --bg:#FBF7F0; --ink:#1E1712; --muted:#6E6356; --line:#E0D7C8;
-    --ph:#E6DFD4; --ph-line:#CFC4B2; --card:#fff; --accent:#2B5CE6; --add:#185FA5;
-  }
+  :root{--bg:#FBF7F0;--ink:#1E1712;--muted:#6E6356;--line:#E0D7C8;--ph:#E6DFD4;--ph-line:#CFC4B2;--card:#fff;--accent:#2B5CE6;--add:#185FA5}
   *{box-sizing:border-box}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
-    background:var(--bg);color:var(--ink);display:flex;min-height:100vh}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;background:var(--bg);color:var(--ink);display:flex;min-height:100vh}
   aside{width:240px;flex:0 0 240px;border-right:1px solid var(--line);padding:24px 18px;position:sticky;top:0;height:100vh;overflow:auto}
   aside h1{font-size:15px;letter-spacing:.14em;margin:0 0 2px}
   aside .sub{font-size:11px;color:var(--muted);margin-bottom:22px}
-  nav button{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;background:none;border:0;
-    padding:9px 10px;border-radius:8px;font-size:13px;color:var(--ink);cursor:pointer;margin-bottom:2px}
+  nav button{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;background:none;border:0;padding:9px 10px;border-radius:8px;font-size:13px;color:var(--ink);cursor:pointer;margin-bottom:2px}
   nav button:hover{background:#F1EADF}
   nav button.active{background:var(--ink);color:#fff}
   nav button .n{font-size:10px;color:var(--muted)}
@@ -37,8 +32,7 @@
   .alt{font-size:12px;color:var(--muted);font-style:italic}
   .fields{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
   .field{font-size:11px;background:#F1EADF;border:1px dashed var(--ph-line);border-radius:6px;padding:4px 9px;color:var(--muted)}
-  .ph{background:var(--ph);border:1px dashed var(--ph-line);border-radius:8px;display:flex;align-items:center;justify-content:center;
-    color:#8a7f6f;font-size:12px;text-align:center;padding:18px;min-height:80px;gap:6px}
+  .ph{background:var(--ph);border:1px dashed var(--ph-line);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#8a7f6f;font-size:12px;text-align:center;padding:16px;min-height:70px;gap:6px}
   .grid2{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:center}
   .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
   .cards.two{grid-template-columns:repeat(2,1fr)}
@@ -47,10 +41,11 @@
   .mini .ico{width:32px;height:32px;border-radius:8px;background:var(--ph);border:1px solid var(--ph-line);margin-bottom:8px}
   .mini h4{margin:0 0 6px;font-size:14px}
   .mini p{font-size:12px;color:var(--muted);margin:0}
-  .row{display:flex;gap:10px}
-  .row .mini{flex:1}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .row .mini{flex:1;min-width:150px}
   .chips{display:flex;flex-wrap:wrap;gap:8px}
   .chip{background:#EEF1FB;color:#22315f;border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:600}
+  .chip.k{background:#F1EADF;color:#5b4a36}
   .navbar{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:10px;padding:10px 14px}
   .btn{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--ph-line);border-radius:8px;padding:8px 16px;font-size:13px;color:var(--ink)}
   .btn.p{background:var(--accent);color:#fff;border:0}
@@ -61,11 +56,18 @@
   .split .ai{flex:0 0 80%;background:#DCE3FA;color:#22315f;display:flex;flex-direction:column;align-items:center;justify-content:center}
   .split .you{flex:1;background:var(--ink);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
   .split b{font-size:20px}.split span{font-size:11px}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .step{border:1px solid var(--line);border-radius:10px;padding:12px;background:#FCFAF6}
+  .step .num{width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+  .step p{font-size:12px;color:var(--muted);margin:0}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .stat{border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center;background:#FCFAF6}
+  .stat b{display:block;font-size:30px;line-height:1.1}.stat span{font-size:11px;color:var(--muted)}
   .faqrow{display:flex;justify-content:space-between;font-size:13px;padding:9px 0;border-bottom:1px solid var(--line)}
   .foot{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:12px;font-size:12px;color:var(--muted)}
   .foot b{color:var(--ink);font-weight:600;display:block;margin-bottom:6px}
   .status-pill{margin-left:auto;display:flex;align-items:center;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em}
-  @media(max-width:760px){aside{display:none}main{padding:20px 16px}.cards,.cards.four,.grid2{grid-template-columns:1fr}}
+  @media(max-width:760px){aside{display:none}main{padding:20px 16px}.cards,.cards.four,.grid2,.steps,.stats{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -74,9 +76,9 @@
   <div class="sub">Wireframe-prototyp · v0</div>
   <nav id="nav"></nav>
   <div class="legend">
-    <div><span class="dot" style="background:#B45309"></span>utkast</div>
-    <div><span class="dot" style="background:#B0A696"></span>tom</div>
-    <div style="margin-top:8px"><span class="badge add" style="font-size:10px">tillagd</span> = lagt till av UX/PO</div>
+    <div><span class="dot" style="background:#B45309"></span>utkast (copy ifylld)</div>
+    <div><span class="dot" style="background:#B0A696"></span>tom / platshållare</div>
+    <div style="margin-top:8px"><span class="badge add" style="font-size:10px">tillagd</span> = UX/PO-tillägg</div>
     <div style="margin-top:8px">🖼 bild · 📊 siffror · ✦ illustration</div>
   </div>
 </aside>
@@ -92,118 +94,80 @@ const nav=`<div class="navbar"><span style="font-weight:600;letter-spacing:.06em
 const foot=`<div class="foot"><div><b>SEVR INSIGHTS</b><div style="font-size:11.5px">Från sifferleverans till rådgivning.</div></div><div><b>Produkt</b>För byråer<br>För företag<br>Pris</div><div><b>Företag</b>Vision<br>Boka demo<br>Kontakt</div><div><b>Trygghet</b>GDPR<br>Ingen modellträning</div></div><p style="font-size:11px;color:var(--muted);margin-top:12px">© SEVR Reporting Services AB · Integritetspolicy · [org.nr platshållare]</p>`;
 
 const pages={
- start:{title:"Startsida", route:"/", aud:"alla · hubb/router",
-  secs:[
+ start:{title:"Startsida",route:"/",aud:"alla · hubb/router",secs:[
    {t:"Navigering",s:"draft",b:nav},
-   {t:"Hero",s:"draft",b:`<div class="grid2"><div>
-      <h3>AI som gör grovjobbet i ekonomin</h3>
-      <p>SEVR Insights är AI-plattformen för ekonomer. För redovisningsbyråer som vill skala rådgivning – och för företag som vill förstå sin ekonomi och fatta bättre beslut.</p>
-      <div class="row" style="gap:8px"><span class="btn p">Boka demo</span><span class="btn">Se hur det fungerar →</span></div>
-      <p class="alt" style="margin-top:10px">A/B: "Från timmar av manuellt arbete till svar på sekunder" / "En AI-kollega för ekonomer"</p>
-      </div>${ph("🖼 Produktskärm som bevis")}</div>`},
-   {t:"Spårval",s:"draft",b:`<div style="text-align:center;font-weight:600;margin-bottom:10px">Vad är du ute efter?</div>
-      <div class="cards two">
-      <div class="mini"><div class="ico"></div><h4>För redovisningsbyråer</h4><p>Skala rådgivning till hela kundstocken – utan fler timmar.</p><div style="margin-top:8px"><span class="btn" style="font-size:12px">För byråer →</span></div></div>
-      <div class="mini"><div class="ico"></div><h4>För företag</h4><p>Förstå din ekonomi och fatta bättre beslut – utan att anställa en CFO.</p><div style="margin-top:8px"><span class="btn" style="font-size:12px">För företag →</span></div></div>
-      </div>`},
-   {t:"Trygghetsrad",s:"draft",b:`<div class="row">
-      <div class="mini">Byggd för byrå – svensk redovisning, revision &amp; lön</div>
-      <div class="mini">GDPR-säkert – tränar aldrig någon annans AI</div>
-      <div class="mini">Från data till analys på sekunder</div></div>`},
-   {t:"Pelare · tillagd",s:"draft",add:1,b:`<div class="cards">
-      <div class="mini"><div class="ico"></div><h4>Rapportering</h4><p>Period, månad, kvartal, bokslut – skalat till många.</p></div>
-      <div class="mini"><div class="ico"></div><h4>Regelverk</h4><p>Svar med källa, kopplat till kundens egen data.</p></div>
-      <div class="mini"><div class="ico"></div><h4>Agenter</h4><p>Avstämningar, konteringar, bokslut – i dina processer.</p></div></div>`},
+   {t:"Hero",s:"draft",b:`<div class="grid2"><div><h3>AI som gör grovjobbet i ekonomin</h3><p>SEVR Insights är AI-plattformen för ekonomer. För redovisningsbyråer som vill skala rådgivning – och för företag som vill förstå sin ekonomi och fatta bättre beslut.</p><div class="row" style="gap:8px"><span class="btn p">Boka demo</span><span class="btn">Se hur det fungerar →</span></div><p class="alt" style="margin-top:10px">A/B: "Från timmar av manuellt arbete till svar på sekunder" / "En AI-kollega för ekonomer"</p></div>${ph("🖼 Produktskärm som bevis")}</div>`},
+   {t:"Spårval",s:"draft",b:`<div style="text-align:center;font-weight:600;margin-bottom:10px">Vad är du ute efter?</div><div class="cards two"><div class="mini"><div class="ico"></div><h4>För redovisningsbyråer</h4><p>Skala rådgivning till hela kundstocken – utan fler timmar.</p><div style="margin-top:8px"><span class="btn" style="font-size:12px">För byråer →</span></div></div><div class="mini"><div class="ico"></div><h4>För företag</h4><p>Förstå din ekonomi och fatta bättre beslut – utan att anställa en CFO.</p><div style="margin-top:8px"><span class="btn" style="font-size:12px">För företag →</span></div></div></div>`},
+   {t:"Trygghetsrad",s:"draft",b:`<div class="row"><div class="mini">Byggd för byrå – svensk redovisning, revision &amp; lön</div><div class="mini">GDPR-säkert – tränar aldrig någon annans AI</div><div class="mini">Från data till analys på sekunder</div></div>`},
+   {t:"Pelare · tillagd",s:"draft",add:1,b:`<div class="cards"><div class="mini"><div class="ico"></div><h4>Rapportering</h4><p>Period, månad, kvartal, bokslut – skalat till många.</p></div><div class="mini"><div class="ico"></div><h4>Regelverk</h4><p>Svar med källa, kopplat till kundens egen data.</p></div><div class="mini"><div class="ico"></div><h4>Agenter</h4><p>Avstämningar, konteringar, bokslut – i dina processer.</p></div></div>`},
    {t:"Socialt bevis · tillagd",s:"empty",add:1,b:`<div class="row"><div class="ph" style="flex:2">🖼 Logorad: byråer som använder SEVR</div><div class="mini" style="flex:3;font-style:italic">"[Platshållare – ej verifierat citat. Riktig byråreferens + mätbar effekt.]"</div></div>`},
    {t:"FAQ · tillagd",s:"empty",add:1,b:`<div class="faqrow"><span>Behöver jag installera något?</span><span>+</span></div><div class="faqrow"><span>Vilka system stöds? (Fortnox, SIE)</span><span>+</span></div><div class="faqrow" style="border:0"><span>Är min data säker?</span><span>+</span></div>`},
    {t:"CTA-band",s:"draft",b:`<div class="ctaband"><h3>Redo att se SEVR på era siffror?</h3><p>[Platshållare-rubrik – byt mot vald slutvinkel]</p><span class="btn p">Boka demo</span></div>`},
    {t:"Footer",s:"draft",b:foot},
-  ]},
- vision:{title:"Vision", route:"/vision", aud:"alla · manifest/story",
-  secs:[
+ ]},
+ byra:{title:"För byråer",route:"/for-byraer",aud:"byrå · sajtens tyngsta sida",secs:[
    {t:"Navigering",s:"draft",b:nav},
-   {t:"Hero",s:"draft",b:`<div class="grid2"><div>
-      <h3>Redovisningsekonomen – entreprenörens bästa vän.</h3>
-      <p>SEVR finns för att lyfta redovisningsekonomen. Vi låter AI sköta det tråkiga, repetitiva arbetet – så att du lägger din tid och ditt omdöme där det gör skillnad: hos kunden.</p>
-      <div class="row" style="gap:8px"><span class="btn p">Boka demo</span><span class="btn">Se hur det fungerar →</span></div>
-      <p class="alt" style="margin-top:10px">A/B: "Vi tar tråket. Du tar omdömet." / "Mer tid till det du faktiskt är utbildad för."</p>
-      </div>${ph("🖼 Ekonom i arbete / produktskärm")}</div>`},
+   {t:"Hero",s:"draft",b:`<div class="grid2"><div><h3>Ge byrån en AI-kollega som gör jobbet</h3><p>SEVR Insights är en AI-plattform som tar över grovjobbet i byråns kärnprocesser – bokföring, avstämning, bokslut, moms, lön, reskontra och rapportering. Agenterna gör jobbet. Era konsulter validerar, levererar och lägger tiden där den skapar värde: hos kunden.</p><div class="row" style="gap:8px"><span class="btn p">Boka demo</span><span class="btn">Se hur det fungerar →</span></div><p class="alt" style="margin-top:10px">A/B: "Era kärnprocesser. Körda av AI." / "Mindre grovjobb. Mer rådgivning."</p></div>${ph("🖼 Produktskärm: byråvy")}</div>`},
+   {t:"Problem",s:"draft",b:`<h3>Rapporten tar minuter. Rådgivningen hinns aldrig med.</h3><p>Era konsulter blev ekonomer för att ge råd – inte för att klistra in i Excel. Men över 200 timmar per kund och år försvinner i manuellt arbete. Fastpriset står still medan kraven växer. Och det går inte att rekrytera sig ur det.</p><div class="row" style="margin-top:6px"><div class="mini"><h4>Fastprispress</h4><p>Kraven växer, priset står still.</p></div><div class="mini"><h4>Kompetensbrist</h4><p>Svårt att rekrytera och behålla.</p></div><div class="mini"><h4>Kunderna vill ha mer</h4><p>Råd, inte bara siffror.</p></div></div><p class="alt">Tre krafter (från Accountec V3) – bekräfta formuleringar.</p>`},
+   {t:"Lösning – kärnan",s:"draft",b:`<h3>Inte ett verktyg. En plattform som kör era kärnprocesser.</h3><p>SEVR Insights lever i byråns dagliga arbete och tar hand om grovjobbet i hela ert flöde. Specialiserade agenter sköter bokslut, moms, avstämning, reskontra och lön. AI:n bygger rapporter, kommenterar resultat, lägger budget och bevakar likviditet. Konsulten validerar och levererar.</p><p>Allt på ett ställe, i svensk redovisningskontext. Resultatet: byrån gör mer, snabbare – och rådgivning blir norm, inte undantag.</p>`},
+   {t:"Fyra pelare",s:"draft",b:`<div class="cards four"><div class="mini"><div class="ico"></div><h4>Bokföring &amp; avstämning</h4></div><div class="mini"><div class="ico"></div><h4>Bokslut &amp; moms</h4></div><div class="mini"><div class="ico"></div><h4>Lön &amp; reskontra</h4></div><div class="mini"><div class="ico"></div><h4>Rapportering &amp; analys</h4></div></div><p class="alt">Doc anger "fyra pelare med ikon" men namnger dem inte – grupperat ur kärnprocesserna, bekräfta.</p>`},
+   {t:"Så fungerar det",s:"draft",b:`<h3>Koppla. Låt AI:n arbeta. Validera. Leverera.</h3><div class="steps"><div class="step"><div class="num">1</div><b style="font-size:13px">Koppla</b><p>Koppla bokföringen eller ladda en SIE-fil.</p></div><div class="step"><div class="num">2</div><b style="font-size:13px">AI &amp; agenter</b><p>Rapporter, kommentarer, avstämning, bokslut, prognoser.</p></div><div class="step"><div class="num">3</div><b style="font-size:13px">Validera</b><p>Ni är experten – AI:n gör analysen, ni gör bedömningen.</p></div><div class="step"><div class="num">4</div><b style="font-size:13px">Leverera</b><p>Kunden får beslutsstöd och råd.</p></div></div>`},
+   {t:"Allt byrån gör",s:"draft",b:`<h3>Hela byråns kärnprocesser – i en plattform</h3><p>SEVR Insights täcker arbetet ni redan gör. Agenter och AI gör grovjobbet, ni har kontrollen.</p><div class="chips"><span class="chip k">Bokföring</span><span class="chip k">Avstämning</span><span class="chip k">Bokslut</span><span class="chip k">Moms</span><span class="chip k">Lön</span><span class="chip k">Reskontra</span><span class="chip k">Rapportering</span></div>`},
+   {t:"AI-arbetsytan för teamet",s:"draft",b:`<div class="grid2"><div><h3>Hela teamets AI-kollega – med svaren i ryggen</h3><p>Fråga vad som helst inom redovisning, revision, skatt och lön och få svar med källhänvisning – grundat i svenska regelverk, inte gissningar. Låt AI:n skriva utkast till kundutskick och mejl. Samla teamet i samma arbetsyta.</p><p>Kunskapen finns alltid till hands – junior som senior.</p></div>${ph("🖼 Skärm: AI-arbetsyta / Fråga AI")}</div>`},
+   {t:"Värdet: tid · siffror",s:"empty",b:`<h3>Veckor tillbaka. Per kund. Varje år.</h3><p>Det manuella rapportarbetet tar hundratals timmar per kund och år. Med SEVR Insights blir det en bråkdel.</p><div class="stats"><div class="stat"><b>[est.]</b><span>timmar sparade / kund &amp; år</span></div><div class="stat"><b>[est.]</b><span>rapporter på sekunder</span></div><div class="stat"><b>[est.]</b><span>mer rådgivningstid</span></div></div><p class="alt">Siffror saknas – måste märkas "(est.)" enligt designnotis.</p>`},
+   {t:"Värdet: kundupplevelse",s:"draft",b:`<h3>Era kunder slutar vänta på svar</h3><p>Varje leverans blir ett tillfälle att ge råd. Kunden får svar direkt i stället för "jag återkommer". Ni ser likviditetssvackan innan den slår till och föreslår åtgärder i stället för att rapportera utfall.</p><p>Det bygger förtroende långt bortom debet och kredit – och kunder som stannar.</p>`},
+   {t:"Trygghet",s:"draft",b:`<div class="grid2"><div><h3>Kundens siffror ska inte tränas av någon annans AI</h3><p>Idag klistrar konsulter in resultat- och balansräkningar i konsumentverktyg som ChatGPT och Copilot – utan avtal, utan att veta var datan hamnar.</p><p>SEVR Insights är byggt för byrå. Data hanteras enligt GDPR och används aldrig för att träna AI-modeller.</p></div>${ph("✦ GDPR-/säkerhetsmärke")}</div>`},
+   {t:"Pris – byrå",s:"draft",b:`<h3>Betala för värdet – inte för inloggningar</h3><p>Plattformen prissätts per kund. AI-credits köper ni till för hela byrån och de delas av alla konsulter. Inga licenser per användare.</p><div class="row"><div class="mini"><h4>19 kr / kund</h4><p>Ingångspris per kund (bekräfta).</p></div><div class="mini"><h4>Credits-paket</h4><p>[Platshållare: paketnivåer &amp; pris – delas av byrån, 30 dagars villkor.]</p></div></div><div style="margin-top:10px"><span class="btn p">Boka demo</span></div>`},
+   {t:"CTA-band",s:"draft",b:`<div class="ctaband"><h3>Ge byrån en AI-kollega som gör jobbet</h3><p>Se hur SEVR jämnar ut arbetsbördan och höjer marginalen.</p><span class="btn p">Boka demo</span></div>`},
+   {t:"Footer",s:"draft",b:foot},
+ ]},
+ foretag:{title:"För företag",route:"/for-foretag",aud:"företag/VD · slutanvändare",secs:[
+   {t:"Navigering",s:"draft",b:nav},
+   {t:"Hero",s:"draft",b:`<div class="grid2"><div><h3>En CFO som svarar direkt – utan att anställa en</h3><p>Ert bolag har vuxit ur enkel bokföring, men en egen controller eller CFO är ett stort kliv. SEVR Insights ger beslutsstöd direkt: fråga vad som helst om er ekonomi och få svar – i klartext, med konkreta åtgärder.</p><div class="row" style="gap:8px"><span class="btn p">Boka demo</span></div><p class="alt" style="margin-top:10px">A/B: "Er ekonomi, i klartext" / "Sluta gissa. Börja veta."</p></div>${ph("🖼 Produktskärm: Fråga AI / CFO-vy")}</div>`},
+   {t:"Problem",s:"draft",b:`<h3>Ni ser resultatet. Inte vad ni ska göra åt det.</h3><p>Omsättningen växer och besluten blir tyngre. Men balansräkningen säger inte alltid vad ni behöver veta, och rådgivning kommer ofta i efterhand. Resultatet: viktiga beslut fattas på magkänsla.</p><div style="font-size:13px;line-height:1.9">· Ni ser resultatet, men inte alltid varför.<br>· Likviditeten svänger – och ni märker det för sent.<br>· Svaret på ekonomifrågan dröjer till nästa möte.</div>`},
+   {t:"Lösning",s:"draft",b:`<h3>Er digitala CFO</h3><p>SEVR Insights läser er ekonomi och svarar på ett språk ni förstår. Fråga vad som helst och få analys, diagram och konkreta åtgärder – direkt. Beslutsstöd när ni behöver det, inte tre veckor senare.</p>`},
+   {t:"Vad ni kan göra",s:"draft",b:`<h3>Fråga. Förstå. Agera.</h3><div class="cards"><div class="mini"><div class="ico"></div><h4>Fråga</h4><p>Ställ vilken ekonomifråga som helst i klartext.</p></div><div class="mini"><div class="ico"></div><h4>Förstå</h4><p>Få analys och diagram som förklarar varför.</p></div><div class="mini"><div class="ico"></div><h4>Agera</h4><p>Konkreta åtgärder – direkt, inte tre veckor senare.</p></div></div>`},
+   {t:"Koncern",s:"draft",b:`<h3>Driver ni en mindre koncern?</h3><p>Koncernmodulen samlar och konsoliderar era bolag – beslutsstöd på koncernnivå, utan en hel ekonomiavdelning.</p>`},
+   {t:"Trygghet",s:"draft",b:`<h3>Er data är er</h3><p>SEVR Insights hanterar er ekonomi enligt GDPR och använder den aldrig för att träna AI-modeller. Tryggt och säkert, från första frågan.</p>`},
+   {t:"Pris – företag",s:"draft",b:`<h3>Från 799 kr/mån</h3><p>Ett fast, förutsägbart pris – en bråkdel av vad en controller- eller CFO-tjänst kostar. Beslutsstöd som betalar sig på det första kloka beslutet.</p><div style="margin-top:8px"><span class="btn p">Boka demo</span></div>`},
+   {t:"CTA-band",s:"draft",b:`<div class="ctaband"><h3>Sluta gissa. Börja veta.</h3><p>Se er digitala CFO i arbete.</p><span class="btn p">Boka demo</span></div>`},
+   {t:"Footer",s:"draft",b:foot},
+ ]},
+ pris:{title:"Pris",route:"/pris",aud:"alla",secs:[
+   {t:"Navigering",s:"draft",b:nav},
+   {t:"Hero",s:"draft",b:`<h3>Betala för värdet – inte för inloggningar</h3><p>Två prismodeller, en plattform. Välj spår nedan.</p>`},
+   {t:"Pris – byrå",s:"draft",b:`<div class="mini"><h4>Byrå – 19 kr / kund</h4><p>Plattformen prissätts per kund. AI-credits köps till och delas av hela byrån. Inga licenser per användare.</p><p style="margin-top:6px">[Platshållare: credit-paketens nivåer &amp; pris]</p><div style="margin-top:8px"><span class="btn p">Boka demo</span></div></div>`},
+   {t:"Pris – företag",s:"draft",b:`<div class="mini"><h4>Företag – från 799 kr/mån</h4><p>Fast, förutsägbart pris. En bråkdel av en controller- eller CFO-tjänst.</p><div style="margin-top:8px"><span class="btn p">Boka demo</span></div></div>`},
+   {t:"FAQ",s:"empty",b:`<div class="faqrow"><span>Vad är AI-credits?</span><span>+</span></div><div class="faqrow"><span>Hur delas credits i byrån?</span><span>+</span></div><div class="faqrow" style="border:0"><span>Vilka betalningsvillkor gäller? (30 dagar)</span><span>+</span></div>`},
+   {t:"CTA-band",s:"draft",b:`<div class="ctaband"><h3>Hitta rätt plan</h3><span class="btn p">Boka demo</span></div>`},
+   {t:"Footer",s:"draft",b:foot},
+ ]},
+ demo:{title:"Boka demo",route:"/demo",aud:"alla · konvertering",secs:[
+   {t:"Navigering",s:"draft",b:nav},
+   {t:"Hero",s:"draft",b:`<h3>Boka en demo</h3><p>30 minuter. Se SEVR på riktiga siffror och få svar på era frågor.</p>`},
+   {t:"Formulär",s:"empty",b:`<div class="row"><div class="mini" style="flex:1"><div class="fields"><span class="field">Namn</span><span class="field">E-post</span><span class="field">Företag/byrå</span><span class="field">Antal kunder</span><span class="field">Meddelande</span></div><div style="margin-top:10px"><span class="btn p">Boka demo</span></div></div></div>`},
+   {t:"Trygghetsrad",s:"draft",b:`<div class="row"><div class="mini">GDPR-säkert</div><div class="mini">Ingen modellträning</div><div class="mini">Svar med källa</div></div>`},
+   {t:"FAQ",s:"empty",b:`<div class="faqrow"><span>Vad händer på demon?</span><span>+</span></div><div class="faqrow" style="border:0"><span>Behöver jag förbereda något?</span><span>+</span></div>`},
+   {t:"Footer",s:"draft",b:foot},
+ ]},
+ vision:{title:"Vision",route:"/vision",aud:"alla · manifest/story",secs:[
+   {t:"Navigering",s:"draft",b:nav},
+   {t:"Hero",s:"draft",b:`<div class="grid2"><div><h3>Redovisningsekonomen – entreprenörens bästa vän.</h3><p>SEVR finns för att lyfta redovisningsekonomen. Vi låter AI sköta det tråkiga, repetitiva arbetet – så att du lägger din tid och ditt omdöme där det gör skillnad: hos kunden.</p><div class="row" style="gap:8px"><span class="btn p">Boka demo</span><span class="btn">Se hur det fungerar →</span></div><p class="alt" style="margin-top:10px">A/B: "Vi tar tråket. Du tar omdömet." / "Mer tid till det du faktiskt är utbildad för."</p></div>${ph("🖼 Ekonom i arbete / produktskärm")}</div>`},
    {t:"Trygghetsrad · tillagd",s:"draft",add:1,b:`<div class="row"><div class="mini">GDPR-säkert</div><div class="mini">Tränar aldrig någon annans AI</div><div class="mini">Svar med källa</div></div>`},
-   {t:"Det här tror vi på",s:"draft",b:`<div class="grid2" style="grid-template-columns:1fr .7fr"><div>
-      <h3>Det här tror vi på</h3>
-      <p>Redovisningsekonomen ser sanningen i siffrorna, vet när något är på väg åt fel håll och kan få pengarna att räcka längre. Ändå går dagen åt till annat:</p>
-      <div style="font-size:13px;line-height:1.9">· Tanka ut data<br>· Hämta rapporter<br>· Validera<br>· Stänga böcker manuellt</div>
-      <p style="font-weight:600;margin-top:10px">Det vill vi ändra på.</p></div>${ph("✦ Illustration: en arbetsdag")}</div>`},
+   {t:"Det här tror vi på",s:"draft",b:`<div class="grid2" style="grid-template-columns:1fr .7fr"><div><h3>Det här tror vi på</h3><p>Redovisningsekonomen ser sanningen i siffrorna, vet när något är på väg åt fel håll och kan få pengarna att räcka längre. Ändå går dagen åt till annat:</p><div style="font-size:13px;line-height:1.9">· Tanka ut data<br>· Hämta rapporter<br>· Validera<br>· Stänga böcker manuellt</div><p style="font-weight:600;margin-top:10px">Det vill vi ändra på.</p></div>${ph("✦ Illustration: en arbetsdag")}</div>`},
    {t:"Vår vision",s:"draft",b:`<div style="text-align:center;padding:8px 0"><div style="font-family:Georgia,serif;font-size:20px;line-height:1.4">Att göra redovisningsekonomen till entreprenörens bästa vän.</div><p class="alt" style="font-style:normal;margin-top:10px">Vi sänker pucken i högsäsong och jämnar ut arbetet över året – din vardag blir mer förutsägbar, din rådgivning mer värd.</p></div>`},
-   {t:"Människa & maskin",s:"draft",b:`<h3>Människa och maskin</h3><p>AI gör grovjobbet. Du gör omdömet – och det går inte att automatisera.</p>
-      <div class="split"><div class="ai"><b>80%</b><span>AI – hämtar, bearbetar, validerar</span></div><div class="you"><b>20%</b><span>Du – omdömet</span></div></div>
-      <p class="alt" style="margin-top:10px">Human in the loop, hela vägen. Inte AI istället för dig – AI som arbetar för dig.</p>`},
-   {t:"Hur vi gör det",s:"draft",b:`<div class="cards">
-      <div class="mini"><div class="ico"></div><h4>Rapportering som skalar</h4><p>Period, månad, kvartal, bokslut – till många, inte en i taget.</p>${ph("🖼 Skärm")}</div>
-      <div class="mini"><div class="ico"></div><h4>Regelverk du kan lita på</h4><p>Svar direkt, med exakt källa, kopplat till kundens data.</p>${ph("🖼 Skärm")}</div>
-      <div class="mini"><div class="ico"></div><h4>Agenter i kärnprocesser</h4><p>Avstämningar, konteringar, bokslut. Fler kunder, inte fler timmar.</p>${ph("🖼 Skärm")}</div></div>`},
+   {t:"Människa & maskin",s:"draft",b:`<h3>Människa och maskin</h3><p>AI gör grovjobbet. Du gör omdömet – och det går inte att automatisera.</p><div class="split"><div class="ai"><b>80%</b><span>AI – hämtar, bearbetar, validerar</span></div><div class="you"><b>20%</b><span>Du – omdömet</span></div></div><p class="alt" style="margin-top:10px">Human in the loop, hela vägen. Inte AI istället för dig – AI som arbetar för dig.</p>`},
+   {t:"Hur vi gör det",s:"draft",b:`<div class="cards"><div class="mini"><div class="ico"></div><h4>Rapportering som skalar</h4><p>Period, månad, kvartal, bokslut – till många.</p></div><div class="mini"><div class="ico"></div><h4>Regelverk du kan lita på</h4><p>Svar direkt, med exakt källa, kopplat till kundens data.</p></div><div class="mini"><div class="ico"></div><h4>Agenter i kärnprocesser</h4><p>Avstämningar, konteringar, bokslut. Fler kunder, inte fler timmar.</p></div></div>`},
    {t:"Varför det spelar roll",s:"draft",b:`<h3>Varför det spelar roll</h3><p>När det tråkiga försvinner får du tillbaka tiden.</p><div class="chips"><span class="chip">Sälj mer</span><span class="chip">Hjälp bättre</span><span class="chip">Högre kvalitet</span><span class="chip">Bättre marginal</span></div>`},
    {t:"Socialt bevis · tillagd",s:"empty",add:1,b:`<div class="mini" style="font-style:italic">"[Platshållare – ej verifierat. Riktig SEVR-byråreferens: namn, roll, byrå + mätbar effekt.]"</div>`},
    {t:"Avslut / CTA-band",s:"draft",b:`<div class="ctaband"><h3>AI gör 80 %. Ditt omdöme gör resten.</h3><p>Vi bygger SEVR för att lyfta dig som ekonom – inte ersätta dig.</p><span class="btn p">Boka demo</span></div>`},
    {t:"Footer",s:"draft",b:foot},
-  ]},
- byra:{title:"För byråer", route:"/for-byraer", aud:"byrå",
-  secs:[
-   {t:"Navigering",s:"draft",b:nav},
-   {t:"Hero",s:"empty",b:fields(["Rubrik","Underrubrik","CTA","Visuellt"])+ph("🖼 Hero-visual")},
-   {t:"Problem",s:"empty",b:fields(["Rubrik","Inledning","Smärta 1","Smärta 2","Smärta 3"])},
-   {t:"Lösning",s:"empty",b:fields(["Rubrik","Beskrivning","Resultatpunkter"])},
-   {t:"Feature/Pelare",s:"empty",b:`<div class="cards"><div class="mini"><div class="ico"></div><h4>…</h4></div><div class="mini"><div class="ico"></div><h4>…</h4></div><div class="mini"><div class="ico"></div><h4>…</h4></div></div>`},
-   {t:"Så fungerar",s:"empty",b:fields(["Steg 1–4"])},
-   {t:"Värde/Stats",s:"empty",b:fields(["Siffra 1","Siffra 2","Siffra 3"])},
-   {t:"Omdömen",s:"empty",b:ph("🖼 1–3 omdömen")},
-   {t:"Pris",s:"empty",b:fields(["19 kr/kund","Credit-paket","CTA"])},
-   {t:"FAQ",s:"empty",b:fields(["5–8 frågor"])},
-   {t:"CTA-band",s:"empty",b:`<div class="ctaband"><h3>Rubrik</h3><span class="btn p">Boka demo</span></div>`},
-   {t:"Footer",s:"draft",b:foot},
-  ]},
- foretag:{title:"För företag", route:"/for-foretag", aud:"företag/VD · senare",
-  secs:[
-   {t:"Navigering",s:"draft",b:nav},
-   {t:"Hero",s:"empty",b:fields(["Rubrik","Underrubrik","CTA","Visuellt"])+ph("🖼 Hero-visual")},
-   {t:"Problem",s:"empty",b:fields(["Smärta 1–3"])},
-   {t:"Lösning",s:"empty",b:fields(["Digital CFO"])},
-   {t:"Feature/Pelare",s:"empty",b:`<div class="cards"><div class="mini"><div class="ico"></div><h4>…</h4></div><div class="mini"><div class="ico"></div><h4>…</h4></div><div class="mini"><div class="ico"></div><h4>…</h4></div></div>`},
-   {t:"Värde/Stats",s:"empty",b:fields(["Siffra 1–3"])},
-   {t:"Omdömen",s:"empty",b:ph("🖼 1–3 omdömen")},
-   {t:"Pris",s:"empty",b:fields(["från 799 kr/mån","CTA"])},
-   {t:"FAQ",s:"empty",b:fields(["5–8 frågor"])},
-   {t:"CTA-band",s:"empty",b:`<div class="ctaband"><h3>Rubrik</h3><span class="btn p">Boka demo</span></div>`},
-   {t:"Footer",s:"draft",b:foot},
-  ]},
- pris:{title:"Pris", route:"/pris", aud:"alla",
-  secs:[
-   {t:"Navigering",s:"draft",b:nav},
-   {t:"Hero",s:"empty",b:fields(["Rubrik","Underrubrik"])},
-   {t:"Pris – byrå",s:"empty",b:fields(["19 kr/kund","Credit-paket","CTA"])},
-   {t:"Pris – företag",s:"empty",b:fields(["från 799 kr/mån","CTA"])},
-   {t:"FAQ",s:"empty",b:fields(["Pris/credits/avtal"])},
-   {t:"CTA-band",s:"empty",b:`<div class="ctaband"><h3>Rubrik</h3><span class="btn p">Boka demo</span></div>`},
-   {t:"Footer",s:"draft",b:foot},
-  ]},
- demo:{title:"Boka demo", route:"/demo", aud:"alla · konvertering",
-  secs:[
-   {t:"Navigering",s:"draft",b:nav},
-   {t:"Hero",s:"empty",b:fields(["Rubrik","Underrubrik"])},
-   {t:"Formulär",s:"empty",b:fields(["Namn","E-post","Företag/byrå","Antal kunder","Meddelande","Knapptext"])+ph("Formulär")},
-   {t:"Trygghetsrad",s:"empty",b:fields(["3 punkter"])},
-   {t:"FAQ",s:"empty",b:fields(["3–4 frågor"])},
-   {t:"Footer",s:"draft",b:foot},
-  ]},
+ ]},
 };
 
 const order=["start","byra","foretag","pris","demo","vision"];
 const navEl=document.getElementById("nav");
-order.forEach((k,i)=>{
-  const p=pages[k];const b=document.createElement("button");
-  b.innerHTML=`<span>${p.title}</span><span class="n">${i+1}</span>`;
-  b.onclick=()=>render(k,b);navEl.appendChild(b);
-});
+order.forEach((k,i)=>{const p=pages[k];const b=document.createElement("button");b.innerHTML=`<span>${p.title}</span><span class="n">${i+1}</span>`;b.onclick=()=>render(k,b);navEl.appendChild(b);});
 function render(key,btn){
   document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
   if(btn)btn.classList.add("active");
@@ -211,10 +175,7 @@ function render(key,btn){
   document.getElementById("pagehead").innerHTML=`<h2>${p.title}</h2><div class="meta">${p.route} · ${p.aud} · ${p.secs.length} sektioner</div>`;
   document.getElementById("canvas").innerHTML=p.secs.map((s,i)=>{
     const col=s.s==='draft'?'#B45309':'#B0A696';
-    return `<div class="sec"><div class="sec-top">
-        <span class="badge${s.add?' add':''}">${s.t}</span><span>sektion ${i+1}</span>
-        <span class="status-pill"><span class="dot" style="background:${col}"></span>${s.s==='draft'?'utkast':'tom'}</span>
-      </div><div class="sec-body">${s.b}</div></div>`;
+    return `<div class="sec"><div class="sec-top"><span class="badge${s.add?' add':''}">${s.t}</span><span>sektion ${i+1}</span><span class="status-pill"><span class="dot" style="background:${col}"></span>${s.s==='draft'?'utkast':'tom'}</span></div><div class="sec-body">${s.b}</div></div>`;
   }).join("");
   window.scrollTo(0,0);
 }
