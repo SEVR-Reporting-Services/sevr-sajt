@@ -196,3 +196,18 @@ Korta. Ikon + en rad var. Bekräfta status med Bartek innan publik.
 - **Pris:** byrå 19 kr/kund + credits · företag från 799 kr.
 
 > Öppna flaggor: egna omdömen (S10), riktiga siffror (S16/S18 "est."), agent-status (DEL 5), Vatsson publikt namn.
+
+---
+
+## DEL 8 – Mallkomponenter att återanvända (lynai-temat, köpt)
+
+Vi äger lynai-temat (lynai.framer.website) och bygger SEVR på det. Två komponenter därifrån som vi ska använda:
+
+**S21 · Kunskapsartikel (feature-large)** `[ACC-artikel omskriven]`
+- Källa: Accountec-bloggen "Hjälp dina kunder att fatta rätt ekonomiska beslut – med AI som strategisk hävstång" (accountec.se/blogg/...). Texten är **omskriven som om oss (SEVR)**, de-Accountec'ad, kortad (copy-editing).
+- Layout: lynai "feature-large" — text vänster (kicker + rubrik + brödtext + ghost-knapp), bild höger.
+- Implementerad i `prototyp-v5.html`.
+
+**S22 · Kundcitat (lynai two-tone)** `[lynai]`
+- Layout: logotyp + stort citat där **första meningen är mörk (hl)** och resten dämpad, + "Läs berättelsen →".
+- Platshållartext tills egen SEVR-referens finns. Implementerad i `prototyp-v5.html`.
