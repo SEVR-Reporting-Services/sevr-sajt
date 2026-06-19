@@ -6,7 +6,7 @@
 <title>SEVR Insights — AI som gör grovjobbet i ekonomin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#FFFBF5;--surface:#fff;--ink:#210D02;--muted:#6E6356;--line:#ECE3D4;--line-2:#DFD3BF;--yellow:#FCD519;--radius:8px}
   @media(prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -264,6 +264,94 @@
   </div>
 </div></section>
 
+<!-- Säg adjö till — rullande problemord + statsrad (lynai-stil i SEVR-tappning) -->
+<style>
+  #wave .c{padding-top:84px;padding-bottom:0}
+  .wave-top{--wf:44px;--L:1.28em;display:flex;align-items:center;justify-content:center;gap:26px;flex-wrap:wrap;padding-bottom:76px}
+  .wave-h{font-size:var(--wf);line-height:1.06;letter-spacing:-.025em;font-weight:500;color:var(--ink);margin:0}
+  .wave-roll{position:relative;font-size:var(--wf);line-height:var(--L);font-weight:600;letter-spacing:-.025em;height:calc(var(--L)*5);overflow:hidden;min-width:430px}
+  .wave-layer{position:absolute;left:0;top:0;right:0}
+  .wave-layer ul{list-style:none;margin:0;padding:0;animation:waveroll 16s cubic-bezier(.7,0,.3,1) infinite}
+  .wave-layer li{height:var(--L);line-height:var(--L);white-space:nowrap}
+  .wave-grey li{color:rgba(33,13,2,.24)}
+  .wave-active{clip-path:inset(calc(var(--L)*2) 0 calc(var(--L)*2) 0)}
+  .wave-active li{color:var(--ink)}
+  @keyframes waveroll{
+    0%,10.5%    {transform:translateY(0)}
+    14.3%,24.8% {transform:translateY(calc(var(--L)*-1))}
+    28.6%,39.1% {transform:translateY(calc(var(--L)*-2))}
+    42.9%,53.4% {transform:translateY(calc(var(--L)*-3))}
+    57.2%,67.7% {transform:translateY(calc(var(--L)*-4))}
+    71.5%,82.0% {transform:translateY(calc(var(--L)*-5))}
+    85.8%,96.3% {transform:translateY(calc(var(--L)*-6))}
+    100%        {transform:translateY(calc(var(--L)*-7))}
+  }
+  .wave-stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-bottom:0}
+  .wave-stats .wstat{padding:46px 28px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;border-right:1px solid var(--line)}
+  .wave-stats .wstat:last-child{border-right:0}
+  .wnum{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:46px;font-weight:600;letter-spacing:-.04em;color:var(--ink);line-height:1;font-feature-settings:"tnum"}
+  .wnum small{font-family:"IBM Plex Sans",sans-serif;font-size:14px;font-weight:500;color:var(--muted);letter-spacing:0;margin-left:2px}
+  .wlbl{font-size:14.5px;color:var(--muted);max-width:200px}
+  @media(max-width:860px){.wave-top{--wf:34px}.wave-stats{grid-template-columns:repeat(2,1fr)}.wave-stats .wstat:nth-child(2){border-right:0}.wave-stats .wstat:nth-child(1),.wave-stats .wstat:nth-child(2){border-bottom:1px solid var(--line)}.wnum{font-size:38px}}
+</style>
+<section id="wave"><div class="c">
+  <div class="wave-top">
+    <h2 class="wave-h">Säg adjö till</h2>
+    <div class="wave-roll">
+      <div class="wave-layer wave-grey">
+        <ul>
+          <li>manuella rapporter</li>
+          <li>sena bokslut</li>
+          <li>letande i system</li>
+          <li>”jag återkommer”</li>
+          <li>bortslösad tid</li>
+          <li>krångliga frågor</li>
+          <li>dubbelarbete</li>
+          <li>manuella rapporter</li>
+          <li>sena bokslut</li>
+          <li>letande i system</li>
+          <li>”jag återkommer”</li>
+          <li>bortslösad tid</li>
+        </ul>
+      </div>
+      <div class="wave-layer wave-active">
+        <ul>
+          <li>manuella rapporter</li>
+          <li>sena bokslut</li>
+          <li>letande i system</li>
+          <li>”jag återkommer”</li>
+          <li>bortslösad tid</li>
+          <li>krångliga frågor</li>
+          <li>dubbelarbete</li>
+          <li>manuella rapporter</li>
+          <li>sena bokslut</li>
+          <li>letande i system</li>
+          <li>”jag återkommer”</li>
+          <li>bortslösad tid</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="wave-stats">
+    <div class="wstat">
+      <div class="wnum">90&nbsp;% <small>(est.)</small></div>
+      <div class="wlbl">Mindre tid på manuella rapporter</div>
+    </div>
+    <div class="wstat">
+      <div class="wnum">2X <small>(est.)</small></div>
+      <div class="wlbl">Snabbare svar till kund</div>
+    </div>
+    <div class="wstat">
+      <div class="wnum">1&nbsp;000+</div>
+      <div class="wlbl">Byråer &amp; företag i Norden</div>
+    </div>
+    <div class="wstat">
+      <div class="wnum">24/7</div>
+      <div class="wlbl">En AI-kollega som aldrig sover</div>
+    </div>
+  </div>
+</div></section>
+
 <section id="produkten"><div class="c">
   <div class="center"><span class="pill"><span class="dot"></span>Produkten</span><h2 style="margin-top:18px">En AI-motor, sex rådgivningsprodukter</h2><p class="sub" style="margin:0 auto;max-width:640px">Varje leverans blir ett debiterbart rådgivningstillfälle — inte bara en sifferleverans.</p></div>
   <div class="agwrap">
@@ -338,12 +426,88 @@
   </div>
 </div></section>
 
+<!-- Kunder — bento (omdömen + resultatrutor med kundlogga), gradienter i SEVR-tappning -->
+<style>
+  .bento-t{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:42px;background:var(--line);border:1px solid var(--line);
+    grid-template-areas:
+      "s1 s2 t1"
+      "t2 t2 t1"
+      "s3 t3 t3"
+      "s4 t4 t4";}
+  .bt{border-radius:0;padding:30px;display:flex;flex-direction:column}
+  .bt.t1{grid-area:t1}.bt.t2{grid-area:t2}.bt.t3{grid-area:t3}.bt.t4{grid-area:t4}
+  .bt.s1{grid-area:s1}.bt.s2{grid-area:s2}.bt.s3{grid-area:s3}.bt.s4{grid-area:s4}
+  .bstat{justify-content:space-between;min-height:236px}
+  .bnum{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:34px;font-weight:600;letter-spacing:-.03em;color:var(--ink);line-height:1}
+  .bnum small{font-family:"IBM Plex Sans",sans-serif;font-size:13px;font-weight:500;color:var(--muted);margin-left:3px}
+  .blbl{font-size:15px;color:#5c5346;margin-top:8px}
+  .blogo{margin-top:auto;padding-top:26px;font-weight:700;font-size:18px;letter-spacing:-.01em;color:rgba(33,13,2,.42)}
+  .g-gold{background:linear-gradient(150deg,#F7EEDC,#EFD8AC)}
+  .g-lilac{background:linear-gradient(150deg,#ECEAFB,#D5DAF7)}
+  .g-terra{background:linear-gradient(150deg,#FBEBE3,#F4D1C2)}
+  .g-sand{background:linear-gradient(150deg,#F0EBE0,#E2D7BE)}
+  .bquote{background:#fff;justify-content:space-between}
+  .qt{font-size:17.5px;line-height:1.5;color:#2c2620;margin:0 0 26px}
+  .bt.t1 .qt{font-size:19px}
+  .bq-foot{display:flex;align-items:center;gap:12px}
+  .bq-ava{width:46px;height:46px;border-radius:8px;flex:0 0 auto;background:linear-gradient(135deg,#C49A2B,#F2901F 30%,#ED8A6E 55%,#A6AEF0 82%,#CBD7FB)}
+  .bq-id{flex:1;line-height:1.3}.bq-id strong{display:block;font-size:15px;font-weight:600;color:var(--ink)}.bq-id span{font-size:14px;color:var(--muted)}
+  .bq-x{width:42px;height:42px;border-radius:9px;background:#16100A;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .bq-x svg{width:18px;height:18px;fill:#fff}
+  @media(max-width:860px){.bento-t{grid-template-columns:1fr 1fr;grid-template-areas:"s1 s2" "t1 t1" "t2 t2" "s3 s4" "t3 t3" "t4 t4"}}
+  @media(max-width:560px){.bento-t{grid-template-columns:1fr;grid-template-areas:"s1" "s2" "t1" "t2" "s3" "t3" "s4" "t4"}.bstat{min-height:180px}}
+</style>
 <section><div class="c">
-  <div class="center"><span class="pill"><span class="dot"></span>kunder</span><h2 style="margin-top:18px">En väldigt omtyckt produkt</h2></div>
-  <div class="quotes">
-    <div class="qcard"><p class="q">”Vi gick från sifferleverans till rådgivning — utan att anställa fler.”</p><div class="who"><span class="ava"></span><div><strong>SEVR-kund</strong><span>Redovisningsbyrå · placeholder</span></div></div></div>
-    <div class="qcard"><p class="q">”Likviditetssvackan syns innan den slår till. Kunderna älskar det.”</p><div class="who"><span class="ava a2"></span><div><strong>SEVR-kund</strong><span>Byrå · placeholder</span></div></div></div>
-    <div class="qcard"><p class="q">”VD-rapporten tar 30 sekunder. Förr en halv arbetsdag.”</p><div class="who"><span class="ava"></span><div><strong>SEVR-kund</strong><span>Byrå · placeholder</span></div></div></div>
+  <div class="center"><span class="pill"><span class="dot"></span>kunder</span><h2 style="margin-top:18px">Det säger byråer och företag om SEVR</h2></div>
+  <div class="bento-t">
+    <div class="bt s1 bstat g-gold">
+      <div><div class="bnum">60&nbsp;% <small>(est.)</small></div><div class="blbl">Mindre manuellt arbete</div></div>
+      <div class="blogo">BYRÅ&nbsp;AB</div>
+    </div>
+    <div class="bt s2 bstat g-lilac">
+      <div><div class="bnum">2X <small>(est.)</small></div><div class="blbl">Fler rådgivningstimmar</div></div>
+      <div class="blogo">REVISIO</div>
+    </div>
+    <div class="bt t1 bquote">
+      <p class="qt">”Vi gick från sifferleverans till rådgivning — utan att anställa fler. SEVR gör det tråkiga, vi gör bedömningen.”</p>
+      <div class="bq-foot">
+        <span class="bq-ava"></span>
+        <div class="bq-id"><strong>SEVR-kund</strong><span>VD, redovisningsbyrå · placeholder</span></div>
+        <a class="bq-x" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.6c0-1.57-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V23h-4V8z"/></svg></a>
+      </div>
+    </div>
+    <div class="bt t2 bquote">
+      <p class="qt">”Likviditetssvackan syns innan den slår till. Vi hör av oss till kunden innan det blir ett problem — det är där förtroendet byggs.”</p>
+      <div class="bq-foot">
+        <span class="bq-ava"></span>
+        <div class="bq-id"><strong>SEVR-kund</strong><span>Rådgivningsansvarig · placeholder</span></div>
+        <a class="bq-x" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.6c0-1.57-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V23h-4V8z"/></svg></a>
+      </div>
+    </div>
+    <div class="bt s3 bstat g-terra">
+      <div><div class="bnum">30&nbsp;sek</div><div class="blbl">VD-rapport — förr en halv dag</div></div>
+      <div class="blogo">EKONOMI+</div>
+    </div>
+    <div class="bt t3 bquote">
+      <p class="qt">”Äntligen svenska svar med källa. Vi litar på siffran direkt och slipper dubbelkolla i tre system.”</p>
+      <div class="bq-foot">
+        <span class="bq-ava"></span>
+        <div class="bq-id"><strong>SEVR-kund</strong><span>Byråägare · placeholder</span></div>
+        <a class="bq-x" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.6c0-1.57-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V23h-4V8z"/></svg></a>
+      </div>
+    </div>
+    <div class="bt s4 bstat g-sand">
+      <div><div class="bnum">+40&nbsp;% <small>(est.)</small></div><div class="blbl">Fler kunder per ekonom</div></div>
+      <div class="blogo">NORD&nbsp;BYRÅ</div>
+    </div>
+    <div class="bt t4 bquote">
+      <p class="qt">”Vi förstår vår ekonomi i klartext nu. Inga fler ’jag återkommer’ — svaret finns direkt.”</p>
+      <div class="bq-foot">
+        <span class="bq-ava"></span>
+        <div class="bq-id"><strong>SEVR-kund</strong><span>Ekonomichef, företag · placeholder</span></div>
+        <a class="bq-x" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.6c0-1.57-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V23h-4V8z"/></svg></a>
+      </div>
+    </div>
   </div>
 </div></section>
 
