@@ -33,6 +33,11 @@
   .hero{text-align:center;padding:0}
   .hero>.c{padding-top:48px}
   h1{font-family:"Instrument Serif",Georgia,serif;font-size:82px;line-height:1.02;letter-spacing:-.01em;font-weight:400;margin:26px auto 0;max-width:1000px}
+  .rotw{position:relative;font-style:italic;color:#B5541E;white-space:nowrap;transition:opacity .3s ease;padding:0 .04em}
+  .rotw::after{content:"";position:absolute;left:0;right:0;bottom:.04em;height:.08em;border-radius:4px;background:linear-gradient(90deg,#C49A2B,#F2901F 35%,#ED8A6E 60%,#A6AEF0);}
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s cubic-bezier(.22,.61,.36,1)}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important}}
   .hero .sub{font-size:19px;color:var(--muted);max-width:600px;margin:24px auto 28px;line-height:1.5}
   .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
   h2{font-family:"Instrument Serif",Georgia,serif;font-size:50px;line-height:1.05;letter-spacing:-.005em;font-weight:400;margin:0 0 14px}
@@ -243,7 +248,7 @@
 <a id="top"></a>
 <section class="hero"><div class="c">
   <span class="pill"><b>NYTT</b> En AI-kollega för ekonomer</span>
-  <h1>AI som gör det <em style="font-style:italic">tråkiga</em> jobbet i ekonomin</h1>
+  <h1>AI som gör det <span class="rotw" id="rotw">tråkiga</span> jobbet i ekonomin</h1>
   <p class="sub">SEVR Insights är AI-plattformen för ekonomer. För redovisningsbyråer som vill skala rådgivning – och för företag som vill förstå sin ekonomi och fatta bättre beslut.</p>
   <div class="ctas"><a class="btn y eq" href="#cta">Boka en demo</a></div>
 
@@ -348,15 +353,15 @@
   </div>
   <div class="wave-stats">
     <div class="wstat">
-      <div class="wnum">90&nbsp;% <small>(est.)</small></div>
+      <div class="wnum"><span class="cup" data-to="90" data-suf="&nbsp;%">0&nbsp;%</span> <small>(est.)</small></div>
       <div class="wlbl">Mindre tid på manuella rapporter</div>
     </div>
     <div class="wstat">
-      <div class="wnum">2X <small>(est.)</small></div>
+      <div class="wnum"><span class="cup" data-to="2" data-suf="X">0X</span> <small>(est.)</small></div>
       <div class="wlbl">Snabbare svar till kund</div>
     </div>
     <div class="wstat">
-      <div class="wnum">1&nbsp;000+</div>
+      <div class="wnum"><span class="cup" data-to="1000" data-grp="1" data-suf="+">0+</span></div>
       <div class="wlbl">Byråer &amp; företag i Norden</div>
     </div>
     <div class="wstat">
@@ -597,6 +602,9 @@ var panel=document.getElementById('panel');
 function setTab(k){var d=TAB[k];panel.className='panel '+d.grad;panel.innerHTML='<div class="mock">'+d.mock+'</div>';}
 document.querySelectorAll('.tabs button').forEach(function(b){b.onclick=function(){document.querySelectorAll('.tabs button').forEach(function(x){x.classList.remove('on');});b.classList.add('on');setTab(b.dataset.t);};});
 setTab('rapporter');
-document.querySelectorAll('.fitem .q').forEach(function(q){q.onclick=function(){q.parentElement.classList.toggle('open');};});</script>
+document.querySelectorAll('.fitem .q').forEach(function(q){q.onclick=function(){q.parentElement.classList.toggle('open');};});
+(function(){var words=['tråkiga','grova','tunga','sega','repetitiva','manuella'];var i=0;var el=document.getElementById('rotw');if(!el)return;setInterval(function(){el.style.opacity='0';setTimeout(function(){i=(i+1)%words.length;el.textContent=words[i];el.style.opacity='1';},300);},2400);})();
+(function(){var grid=document.querySelector('.wave-stats');if(!grid||!('IntersectionObserver'in window))return;function run(){grid.querySelectorAll('.cup').forEach(function(el){var to=parseFloat(el.dataset.to),suf=el.dataset.suf||'',grp=el.dataset.grp,dur=1500,t0=null;function fmt(v){v=Math.round(v);return grp?v.toLocaleString('sv-SE'):v;}function step(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/dur,1);var e=1-Math.pow(1-p,3);el.innerHTML=fmt(to*e)+suf;if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);});}var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){run();io.disconnect();}});},{threshold:.4});io.observe(grid);})();
+(function(){if(!('IntersectionObserver'in window))return;var secs=document.querySelectorAll('section');secs.forEach(function(s){s.classList.add('reveal');});var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12,rootMargin:'0px 0px -8% 0px'});secs.forEach(function(s){io.observe(s);});})();</script>
 </body>
 </html>
