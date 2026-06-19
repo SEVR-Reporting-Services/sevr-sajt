@@ -6,12 +6,12 @@
 <title>SEVR Insights — AI som gör grovjobbet i ekonomin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#FFFBF5;--surface:#fff;--ink:#210D02;--muted:#6E6356;--line:#ECE3D4;--line-2:#DFD3BF;--yellow:#FCD519;--radius:8px}
   @media(prefers-reduced-motion:reduce){*{transition:none!important}}
   *{box-sizing:border-box}
-  body{margin:0;font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  body{margin:0;font-family:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
   .c{max-width:1240px;margin:0 auto;padding:0 40px}
   header{position:sticky;top:0;z-index:50;background:rgba(255,251,245,.85);backdrop-filter:blur(10px)}
@@ -32,21 +32,23 @@
   section>.c{padding:84px 40px;border-bottom:1px solid var(--line)}
   .hero{text-align:center;padding:0}
   .hero>.c{padding-top:48px}
-  h1{font-size:76px;line-height:1.04;letter-spacing:-.03em;font-weight:500;margin:26px auto 0;max-width:1000px}
+  h1{font-family:"Instrument Serif",Georgia,serif;font-size:82px;line-height:1.02;letter-spacing:-.01em;font-weight:400;margin:26px auto 0;max-width:1000px}
   .hero .sub{font-size:19px;color:var(--muted);max-width:600px;margin:24px auto 28px;line-height:1.5}
   .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-  h2{font-size:46px;line-height:1.06;letter-spacing:-.025em;font-weight:500;margin:0 0 14px}
+  h2{font-family:"Instrument Serif",Georgia,serif;font-size:50px;line-height:1.05;letter-spacing:-.005em;font-weight:400;margin:0 0 14px}
   h3{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0 0 8px}
   .sub{font-size:19px;color:var(--muted);line-height:1.5}
   .center{text-align:center;max-width:840px;margin:0 auto}
-  .tabmod{margin-top:60px;border:1px solid var(--line);background:var(--surface);padding:10px}
-  .tabs{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:10px}
-  .tabs button{border:0;background:none;padding:16px 20px;cursor:pointer;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:3px;text-align:left}
-  .tabs button:last-child{border-right:0}
-  .tabs .tt{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:-.01em}
+  .tabmod{margin-top:60px;border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:10px}
+  .tabs{display:flex;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:6px;margin-bottom:10px}
+  .tabs button{flex:1;border:1px solid transparent;background:transparent;border-radius:9px;padding:13px 16px;cursor:pointer;display:flex;flex-direction:column;gap:3px;text-align:left;transition:background .15s,border-color .15s,box-shadow .15s}
+  .tabs button:hover{background:rgba(33,13,2,.045)}
+  .tabs .tt{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
   .tabs .ts{font-size:12.5px;font-weight:400;color:var(--muted);opacity:.78;line-height:1.35}
-  .tabs button.on{background:#EAF0FF}
+  .tabs button.on{background:#fff;border-color:var(--line-2);box-shadow:0 1px 3px rgba(0,0,0,.08)}
   .tabs button.on .tt{color:var(--ink)}
+  .tabs button .tt::before{content:"";width:9px;height:9px;border-radius:50%;background:transparent;border:1.5px solid var(--line-2);flex:0 0 9px;transition:.15s}
+  .tabs button.on .tt::before{background:linear-gradient(135deg,#F2901F,#A6AEF0);border-color:transparent}
   .gridtex{background-image:linear-gradient(rgba(33,13,2,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(33,13,2,.06) 1px,transparent 1px);background-size:30px 30px}
   .panel{position:relative;overflow:hidden;border-radius:14px;padding:48px;display:flex;align-items:center;justify-content:center;min-height:340px;transition:background .4s ease}
   .panel.o{background:linear-gradient(120deg,#C49A2B,#F2901F 28%,#ED8A6E 54%,#A6AEF0 80%,#CBD7FB)}
@@ -211,20 +213,24 @@
 </style>
 </head>
 <body>
-<div id="vswitch" style="position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;gap:3px;background:#fff;border:1px solid #ddd;border-radius:9px;padding:4px;box-shadow:0 3px 12px rgba(0,0,0,.14);font-family:-apple-system,sans-serif">
-<a href="version-0/index.html" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V0</a>
-<a href="index.html" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V1</a>
-<a href="prototyp-v2.html" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V2</a>
-<a href="salj-sajt.html" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V3</a>
-<a href="prototyp-v4.html" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V4</a>
-<a href="prototyp-v5.html" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#fff;background:#1a1a1a;text-decoration:none">V5</a>
-<a href="prototyp-v6.html" title="Gleap-skin" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V5.1</a>
-<a href="prototyp-v7.html" title="Slack-skin" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V5.2</a>
-<a href="prototyp-v8.html" title="Apollo-skin" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V5.3</a>
-<a href="prototyp-v9.html" title="Vanta-skin" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V5.4</a>
-<a href="prototyp-v10.html" title="Maze-skin" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V5.5</a>
-<a href="prototyp-v11.html" title="Huddle-skin" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V5.6</a>
-<a href="prototyp-v12.html" title="Awesomic-skin" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V5.7</a>
+<div id="vswitch" style="position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:5px;background:#fff;border:1px solid #ddd;border-radius:10px;padding:6px;box-shadow:0 3px 12px rgba(0,0,0,.14);font-family:-apple-system,system-ui,sans-serif">
+<div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end">
+<a href="version-0/index.html" title="V0 — startpunkt" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none;display:inline-flex;align-items:center;gap:5px">V0<span style="width:6px;height:6px;border-radius:50%;background:#F2901F;display:inline-block"></span></a>
+<a href="index.html" title="V1" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V1</a>
+<a href="prototyp-v2.html" title="V2" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V2</a>
+<a href="salj-sajt.html" title="V3" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V3</a>
+<a href="prototyp-v4.html" title="V4" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V4</a>
+</div>
+<div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end">
+<a href="prototyp-v5.html" title="SEVR" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5</a>
+<a href="prototyp-v6.html" title="Gleap" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.1</a>
+<a href="prototyp-v7.html" title="Slack" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.2</a>
+<a href="prototyp-v8.html" title="Apollo" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.3</a>
+<a href="prototyp-v9.html" title="Vanta" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.4</a>
+<a href="prototyp-v10.html" title="Maze" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.5</a>
+<a href="prototyp-v11.html" title="Huddle" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.6</a>
+<a href="prototyp-v12.html" title="Awesomic" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.7</a>
+</div>
 </div>
 
 <header><div class="c nav">
@@ -296,8 +302,8 @@
   .wave-stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-bottom:0}
   .wave-stats .wstat{padding:46px 28px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;border-right:1px solid var(--line)}
   .wave-stats .wstat:last-child{border-right:0}
-  .wnum{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:46px;font-weight:600;letter-spacing:-.04em;color:var(--ink);line-height:1;font-feature-settings:"tnum"}
-  .wnum small{font-family:"IBM Plex Sans",sans-serif;font-size:14px;font-weight:500;color:var(--muted);letter-spacing:0;margin-left:2px}
+  .wnum{font-family:"Inter",ui-monospace,monospace;font-size:46px;font-weight:600;letter-spacing:-.04em;color:var(--ink);line-height:1;font-feature-settings:"tnum"}
+  .wnum small{font-family:"Inter",sans-serif;font-size:14px;font-weight:500;color:var(--muted);letter-spacing:0;margin-left:2px}
   .wlbl{font-size:14.5px;color:var(--muted);max-width:200px}
   @media(max-width:860px){.wave-top{--wf:34px}.wave-stats{grid-template-columns:repeat(2,1fr)}.wave-stats .wstat:nth-child(2){border-right:0}.wave-stats .wstat:nth-child(1),.wave-stats .wstat:nth-child(2){border-bottom:1px solid var(--line)}.wnum{font-size:38px}}
 </style>
@@ -445,8 +451,8 @@
   .bt.t1{grid-area:t1}.bt.t2{grid-area:t2}.bt.t3{grid-area:t3}.bt.t4{grid-area:t4}
   .bt.s1{grid-area:s1}.bt.s2{grid-area:s2}.bt.s3{grid-area:s3}.bt.s4{grid-area:s4}
   .bstat{justify-content:space-between;min-height:236px}
-  .bnum{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:34px;font-weight:600;letter-spacing:-.03em;color:var(--ink);line-height:1}
-  .bnum small{font-family:"IBM Plex Sans",sans-serif;font-size:13px;font-weight:500;color:var(--muted);margin-left:3px}
+  .bnum{font-family:"Inter",ui-monospace,monospace;font-size:34px;font-weight:600;letter-spacing:-.03em;color:var(--ink);line-height:1}
+  .bnum small{font-family:"Inter",sans-serif;font-size:13px;font-weight:500;color:var(--muted);margin-left:3px}
   .blbl{font-size:15px;color:#5c5346;margin-top:8px}
   .blogo{margin-top:auto;padding-top:26px;font-weight:700;font-size:18px;letter-spacing:-.01em;color:rgba(33,13,2,.42)}
   .g-gold{background:linear-gradient(150deg,#F7EEDC,#EFD8AC)}
@@ -590,8 +596,6 @@ var panel=document.getElementById('panel');
 function setTab(k){var d=TAB[k];panel.className='panel '+d.grad;panel.innerHTML='<div class="mock">'+d.mock+'</div>';}
 document.querySelectorAll('.tabs button').forEach(function(b){b.onclick=function(){document.querySelectorAll('.tabs button').forEach(function(x){x.classList.remove('on');});b.classList.add('on');setTab(b.dataset.t);};});
 setTab('rapporter');
-document.querySelectorAll('.fitem .q').forEach(function(q){q.onclick=function(){q.parentElement.classList.toggle('open');};});
-document.querySelectorAll('#vswitch a').forEach(function(a){if(a.getAttribute('href')===(location.pathname.split('/').pop()||'index.html')){a.style.background='#1a1a1a';a.style.color='#fff';}});
-</script>
+document.querySelectorAll('.fitem .q').forEach(function(q){q.onclick=function(){q.parentElement.classList.toggle('open');};});</script>
 </body>
 </html>

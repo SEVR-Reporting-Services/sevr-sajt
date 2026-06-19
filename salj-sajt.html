@@ -75,15 +75,25 @@
 </style>
 </head>
 <body>
-<div id="vswitch" style="position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;gap:3px;background:#fff;border:1px solid #ddd;border-radius:9px;padding:4px;box-shadow:0 3px 12px rgba(0,0,0,.14);font-family:-apple-system,BlinkMacSystemFont,sans-serif">
-<a href="version-0/index.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V0</a>
-<a href="index.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V1</a>
-<a href="prototyp-v2.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V2</a>
-<a href="salj-sajt.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V3</a>
-<a href="prototyp-v4.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V4</a>
-<a href="prototyp-v5.html" style="padding:6px 11px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V5</a>
+<div id="vswitch" style="position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:5px;background:#fff;border:1px solid #ddd;border-radius:10px;padding:6px;box-shadow:0 3px 12px rgba(0,0,0,.14);font-family:-apple-system,system-ui,sans-serif">
+<div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end">
+<a href="version-0/index.html" title="V0 — startpunkt" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none;display:inline-flex;align-items:center;gap:5px">V0<span style="width:6px;height:6px;border-radius:50%;background:#F2901F;display:inline-block"></span></a>
+<a href="index.html" title="V1" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V1</a>
+<a href="prototyp-v2.html" title="V2" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V2</a>
+<a href="salj-sajt.html" title="V3" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V3</a>
+<a href="prototyp-v4.html" title="V4" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V4</a>
 </div>
-<script>(function(){var f=(location.pathname.split('/').pop()||'index.html');document.querySelectorAll('#vswitch a').forEach(function(a){if(a.getAttribute('href')===f){a.style.background='#1a1a1a';a.style.color='#fff';}});})();</script>
+<div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end">
+<a href="prototyp-v5.html" title="SEVR" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5</a>
+<a href="prototyp-v6.html" title="Gleap" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.1</a>
+<a href="prototyp-v7.html" title="Slack" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.2</a>
+<a href="prototyp-v8.html" title="Apollo" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.3</a>
+<a href="prototyp-v9.html" title="Vanta" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.4</a>
+<a href="prototyp-v10.html" title="Maze" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.5</a>
+<a href="prototyp-v11.html" title="Huddle" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.6</a>
+<a href="prototyp-v12.html" title="Awesomic" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.7</a>
+</div>
+</div>
 <header><div class="c nav">
   <span class="brand" onclick="show('home')"><img src="logo.svg" alt="SEVR Insights" style="height:20px;width:auto;vertical-align:middle;margin-right:8px"> <span style="font-size:10px;letter-spacing:.1em;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-weight:600;vertical-align:middle">V3 · HORMOZI “GRAND SLAM”</span></span>
   <nav class="links" id="links"></nav>
