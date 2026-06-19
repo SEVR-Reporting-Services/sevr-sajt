@@ -30,6 +30,7 @@ En statisk prototyp-sajt för **SEVR Insights** — en AI-plattform för ekonome
 | `byra.html`, `foretag.html`, `pris.html`, `faq.html`, `kontakt.html` | Undersidor byggda på V5:s formspråk. |
 | `villkor.html`, `integritetspolicy.html`, `cookiepolicy.html`, `dpa.html` | Juridiska sidor — **platshållartext**, ej färdig juridik. |
 | `VERSIONER.md` | Designlogg: varför V0→V5 + skin-beskrivningar. Läs för kontext. |
+| `skills/` | Referens-skills för metodiken: `copy-alex-hormozi` (offert-copy), `apollo-style-copy` (svensk onboarding/webb-copy), `saas-landing-architect` (landningssidearkitektur + references). Läs dessa innan du skriver copy eller bygger nya sektioner. |
 
 ---
 
