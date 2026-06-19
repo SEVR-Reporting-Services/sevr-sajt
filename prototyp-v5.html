@@ -39,16 +39,17 @@
   h3{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0 0 8px}
   .sub{font-size:19px;color:var(--muted);line-height:1.5}
   .center{text-align:center;max-width:840px;margin:0 auto}
-  .tabmod{margin-top:60px;border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:10px}
-  .tabs{display:flex;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:6px;margin-bottom:10px}
-  .tabs button{flex:1;border:1px solid transparent;background:transparent;border-radius:9px;padding:13px 16px;cursor:pointer;display:flex;flex-direction:column;gap:3px;text-align:left;transition:background .15s,border-color .15s,box-shadow .15s}
-  .tabs button:hover{background:rgba(33,13,2,.045)}
+  .tabmod{margin-top:60px}
+  .tabs{display:flex;gap:4px;position:relative;z-index:2}
+  .tabs button{flex:1;border:0;background:rgba(33,13,2,.045);padding:15px 18px 18px;border-radius:14px 14px 0 0;cursor:pointer;display:flex;flex-direction:column;gap:3px;text-align:left;transition:background .15s,color .15s;font-family:inherit}
+  .tabs button:hover{background:rgba(33,13,2,.08)}
   .tabs .tt{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
-  .tabs .ts{font-size:12.5px;font-weight:400;color:var(--muted);opacity:.78;line-height:1.35}
-  .tabs button.on{background:#fff;border-color:var(--line-2);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .tabs .ts{font-size:12.5px;font-weight:400;color:var(--muted);opacity:.8;line-height:1.35}
+  .tabs button.on{background:#fff;box-shadow:0 -4px 12px rgba(0,0,0,.05)}
   .tabs button.on .tt{color:var(--ink)}
   .tabs button .tt::before{content:"";width:9px;height:9px;border-radius:50%;background:transparent;border:1.5px solid var(--line-2);flex:0 0 9px;transition:.15s}
   .tabs button.on .tt::before{background:linear-gradient(135deg,#F2901F,#A6AEF0);border-color:transparent}
+  .tabmod .panel{margin-top:0;border-top-left-radius:0;border-top-right-radius:0}
   .gridtex{background-image:linear-gradient(rgba(33,13,2,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(33,13,2,.06) 1px,transparent 1px);background-size:30px 30px}
   .panel{position:relative;overflow:hidden;border-radius:14px;padding:48px;display:flex;align-items:center;justify-content:center;min-height:340px;transition:background .4s ease}
   .panel.o{background:linear-gradient(120deg,#C49A2B,#F2901F 28%,#ED8A6E 54%,#A6AEF0 80%,#CBD7FB)}
@@ -234,7 +235,7 @@
 </div>
 
 <header><div class="c nav">
-  <a href="#top"><img src="logo.svg" alt="SEVR Insights" style="height:28px;width:auto;display:block"></a>
+  <a href="#top" style="display:flex;align-items:baseline;gap:6px;text-decoration:none"><span style="font-family:'Inter',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.03em;color:var(--ink)">SEVR</span><span style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:24px;color:var(--ink)">Insights</span></a>
   <nav class="links"><a href="byra.html">För byrå</a><a href="foretag.html">För företag</a><a href="pris.html">Pris</a><a href="faq.html">Vanliga frågor</a><a href="kontakt.html">Kontakta oss</a></nav>
   <div class="nav-right"><span class="login">Login</span><a class="btn y" href="#cta">Boka demo</a></div>
 </div></header>
@@ -242,7 +243,7 @@
 <a id="top"></a>
 <section class="hero"><div class="c">
   <span class="pill"><b>NYTT</b> En AI-kollega för ekonomer</span>
-  <h1>AI som gör det tråkiga jobbet i ekonomin</h1>
+  <h1>AI som gör det <em style="font-style:italic">tråkiga</em> jobbet i ekonomin</h1>
   <p class="sub">SEVR Insights är AI-plattformen för ekonomer. För redovisningsbyråer som vill skala rådgivning – och för företag som vill förstå sin ekonomi och fatta bättre beslut.</p>
   <div class="ctas"><a class="btn y eq" href="#cta">Boka en demo</a></div>
 
