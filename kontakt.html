@@ -113,8 +113,11 @@
   .ctaband::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.3) 1px,transparent 1px);background-size:46px 46px}
   .ctaband h2,.ctaband .sub,.ctaband .btn{position:relative;z-index:1}
   .ctaband h2{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.18)}.ctaband .sub{color:rgba(255,255,255,.92);margin:0 auto 26px}
-  footer{padding:56px 0 40px;border-top:1px solid var(--line);color:var(--muted);font-size:13.5px}
-  .foot{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:24px}.foot b{color:var(--ink);display:block;margin-bottom:10px}.foot a{display:block;padding:4px 0}
+  footer{padding:64px 0 32px;background:#16100A;color:rgba(255,255,255,.6);font-size:13.5px}
+  .foot{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:24px}.foot b{color:#fff;display:block;margin-bottom:10px}.foot a{display:block;padding:4px 0;color:rgba(255,255,255,.6)}
+  footer .foot img{filter:brightness(0) invert(1)}
+  .legal{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.12);font-size:12.5px}
+  .legal a{color:rgba(255,255,255,.55);text-decoration:none}
   .note{font-size:12px;color:var(--muted);font-style:italic;text-align:center;margin-top:12px}
   .kicker{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#C77A2E;font-weight:600}
   .flarge{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
@@ -234,7 +237,7 @@
 
 <header><div class="c nav">
   <a href="prototyp-v5.html"><img src="logo.svg" alt="SEVR Insights" style="height:28px;width:auto;display:block"></a>
-  <nav class="links"><a href="byra.html">För byrå</a><a href="foretag.html">För företag</a><a href="pris.html">Pris</a><a href="prototyp-v5.html#faq">Vanliga frågor</a><a href="kontakt.html" style="color:var(--ink);font-weight:600">Kontakta oss</a></nav>
+  <nav class="links"><a href="byra.html">För byrå</a><a href="foretag.html">För företag</a><a href="pris.html">Pris</a><a href="faq.html">Vanliga frågor</a><a href="kontakt.html" style="color:var(--ink);font-weight:600">Kontakta oss</a></nav>
   <div class="nav-right"><span class="login">Login</span><a class="btn y" href="#form">Boka demo</a></div>
 </div></header>
 
@@ -278,6 +281,16 @@
   </div>
 </div></section>
 
+<section id="faq"><div class="c faqwrap">
+  <div class="faqhead"><span class="pill"><span class="dot"></span>FAQ</span><h2>Vanliga frågor</h2></div>
+  <div class="faq">
+    <div class="fitem open"><div class="q">Hur snabbt får jag svar?<i>⌄</i></div><div class="a">Inom en arbetsdag – ofta samma dag. Bokar du demo hör vi av oss för att hitta en tid.</div></div>
+    <div class="fitem"><div class="q">Vad händer på en demo?<i>⌄</i></div><div class="a">30 minuter där vi visar plattformen på er verklighet. Inga förberedelser krävs.</div></div>
+    <div class="fitem"><div class="q">Är det bindande?<i>⌄</i></div><div class="a">Nej. Demon är kostnadsfri och utan åtagande – inget kort krävs.</div></div>
+    <div class="fitem"><div class="q">Hjälper ni till att komma igång?<i>⌄</i></div><div class="a">Ja. Vi hjälper er koppla Fortnox eller ladda en SIE-fil och kommer igång snabbt.</div></div>
+  </div>
+</div></section>
+
 <section style="padding-top:0"><div class="c"><div class="ctaband" id="cta">
   <h2>Vill ni se SEVR i arbete?</h2>
   <p class="sub">Boka en 30-minuters demo – vi visar plattformen på er verklighet.</p>
@@ -291,11 +304,18 @@
     <div><b>Företag</b><a href="prototyp-v5.html#cta">Boka demo</a><a href="kontakt.html">Kontakta oss</a></div>
     <div><b>Trygghet</b><a>GDPR-säkert</a><a>Ingen modellträning</a><a>Svar med källa</a></div>
   </div>
+  <div class="legal">
+    <a href="villkor.html">Licensavtal &amp; allmänna användarvillkor</a>
+    <a href="integritetspolicy.html">Integritetspolicy</a>
+    <a href="cookiepolicy.html">Cookiepolicy</a>
+    <a href="dpa.html">Personuppgiftsbiträdesavtal</a>
+  </div>
   <p style="margin-top:24px;font-size:12px">© SEVR Reporting Services AB · Prototyp V5 — Kontakt</p>
 </div></footer>
 
 <script>
 document.querySelectorAll('#vswitch a').forEach(function(a){if(a.getAttribute('href')===(location.pathname.split('/').pop()||'index.html')){a.style.background='#1a1a1a';a.style.color='#fff';}});
+document.querySelectorAll('.fitem .q').forEach(function(q){q.onclick=function(){q.parentElement.classList.toggle('open');};});
 </script>
 </body>
 </html>

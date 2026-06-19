@@ -113,11 +113,8 @@
   .ctaband::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.3) 1px,transparent 1px);background-size:46px 46px}
   .ctaband h2,.ctaband .sub,.ctaband .btn{position:relative;z-index:1}
   .ctaband h2{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.18)}.ctaband .sub{color:rgba(255,255,255,.92);margin:0 auto 26px}
-  footer{padding:64px 0 32px;background:#16100A;color:rgba(255,255,255,.6);font-size:13.5px}
-  .foot{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:24px}.foot b{color:#fff;display:block;margin-bottom:10px}.foot a{display:block;padding:4px 0;color:rgba(255,255,255,.6)}
-  footer .foot img{filter:brightness(0) invert(1)}
-  .legal{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.12);font-size:12.5px}
-  .legal a{color:rgba(255,255,255,.55);text-decoration:none}
+  footer{padding:56px 0 40px;border-top:1px solid var(--line);color:var(--muted);font-size:13.5px}
+  .foot{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:24px}.foot b{color:var(--ink);display:block;margin-bottom:10px}.foot a{display:block;padding:4px 0}
   .note{font-size:12px;color:var(--muted);font-style:italic;text-align:center;margin-top:12px}
   .kicker{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#C77A2E;font-weight:600}
   .flarge{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
@@ -212,74 +209,14 @@
 </head>
 <body>
 <style>
-.hsplit{display:grid;grid-template-columns:1.05fr .95fr;align-items:stretch;text-align:left}
-.hsplit .hleft{padding:16px 56px 64px 0;display:flex;flex-direction:column;justify-content:center}
-.hsplit h1{font-size:52px;line-height:1.05;letter-spacing:-.03em;margin:18px 0 0}
-.hsplit .sub{margin:18px 0 0;max-width:480px}
-.hsplit .ctas{margin-top:30px;display:flex;gap:12px;justify-content:flex-start}
-.hvis{position:relative;overflow:hidden;border-left:1px solid var(--line);background:linear-gradient(135deg,#C49A2B,#F2901F 30%,#ED8A6E 55%,#A6AEF0 82%,#CBD7FB);display:flex;align-items:center;justify-content:center;padding:40px;min-height:480px}
-.hvis::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.28) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.28) 1px,transparent 1px);background-size:46px 46px}
-.anacard{position:relative;z-index:1;background:#fff;border-radius:18px;box-shadow:0 40px 80px -40px rgba(33,13,2,.5);padding:24px;width:100%;max-width:460px}
-.anacard .anah{font-weight:600;margin-bottom:14px}
-.anacard .anax{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:10px}
-.agrow.three{grid-template-columns:repeat(3,1fr)}
-.statn{font-size:54px;font-weight:600;letter-spacing:-.02em;line-height:1;color:var(--ink)}
-.statn small{display:block;font-size:14px;font-weight:400;color:var(--muted);margin-top:12px;letter-spacing:0;line-height:1.4}
-.goldbar{background:linear-gradient(135deg,#F4C079,#E8973A);color:#3a2a14;padding:22px 28px;font-weight:600;border:1px solid var(--line);margin-top:18px;font-size:16px}
-.ptab{width:100%;border-collapse:collapse;margin-top:18px;font-size:14px}
-.ptab th,.ptab td{border:1px solid var(--line);padding:12px 16px;text-align:left}
-.ptab th{background:#FBF6EC;font-weight:600}
-.psplit{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;border:1px solid var(--line)}
-.pvis{position:relative;overflow:hidden;border-right:1px solid var(--line);background:linear-gradient(150deg,#C9A0F5,#A6AEF0 42%,#F2901F);display:flex;align-items:center;justify-content:center;padding:44px;min-height:440px}
-.pvis::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.26) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.26) 1px,transparent 1px);background-size:46px 46px}
-.pcardm{position:relative;z-index:1;background:#fff;border-radius:16px;box-shadow:0 34px 64px -38px rgba(33,13,2,.5);padding:24px;width:100%;max-width:380px}
-.pright{padding:48px}
-.pright p{color:var(--muted);font-size:15px;line-height:1.6;margin:0}
-.psplit.flip .pvis{border-right:0;border-left:1px solid var(--line)}
-.pright h2{font-size:38px;line-height:1.08;letter-spacing:-.02em;margin:16px 0 18px}
-.acc{display:flex;flex-direction:column}
-.acci{border-top:1px solid var(--line)}.acci:first-child{border-top:0}
-.acch{width:100%;text-align:left;background:none;border:0;padding:20px 0;font-size:20px;font-weight:600;color:var(--muted);cursor:pointer;font-family:inherit;transition:color .15s}
-.acci.open .acch{color:var(--ink)}
-.accb{max-height:0;overflow:hidden;color:var(--muted);font-size:15px;line-height:1.6;transition:max-height .25s ease,padding .25s ease}
-.acci.open .accb{max-height:220px;padding:0 0 22px}
-.pgrid{display:grid;grid-template-columns:1fr 1.15fr 1fr;border:1px solid var(--line);background:var(--surface);margin-top:48px}
-.pgrid .agc{border-right:1px solid var(--line);min-height:210px}
-.pc1{grid-column:1;grid-row:1;border-bottom:1px solid var(--line)}
-.pc2{grid-column:1;grid-row:2}
-.pc3{grid-column:3;grid-row:1;border-right:0!important;border-bottom:1px solid var(--line)}
-.pc4{grid-column:3;grid-row:2;border-right:0!important}
-.pmid{grid-column:2;grid-row:1 / span 2;border-right:1px solid var(--line);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:30px;color:#fff;font-weight:600;text-align:center;background:linear-gradient(150deg,#C9A0F5,#A6AEF0 45%,#F2901F)}
-.pmid::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.26) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.26) 1px,transparent 1px);background-size:44px 44px}
-.pmid span{position:relative;z-index:1;text-shadow:0 1px 3px rgba(0,0,0,.2)}
-.tline{position:relative;overflow:hidden;margin-top:48px;border:1px solid var(--line);background:linear-gradient(135deg,#C49A2B,#F2901F 30%,#ED8A6E 55%,#A6AEF0 82%,#CBD7FB);padding:56px 44px;display:grid;grid-template-columns:repeat(4,1fr);gap:0}
-.tline::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.24) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.24) 1px,transparent 1px);background-size:46px 46px}
-.tstep{position:relative;z-index:1;padding-right:28px}
-.tstep:not(:last-child)::after{content:"";position:absolute;top:24px;left:24px;width:100%;height:2px;background:rgba(255,255,255,.55);z-index:-1}
-.tnum{width:48px;height:48px;border-radius:50%;background:#fff;color:var(--ink);font-weight:700;font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 22px -10px rgba(0,0,0,.45);margin-bottom:24px}
-.tstep h4{color:#fff;margin:0 0 6px;font-size:18px;letter-spacing:-.01em;text-shadow:0 1px 2px rgba(0,0,0,.18)}
-.tstep p{color:rgba(255,255,255,.92);font-size:14px;line-height:1.5;margin:0}
-.vblock{margin-top:48px;border:1px solid var(--line);background:var(--surface)}
-.vstats{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
-.vstat{padding:40px;border-right:1px solid var(--line)}
-.vstats .vstat:last-child{border-right:0}
-.vstat .statn{font-size:54px;font-weight:600;letter-spacing:-.02em;line-height:1;color:var(--ink)}
-.vcap{margin-top:12px;font-size:14px;color:var(--muted);line-height:1.45}
-.vcap em{font-style:normal;font-size:12px;opacity:.75}
-.vsplit{display:grid;grid-template-columns:1fr 1fr}
-.vleft{padding:48px;display:flex;flex-direction:column;justify-content:center}
-.vleft h2{font-size:34px;line-height:1.1;letter-spacing:-.02em;margin:16px 0 14px}
-.vleft p{color:var(--muted);font-size:15px;line-height:1.6;margin:0}
-.vimg{position:relative;overflow:hidden;border-left:1px solid var(--line);min-height:380px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;text-align:center;background:linear-gradient(150deg,#A6AEF0,#C9A0F5 45%,#F2901F)}
-.vimg::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.24) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.24) 1px,transparent 1px);background-size:44px 44px}
-.vimg span{position:relative;z-index:1;text-shadow:0 1px 3px rgba(0,0,0,.2)}
-.prices .pop{background:linear-gradient(140deg,#C9A0F5,#A6AEF0 38%,#F2901F);color:#fff;border:0;box-shadow:0 30px 60px -36px rgba(120,60,200,.5)}
-.prices .pop h3,.prices .pop .amt,.prices .pop .per,.prices .pop li{color:#fff}
-.prices .pop .poplbl{background:#fff;color:#210D02}
-.prices .pop .btn{background:#fff;color:#210D02;border-color:#fff}
-.penterprise{max-width:900px;margin:20px auto 0;background:#EFE7D9;border:1px solid var(--line);padding:30px 36px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px}
-.penterprise h4{margin:0 0 4px;font-size:18px}.penterprise p{margin:0;color:var(--muted);font-size:14px}
-@media(max-width:980px){.hsplit{grid-template-columns:1fr}.hsplit .hleft{padding:16px 0 40px}.hvis{min-height:320px;border-left:0}.hsplit h1{font-size:38px}.agrow.three{grid-template-columns:1fr}.psplit{grid-template-columns:1fr}.pvis{min-height:300px;border-right:0;border-bottom:1px solid var(--line)}.pright{padding:28px}.pgrid{grid-template-columns:1fr}.pgrid .agc,.pmid{grid-column:1!important;grid-row:auto!important;border-right:0!important;border-bottom:1px solid var(--line)}.pmid{min-height:240px}.tline{grid-template-columns:1fr;gap:0}.tstep{padding:0 0 26px}.tstep::after{display:none}.vstats{grid-template-columns:1fr}.vstat{border-right:0;border-bottom:1px solid var(--line)}.vsplit{grid-template-columns:1fr}.vimg{border-left:0;border-top:1px solid var(--line);min-height:240px}.vleft{padding:28px}.penterprise{grid-template-columns:1fr}}
+footer{background:#16100A;color:rgba(255,255,255,.6);border-top:0}
+.foot b{color:#fff}.foot a{color:rgba(255,255,255,.6)}
+footer .foot img{filter:brightness(0) invert(1)}
+.legal{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.12);font-size:12.5px}
+.legal a{color:rgba(255,255,255,.55);text-decoration:none}
+.legaldoc{max-width:780px}
+.legaldoc h2{font-size:22px;margin:36px 0 10px}
+.legaldoc p{color:var(--muted);line-height:1.7;margin:0 0 14px}
 </style>
 
 <div id="vswitch" style="position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;gap:3px;background:#fff;border:1px solid #ddd;border-radius:9px;padding:4px;box-shadow:0 3px 12px rgba(0,0,0,.14);font-family:-apple-system,sans-serif">
@@ -293,158 +230,37 @@
 
 <header><div class="c nav">
   <a href="prototyp-v5.html"><img src="logo.svg" alt="SEVR Insights" style="height:28px;width:auto;display:block"></a>
-  <nav class="links"><a href="byra.html">För byrå</a><a href="foretag.html" style="color:var(--ink);font-weight:600">För företag</a><a href="pris.html">Pris</a><a href="faq.html">Vanliga frågor</a><a href="kontakt.html">Kontakta oss</a></nav>
-  <div class="nav-right"><span class="login">Login</span><a class="btn y" href="#cta">Boka demo</a></div>
+  <nav class="links"><a href="byra.html">För byrå</a><a href="foretag.html">För företag</a><a href="pris.html">Pris</a><a href="faq.html">Vanliga frågor</a><a href="kontakt.html">Kontakta oss</a></nav>
+  <div class="nav-right"><span class="login">Login</span><a class="btn y" href="kontakt.html">Boka demo</a></div>
 </div></header>
 
 <a id="top"></a>
 <section class="hero" style="padding-bottom:0"><div class="c">
-  <div class="hsplit">
-    <div class="hleft">
-      <span class="pill"><span class="dot"></span>Er digitala CFO</span>
-      <h1>En CFO som svarar direkt – utan att anställa en</h1>
-      <p class="sub">Ert bolag har vuxit ur enkel bokföring, men en egen controller eller CFO är ett stort kliv. SEVR Insights ger beslutsstöd direkt: fråga vad som helst om er ekonomi och få svar – i klartext, med konkreta åtgärder.</p>
-      <div class="ctas"><a class="btn y eq" href="#cta">Boka demo</a><a class="btn eq" href="#vad">Se hur det fungerar</a></div>
-    </div>
-    <div class="hvis">
-      <div class="anacard">
-        <div class="anah">Er ekonomi i realtid</div>
-        <svg viewBox="0 0 460 210" style="width:100%;height:190px;display:block">
-          <g stroke="#eee" stroke-width="1"><line x1="0" y1="40" x2="460" y2="40"/><line x1="0" y1="90" x2="460" y2="90"/><line x1="0" y1="140" x2="460" y2="140"/></g>
-          <path d="M0,150 C90,120 150,135 240,95 C330,55 400,70 460,40" fill="none" stroke="#E8973A" stroke-width="3"/>
-          <path d="M0,165 C90,150 160,150 250,120 C340,92 410,105 460,80" fill="none" stroke="#7B4AE2" stroke-width="3"/>
-          <path d="M0,175 C100,168 170,165 260,150 C350,135 410,138 460,120" fill="none" stroke="#A6AEF0" stroke-width="3"/>
-        </svg>
-        <div class="anax"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span></div>
-      </div>
-    </div>
-  </div>
+  <span class="pill"><span class="dot"></span>Juridik</span>
+  <h1 style="font-size:46px">Cookiepolicy</h1>
+  <p class="sub" style="max-width:640px">Hur SEVR Insights använder cookies och liknande tekniker.</p>
 </div></section>
 
-<section><div class="c">
-  <div class="psplit">
-    <div class="pvis">
-      <div class="pcardm">
-        <div style="font-weight:600;margin-bottom:6px">Resultat denna månad</div>
-        <div style="font-size:12px;color:var(--muted);margin-bottom:12px">…men vad ska vi göra åt det?</div>
-        <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #f0ece4"><span>Omsättning</span><span style="font-weight:600">+12 %</span></div>
-        <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #f0ece4"><span>Likviditet</span><span style="font-weight:600;color:#C0392B">−</span></div>
-        <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #f0ece4"><span>Nästa steg</span><span style="font-weight:600">?</span></div>
-      </div>
-    </div>
-    <div class="pright">
-      <span class="pill"><span class="dot"></span>Problemet</span>
-      <h2>Ni ser resultatet. Inte vad ni ska göra åt det.</h2>
-      <div class="acc">
-        <div class="acci open"><button class="acch">Ni ser resultatet</button><div class="accb">…men inte alltid varför. Siffrorna finns – men inte tolkningen.</div></div>
-        <div class="acci"><button class="acch">Likviditeten svänger</button><div class="accb">…och ni märker det för sent. Hög omsättning är inte samma sak som pengar på kontot.</div></div>
-        <div class="acci"><button class="acch">Svaret dröjer</button><div class="accb">Ekonomifrågan väntar till nästa möte – beslut fattas på magkänsla.</div></div>
-      </div>
-    </div>
-  </div>
-</div></section>
-
-<section><div class="c">
-  <div class="psplit">
-    <div class="pvis">
-      <div class="pcardm">
-        <div style="font-weight:600;margin-bottom:10px">Fråga AI</div>
-        <div style="background:#F3EEE4;border-radius:10px;padding:10px 12px;font-size:13px;margin-bottom:10px">”Varför sjunker likviditeten trots vinst?”</div>
-        <div style="font-size:13px;line-height:1.5;color:var(--muted)">Kundfordringarna har ökat 38 % – kapital binds i obetalda fakturor. <b style="color:var(--ink)">Åtgärd:</b> skärp påminnelser på 3 kunder.</div>
-      </div>
-    </div>
-    <div class="pright">
-      <span class="pill"><span class="dot"></span>Lösningen</span>
-      <h2>Er digitala CFO</h2>
-      <p>SEVR Insights läser er ekonomi och svarar på ett språk ni förstår. Fråga vad som helst och få analys, diagram och konkreta åtgärder – direkt. Beslutsstöd när ni behöver det, inte tre veckor senare.</p>
-    </div>
-  </div>
-</div></section>
-
-<section id="vad"><div class="c">
-  <div class="center"><span class="pill"><span class="dot"></span>Vad ni kan göra</span><h2 style="margin-top:18px">Fråga. Förstå. Agera.</h2></div>
-  <div class="agwrap">
-    <div class="agrow three">
-      <div class="agc"><span class="agnum">Fråga</span><div class="agt"><h4>Likviditet i realtid</h4><p>”Har vi råd att köpa för 200 000 kr och ändå täcka moms och lön?” – svar direkt.</p></div></div>
-      <div class="agc"><span class="agnum">Planera</span><div class="agt"><h4>Budget &amp; prognos</h4><p>Lägg en realistisk kvartalsprognos på minuter, baserat på er historik och säsong.</p></div></div>
-      <div class="agc"><span class="agnum">Förstå</span><div class="agt"><h4>Resultat förklarat</h4><p>Förstå vad som driver ert resultat – på ett språk ni känner igen.</p></div></div>
-    </div>
-    <div class="agrow two">
-      <div class="agc"><span class="agnum">Fråga AI</span><div class="agt"><h4>Fråga er digitala CFO</h4><p>”Hög omsättning och vinst, men dålig likviditet – varför?” AI:n hittar rotorsaken.</p></div></div>
-      <div class="agc"><span class="agnum">Agera</span><div class="agt"><h4>Frigör kapital</h4><p>Se vilka kunder som binder ert kapital och vad ni kan göra åt det.</p></div></div>
-    </div>
-  </div>
-</div></section>
-
-<section><div class="c"><div class="flarge">
-  <div>
-    <div class="kicker">Koncern</div>
-    <h3>Driver ni en mindre koncern?</h3>
-    <p>Koncernmodulen samlar och konsoliderar era bolag – beslutsstöd på koncernnivå, utan en hel ekonomiavdelning.</p>
-  </div>
-  <div class="img" style="display:flex;align-items:center;justify-content:center;color:#3a2a14;font-weight:600">Koncernöversikt (platshållare)</div>
-</div></div></section>
-
-<section><div class="c">
-  <div class="secband">
-    <div class="sechead"><span class="seclbl">+ Trygghet</span><h3 class="sechd">Er data är er.</h3></div>
-    <div class="secgrid">
-      <div class="seccell"><h4>GDPR</h4><p>Er ekonomi hanteras enligt GDPR – Europas strängaste standard för dataskydd.</p></div>
-      <div class="seccell"><h4>Ingen modellträning</h4><p>Er data används aldrig för att träna AI-modeller. Den är och förblir er.</p></div>
-      <div class="seccell"><h4>Säker hantering</h4><p>Krypterad lagring och tydlig åtkomst – ni bestämmer vem som ser vad.</p></div>
-      <div class="seccell"><h4>Tryggt från start</h4><p>Tryggt och säkert, från första frågan. Inga genvägar med er information.</p></div>
-    </div>
-  </div>
-</div></section>
-
-<section id="pris"><div class="c">
-  <div class="center"><span class="pill"><span class="dot"></span>Pris</span><h2 style="margin-top:18px">Ett pris. Förutsägbart.</h2></div>
-  <div class="prices">
-    <div class="pcard pop">
-      <div class="poplbl">Populärast</div>
-      <h3>Företag</h3>
-      <div class="amt">från 799 kr</div>
-      <div class="per">per månad</div>
-      <ul>
-        <li>Likviditet &amp; kassaflöde i realtid</li>
-        <li>Budget &amp; prognos</li>
-        <li>Resultat förklarat i klartext</li>
-        <li>Fråga er digitala CFO</li>
-      </ul>
-      <a class="btn" href="#cta">Boka demo</a>
-    </div>
-    <div class="pcard">
-      <h3>Koncern</h3>
-      <div class="amt">[pris]</div>
-      <div class="per">per månad</div>
-      <ul>
-        <li>Konsolidering av flera bolag</li>
-        <li>Beslutsstöd på koncernnivå</li>
-        <li>Utan egen ekonomiavdelning</li>
-        <li>[Platshållare – pris på väg]</li>
-      </ul>
-      <a class="btn" href="#cta">Boka demo</a>
-    </div>
-  </div>
-  <div class="penterprise">
-    <div><h4>Osäker på vilken nivå som passar er?</h4><p>Berätta om ert bolag så hittar vi rätt upplägg – och svarar på era frågor.</p></div>
-    <a class="btn" href="kontakt.html">Kontakta oss →</a>
-  </div>
-  <p class="note">Priser exkl. moms. Inget kort krävs för att boka demo.</p>
-</div></section>
-
-<section style="padding-top:0"><div class="c"><div class="ctaband" id="cta">
-  <h2>Vill ni fatta bättre beslut?</h2>
-  <p class="sub">Se hur SEVR Insights blir er digitala CFO – boka en demo.</p>
-  <a class="btn y" href="#cta">Boka en demo</a>
+<section><div class="c"><div class="legaldoc">
+  <p><b>Senast uppdaterad:</b> [datum] · Detta är en platshållartext för prototypen och utgör inte ett juridiskt bindande dokument.</p>
+  <h2>1. Inledning</h2>
+  <p>[Platshållare] Detta dokument beskriver villkoren för användning av SEVR Insights. Den slutliga texten tas fram tillsammans med juridisk rådgivare innan lansering.</p>
+  <h2>2. Omfattning</h2>
+  <p>[Platshållare] Avsnittet beskriver vad som omfattas, vilka parter som berörs och hur tjänsten får användas.</p>
+  <h2>3. Behandling av uppgifter</h2>
+  <p>[Platshållare] SEVR Insights hanterar data enligt GDPR. Uppgifter används aldrig för att träna AI-modeller. Detaljerna specificeras här.</p>
+  <h2>4. Ansvar och begränsningar</h2>
+  <p>[Platshållare] Avsnittet beskriver ansvar, begränsningar och förutsättningar för tjänsten.</p>
+  <h2>5. Kontakt</h2>
+  <p>Frågor om detta dokument? Kontakta oss på <b>hej@sevrinsights.se</b> eller via <a href="kontakt.html" style="color:var(--ink);text-decoration:underline">kontaktsidan</a>.</p>
 </div></div></section>
 
 <footer><div class="c">
   <div class="foot">
-    <div><img src="logo.svg" alt="SEVR Insights" style="height:24px;width:auto;margin-bottom:12px"><div>Er ekonomi, i klartext.</div></div>
+    <div><img src="logo.svg" alt="SEVR Insights" style="height:24px;width:auto;margin-bottom:12px"><div>Från sifferleverans till rådgivning.</div></div>
     <div><b>Produkt</b><a href="byra.html">För byrå</a><a href="foretag.html">För företag</a><a href="pris.html">Pris</a></div>
     <div><b>Företag</b><a href="prototyp-v5.html#cta">Boka demo</a><a href="kontakt.html">Kontakta oss</a></div>
-    <div><b>Trygghet</b><a>GDPR-säkert</a><a>Ingen modellträning</a><a>Svar med källa</a></div>
+    <div><b>Juridik</b><a href="villkor.html">Användarvillkor</a><a href="integritetspolicy.html">Integritetspolicy</a><a href="cookiepolicy.html">Cookiepolicy</a></div>
   </div>
   <div class="legal">
     <a href="villkor.html">Licensavtal &amp; allmänna användarvillkor</a>
@@ -452,12 +268,11 @@
     <a href="cookiepolicy.html">Cookiepolicy</a>
     <a href="dpa.html">Personuppgiftsbiträdesavtal</a>
   </div>
-  <p style="margin-top:24px;font-size:12px">© SEVR Reporting Services AB · Prototyp V5 — För företag</p>
+  <p style="margin-top:20px;font-size:12px;color:rgba(255,255,255,.4)">© SEVR Reporting Services AB · Prototyp V5</p>
 </div></footer>
 
 <script>
 document.querySelectorAll('#vswitch a').forEach(function(a){if(a.getAttribute('href')===(location.pathname.split('/').pop()||'index.html')){a.style.background='#1a1a1a';a.style.color='#fff';}});
-document.querySelectorAll('.acch').forEach(function(b){b.onclick=function(){var it=b.parentElement;var open=it.classList.contains('open');it.closest('.acc').querySelectorAll('.acci').forEach(function(x){x.classList.remove('open');});if(!open)it.classList.add('open');};});
 </script>
 </body>
 </html>
