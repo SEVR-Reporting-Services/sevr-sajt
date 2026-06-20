@@ -23,10 +23,11 @@ En statisk prototyp-sajt för **SEVR Insights** — en AI-plattform för ekonome
 
 | Fil | Vad |
 |---|---|
-| `prototyp-v5.html` | **MASTER / basen.** Den genomarbetade startsidan. Utgå härifrån. |
-| `prototyp-v6.html … v12.html` | Skins V5.1–V5.7 (Gleap, Slack, Apollo, Vanta, Maze, Huddle, Awesomic) — **samma struktur & copy som V5**, bara annan visuell hud. |
+| `index.html` | **STARTSIDAN / MASTER (V5).** Roten `/sevr-sajt/` serverar denna. Utgå härifrån när du ändrar huvudsidan. |
+| `prototyp-v5.html` | Redirect → `index.html` (gammal länk, behåll som redirect). |
+| `prototyp-v6.html … v12.html` | Skins V5.1–V5.7 (Gleap, Slack, Apollo, Vanta, Maze, Huddle, Awesomic) — **samma struktur & copy som V5/index**, bara annan visuell hud. |
 | `version-0/index.html` | V0 — tidig rå version (referens). |
-| `index.html`, `prototyp-v2.html`, `salj-sajt.html`, `prototyp-v4.html` | Äldre versioner V1–V4. |
+| `prototyp-v1.html`, `prototyp-v2.html`, `salj-sajt.html`, `prototyp-v4.html` | Äldre versioner V1–V4. |
 | `byra.html`, `foretag.html`, `pris.html`, `faq.html`, `kontakt.html` | Undersidor byggda på V5:s formspråk. |
 | `villkor.html`, `integritetspolicy.html`, `cookiepolicy.html`, `dpa.html` | Juridiska sidor — **platshållartext**, ej färdig juridik. |
 | `VERSIONER.md` | Designlogg: varför V0→V5 + skin-beskrivningar. Läs för kontext. |
