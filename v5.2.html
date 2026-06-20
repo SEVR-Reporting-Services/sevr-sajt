@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEVR Insights — v7 (Slack-skin)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --aubergine:#611f69;--midnight:#1d1c1d;--eggplant:#2e0039;--plum-shadow:#3d0157;
+    --iris:#730394;--lavender:#f9f0ff;--lilac:#f2defe;--iris-edge:#eac8fe;--violet:#d17dfe;
+    --magenta:#9602c7;--plum-deep:#481a54;--cream:#fefbff;--paper:#fff;
+    --graphite:#454245;--steel:#696969;--fog:#8e8e8e;--ash:#edeaed;
+    --disp:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+    --sans:"Inter",ui-sans-serif,system-ui,-apple-system,sans-serif;
+    --shadow-xl:0 0 32px rgba(0,0,0,.1);--shadow-lg:0 5px 20px rgba(0,0,0,.1);
+    --max:1200px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--sans);background:var(--cream);color:var(--midnight);
+    font-size:16px;line-height:1.43;letter-spacing:.07px;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--max);margin:0 auto;padding-left:24px;padding-right:24px}
+  h1,h2,h3,h4{margin:0;font-family:var(--disp);font-weight:700}
+  p{margin:0}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.057em;text-transform:uppercase;color:var(--fog)}
+  .pilltag{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:600;
+    background:var(--lavender);color:var(--midnight);border-radius:48px;padding:6px 16px}
+  .pilltag .dt{width:6px;height:6px;border-radius:50%;background:var(--iris)}
+  .pilltag b{background:var(--iris);color:#fff;border-radius:48px;padding:2px 10px;font-size:11px;letter-spacing:.04em}
+  .btn{display:inline-flex;align-items:center;justify-content:center;font-family:var(--sans);
+    font-size:15px;font-weight:600;letter-spacing:.012em;border-radius:4px;padding:15px 24px;border:1px solid transparent;cursor:pointer;transition:background .15s,color .15s}
+  .btn.fill{background:var(--aubergine);color:#fff}.btn.fill:hover{background:var(--plum-shadow)}
+  .btn.ghost{background:var(--paper);color:var(--iris);border-color:var(--iris)}
+  .btn.ghost:hover{background:var(--lavender)}
+  .btn.sm{font-size:14px;padding:10px 18px}
+  .btn.onlight{background:#fff;color:var(--midnight)}
+  .btn.ondark{background:#fff;color:var(--midnight)}.btn.ondark.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.4)}
+  section{padding:96px 0}
+  .center{text-align:center;max-width:720px;margin:0 auto}
+  .sechead{text-align:center;max-width:720px;margin:0 auto 56px}
+  .sechead .pilltag{margin-bottom:22px}
+  .sechead h2{font-size:50px;line-height:1.12;letter-spacing:-.05em;color:var(--midnight)}
+  .sechead p{margin-top:18px;font-size:18px;color:var(--steel);font-family:var(--sans);font-weight:400}
+
+  /* radial wash */
+  .wash{position:relative;overflow:hidden}
+  .wash::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(22vw 22vw at 10% 60%,rgba(214,125,254,.22),transparent 60%),
+      radial-gradient(22vw 22vw at 35% 75%,rgba(150,2,199,.16),transparent 60%),
+      radial-gradient(22vw 22vw at 68% 65%,rgba(255,120,170,.16),transparent 60%),
+      radial-gradient(22vw 22vw at 92% 70%,rgba(120,160,255,.16),transparent 60%);}
+  .wash>*{position:relative;z-index:1}
+
+  /* banner */
+  .banner{background:var(--lilac);text-align:center;font-size:14px;color:var(--midnight);padding:7px 24px}
+  .banner a{color:var(--iris);font-weight:600;text-decoration:underline}
+
+  /* nav */
+  .navin{max-width:var(--max);margin:0 auto;padding:16px 24px;display:flex;align-items:center;gap:24px}
+  .brand{font-family:var(--disp);font-size:23px;font-weight:700;letter-spacing:-.02em;display:flex;align-items:center;gap:9px}
+  .hash{display:inline-grid;grid-template-columns:repeat(2,8px);gap:3px}
+  .hash i{width:8px;height:8px;border-radius:2px}
+  .hash i:nth-child(1){background:#36c5f0}.hash i:nth-child(2){background:#2eb67d}
+  .hash i:nth-child(3){background:#ecb22e}.hash i:nth-child(4){background:var(--aubergine)}
+  .navmenu{display:flex;gap:26px;margin:0 auto;font-size:15px;color:var(--midnight)}
+  .navmenu a:hover{color:var(--iris)}
+  .navcta{display:flex;align-items:center;gap:12px}
+  .signin{font-size:15px;font-weight:500}
+
+  /* hero */
+  .hero{padding:80px 0 64px;text-align:center}
+  .hero h1{font-size:76px;line-height:1.06;letter-spacing:-.012em;max-width:980px;margin:24px auto 0;color:var(--midnight)}
+  .hero h1 .gr{background:linear-gradient(104deg,#e8973a 0%,#9602c7 60%,#d17dfe 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hero .lead{font-size:19px;color:var(--steel);max-width:620px;margin:24px auto 0;font-weight:400}
+  .hero .cta{display:flex;gap:14px;justify-content:center;margin-top:34px}
+
+  /* tab module */
+  .tabmod{max-width:1080px;margin:60px auto 0;background:#fff;border:1px solid var(--iris-edge);border-radius:16px;padding:12px;box-shadow:var(--shadow-xl)}
+  .tabs{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--ash);border-radius:12px;overflow:hidden;margin-bottom:12px}
+  .tabs button{border:0;background:none;padding:18px 20px;cursor:pointer;border-right:1px solid var(--ash);display:flex;flex-direction:column;gap:4px;text-align:left;font-family:var(--sans)}
+  .tabs button:last-child{border-right:0}
+  .tabs .tt{font-family:var(--disp);font-size:16px;font-weight:700;color:var(--steel);letter-spacing:-.01em}
+  .tabs .ts{font-size:12.5px;font-weight:400;color:var(--steel);opacity:.8;line-height:1.35}
+  .tabs button.on{background:var(--lavender)}
+  .tabs button.on .tt{color:var(--aubergine)}
+  .panel{position:relative;overflow:hidden;border-radius:12px;min-height:340px;display:flex;align-items:center;justify-content:center;padding:36px;transition:background .4s ease}
+  .panel.o{background:radial-gradient(120% 140% at 15% 10%,#d17dfe 0%,#9602c7 45%,#481a54 100%)}
+  .panel.b{background:radial-gradient(120% 140% at 85% 10%,#ff97c2 0%,#9602c7 50%,#481a54 100%)}
+  .panel.l{background:radial-gradient(120% 140% at 50% 0%,#36c5f0 0%,#730394 55%,#481a54 100%)}
+  .panel .mockw{background:#fff;border-radius:14px;box-shadow:0 30px 60px -30px rgba(0,0,0,.5);padding:20px;width:100%;max-width:480px}
+  .panel .h{display:flex;align-items:center;gap:7px;margin-bottom:14px}
+  .panel .h i{width:10px;height:10px;border-radius:50%;background:var(--ash)}
+  .panel .h i:nth-child(1){background:#ff5f57}.panel .h i:nth-child(2){background:#febc2e}.panel .h i:nth-child(3){background:#28c840}
+  .panel .h span{margin-left:8px;font-size:12px;color:var(--steel)}
+  .panel .row{display:flex;justify-content:space-between;font-size:14px;padding:11px 0;border-bottom:1px solid var(--ash)}
+  .panel .row:last-of-type{border:0}.panel .v{font-weight:600}
+  .panel .askbar{margin-top:8px;background:var(--aubergine);color:#fff;border-radius:10px;padding:13px 15px;font-size:13.5px}
+
+  /* trust + logo wall */
+  .trustrow{text-align:center;color:var(--steel);font-size:14px;margin:48px 0 0;letter-spacing:.01em}
+  .trustrow b{color:var(--midnight);font-weight:700}
+  .lwall{max-width:1080px;margin:24px auto 0;display:flex;flex-wrap:wrap;justify-content:center;gap:46px}
+  .lwall span{font-family:var(--disp);font-size:22px;font-weight:700;color:var(--steel);letter-spacing:-.02em;display:flex;align-items:center;gap:9px}
+  .lwall span .d{width:18px;height:18px;border-radius:5px;background:var(--steel)}
+
+  /* accountec quote */
+  .tquote{max-width:1080px;margin:36px auto 0;background:#fff;border:1px solid var(--iris-edge);border-radius:16px;padding:44px;box-shadow:var(--shadow-xl)}
+  .tquote .accw{font-family:var(--disp);font-weight:700;font-size:24px;color:var(--graphite);letter-spacing:-.01em;margin-bottom:26px}
+  .tquote .q{display:block;font-family:var(--disp);font-size:30px;line-height:1.32;letter-spacing:-.02em;font-weight:500;color:var(--steel)}
+  .tquote .q .hl{color:var(--midnight)}
+  .tquote .who{margin-top:24px;font-weight:600;font-size:17px;color:var(--midnight)}
+  .tquote .who span{color:var(--steel);font-weight:500}
+  .tquote .more{margin-top:24px}
+
+  /* wave roll */
+  .wave-top{--wf:50px;--L:1.26em;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;text-align:center}
+  .wave-h{font-family:var(--disp);font-weight:700;font-size:var(--wf);line-height:1.1;letter-spacing:-.04em}
+  .wave-roll{position:relative;font-family:var(--disp);font-weight:700;font-size:var(--wf);line-height:var(--L);letter-spacing:-.04em;height:calc(var(--L)*5);overflow:hidden;min-width:430px}
+  .wave-layer{position:absolute;left:0;top:0;right:0}
+  .wave-layer ul{list-style:none;margin:0;padding:0;animation:waveroll 16s cubic-bezier(.7,0,.3,1) infinite}
+  .wave-layer li{height:var(--L);line-height:var(--L);white-space:nowrap}
+  .wave-grey li{color:var(--iris-edge)}
+  .wave-active{clip-path:inset(calc(var(--L)*2) 0 calc(var(--L)*2) 0)}
+  .wave-active li{color:var(--aubergine)}
+  @keyframes waveroll{
+    0%,10.5%{transform:translateY(0)}14.3%,24.8%{transform:translateY(calc(var(--L)*-1))}
+    28.6%,39.1%{transform:translateY(calc(var(--L)*-2))}42.9%,53.4%{transform:translateY(calc(var(--L)*-3))}
+    57.2%,67.7%{transform:translateY(calc(var(--L)*-4))}71.5%,82%{transform:translateY(calc(var(--L)*-5))}
+    85.8%,96.3%{transform:translateY(calc(var(--L)*-6))}100%{transform:translateY(calc(var(--L)*-7))}}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:48px;margin-top:64px;text-align:center}
+  .stat .n{font-family:var(--disp);font-weight:700;font-size:64px;line-height:1;letter-spacing:-.03em;color:var(--plum-deep)}
+  .stat .n small{font-family:var(--sans);font-size:14px;font-weight:500;color:var(--steel)}
+  .stat .l{margin-top:12px;font-size:15px;color:var(--steel)}
+
+  /* produkten — numbered grid */
+  .agwrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+  .agrow{display:grid;gap:24px}
+  .agrow.two{grid-template-columns:1fr 1fr}
+  .agrow.four{grid-template-columns:repeat(4,1fr)}
+  .agrow.one{grid-template-columns:1fr}
+  .agc{background:#fff;border:1px solid var(--iris-edge);border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:8px}
+  .agc.big{min-height:300px}
+  .agnum{font-family:var(--disp);font-size:13px;font-weight:700;color:var(--iris);letter-spacing:.06em;text-transform:uppercase}
+  .agt{display:flex;flex-direction:column;gap:8px}
+  .agc h4{font-size:19px;font-weight:700;letter-spacing:-.01em}
+  .agc p{margin:0;font-size:14.5px;color:var(--graphite);line-height:1.55}
+  .phbox{margin-top:auto;padding-top:18px;width:100%}
+  .pmock{background:var(--cream);border:1px solid var(--ash);border-radius:12px;padding:18px;box-shadow:var(--shadow-lg)}
+  .pmock .prow{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .pmock .pav{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--violet),var(--aubergine));flex:0 0 40px}
+  .pmock b{font-size:14px}.pmock .psub{font-size:12px;color:var(--steel)}
+  .ptags{display:flex;flex-wrap:wrap;gap:7px}
+  .ptags span{font-size:11px;background:var(--lavender);border:1px solid var(--iris-edge);border-radius:48px;padding:4px 12px;color:var(--aubergine);font-weight:500}
+  .pbars{display:flex;align-items:flex-end;gap:8px;height:86px;margin-bottom:10px}
+  .pbars i{flex:1;border-radius:5px 5px 0 0;background:var(--violet)}
+  .agc.wide{background:radial-gradient(120% 160% at 10% 0%,#d17dfe 0%,#9602c7 50%,#481a54 100%);border:0;color:#fff}
+  .agc.wide h4{color:#fff}.agc.wide p{color:rgba(255,255,255,.92)}.agc.wide .agnum{color:#fff}
+
+  /* feature 3 (vatsson) */
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1080px;margin:0 auto}
+  .fcard{background:#fff;border:1px solid var(--iris-edge);border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:12px}
+  .fcard .ficon{width:44px;height:44px;border-radius:10px;background:var(--lavender);display:flex;align-items:center;justify-content:center}
+  .fcard .ficon svg{width:22px;height:22px;stroke:var(--iris);fill:none;stroke-width:1.8}
+  .fcard h4{font-size:20px;font-weight:700;letter-spacing:-.01em;margin-top:4px}
+  .fcard .fd{margin:0;color:var(--graphite);font-size:14.5px;line-height:1.55}
+  .fmock{margin-top:18px;border-radius:12px;padding:16px;background:radial-gradient(120% 160% at 80% 0%,#d17dfe 0%,#9602c7 60%,#481a54 100%)}
+  .fmock .mk{background:#fff;border-radius:10px;box-shadow:var(--shadow-lg);padding:16px;font-size:12.5px;color:var(--midnight)}
+  .fmock .mr{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-top:1px solid var(--ash)}
+  .fmock .mr:first-of-type{border-top:0}
+  .fmock .fi{width:14px;height:14px;border-radius:4px;background:var(--iris-edge);flex:0 0 14px;display:inline-block;margin-right:8px;vertical-align:middle}
+  .fmock .cite{display:inline-flex;align-items:center;gap:6px;background:var(--lavender);border:1px solid var(--iris-edge);border-radius:48px;padding:5px 12px;font-size:11px;font-weight:600;margin-top:10px;color:var(--aubergine)}
+
+  /* ai-agenter grid */
+  .agentwrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+  .agentrow{display:grid;gap:24px}
+  .agentrow.four{grid-template-columns:repeat(4,1fr)}
+  .agentrow.bottom{grid-template-columns:2fr 1fr 1fr}
+  .agcard{background:#fff;border:1px solid var(--iris-edge);border-radius:16px;padding:28px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-height:170px}
+  .agcard .ic{width:30px;height:30px;stroke:var(--iris);fill:none;stroke-width:1.5}
+  .agcard h4{font-size:17px;font-weight:700;margin:auto 0 0}
+  .agcard p{margin:0;font-size:14px;color:var(--steel);line-height:1.5}
+  .agcard.wide{background:radial-gradient(120% 160% at 10% 0%,#d17dfe 0%,#9602c7 55%,#481a54 100%);border:0;color:#fff}
+  .agcard.wide .ic{stroke:#fff}.agcard.wide h4{color:#fff}.agcard.wide p{color:rgba(255,255,255,.92)}
+
+  /* dark band */
+  .dark{background:var(--plum-deep);color:#fff;text-align:center;position:relative;overflow:hidden}
+  .dark .spark{position:absolute;color:rgba(255,255,255,.5);font-size:22px}
+  .dark h2{font-size:58px;line-height:1.1;letter-spacing:-.04em;max-width:880px;margin:0 auto}
+  .dark p{margin:22px auto 0;max-width:600px;font-size:18px;color:rgba(255,255,255,.82);font-weight:400}
+  .dark .cta{margin-top:34px;display:flex;gap:14px;justify-content:center}
+
+  /* bento */
+  .bento{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;grid-template-areas:"s1 s2 t1" "t2 t2 t1" "s3 t3 t3" "s4 t4 t4";max-width:1080px;margin:0 auto}
+  .bt{border-radius:16px;padding:30px;display:flex;flex-direction:column}
+  .bt.t1{grid-area:t1}.bt.t2{grid-area:t2}.bt.t3{grid-area:t3}.bt.t4{grid-area:t4}
+  .bt.s1{grid-area:s1}.bt.s2{grid-area:s2}.bt.s3{grid-area:s3}.bt.s4{grid-area:s4}
+  .bstat{justify-content:space-between;min-height:230px}
+  .bnum{font-family:var(--disp);font-weight:700;font-size:42px;line-height:1;letter-spacing:-.02em}
+  .bnum small{font-family:var(--sans);font-size:13px;font-weight:500;color:var(--graphite)}
+  .blbl{font-size:15px;color:var(--graphite);margin-top:8px}
+  .blogo{margin-top:auto;padding-top:26px;font-weight:700;font-size:18px;color:rgba(29,28,29,.4);font-family:var(--disp)}
+  .g-lav{background:var(--lavender)}.g-lilac{background:var(--lilac)}
+  .g-deep{background:var(--plum-deep);color:#fff}.g-deep .bnum{color:#fff}.g-deep .blbl{color:rgba(255,255,255,.8)}.g-deep .blogo{color:rgba(255,255,255,.45)}
+  .bquote{background:#fff;border:1px solid var(--iris-edge);justify-content:space-between}
+  .qt{font-size:18px;line-height:1.5;color:var(--graphite);margin:0 0 26px}
+  .bt.t1 .qt{font-size:22px;font-family:var(--disp);font-weight:700;line-height:1.3;letter-spacing:-.02em;color:var(--midnight)}
+  .bqf{display:flex;align-items:center;gap:12px}
+  .bqa{width:46px;height:46px;border-radius:10px;flex:0 0 auto;background:linear-gradient(135deg,var(--violet),var(--aubergine))}
+  .bqi{flex:1;line-height:1.3}.bqi strong{display:block;font-size:15px;font-weight:600}.bqi span{font-size:14px;color:var(--steel)}
+  .bqx{width:42px;height:42px;border-radius:8px;background:var(--midnight);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .bqx svg{width:18px;height:18px;fill:#fff}
+
+  /* välj väg routes */
+  .routes{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1080px;margin:0 auto}
+  .route{background:#fff;border:1px solid var(--iris-edge);border-radius:16px;padding:40px;display:flex;flex-direction:column;gap:6px;transition:background .15s,transform .15s}
+  .route:hover{background:var(--lavender);transform:translateY(-2px)}
+  .route .rk{font-size:12px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;color:var(--iris)}
+  .route h3{margin:6px 0 0;font-size:28px;letter-spacing:-.02em}
+  .route p{margin:8px 0 0;font-size:15px;line-height:1.55;color:var(--steel)}
+  .route .go{margin-top:16px;font-weight:600;font-size:15px;color:var(--aubergine)}
+
+  /* trygghet — dark band */
+  .secband{max-width:1080px;margin:0 auto;background:var(--plum-deep);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-xl)}
+  .secband .shead{padding:30px 36px;border-bottom:1px solid rgba(255,255,255,.1)}
+  .secband .seclbl{color:var(--violet);font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+  .secband .sechd{color:#fff;font-family:var(--disp);font-size:26px;font-weight:700;letter-spacing:-.02em;margin:10px 0 0}
+  .secgrid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .seccell{padding:32px;border-right:1px solid rgba(255,255,255,.1);min-height:240px;display:flex;flex-direction:column}
+  .secgrid .seccell:last-child{border-right:0}
+  .seccell h4{color:#fff;font-family:var(--disp);margin:0 0 10px;font-size:18px;font-weight:700}
+  .seccell p{color:rgba(255,255,255,.7);font-size:14px;line-height:1.55;margin:0}
+  .seccell .readp{margin-top:auto;padding-top:18px;color:var(--violet);font-size:13px;font-weight:600;letter-spacing:.03em}
+
+  /* faq */
+  .faqwrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start;max-width:1080px;margin:0 auto}
+  .faqL h2{font-size:50px;line-height:1.12;letter-spacing:-.05em;margin-top:20px}
+  .faqL p{margin-top:16px;color:var(--steel)}.faqL a{color:var(--iris);text-decoration:underline}
+  .fitem{border:1px solid var(--iris-edge);border-radius:16px;background:#fff;padding:0 26px;margin-bottom:14px}
+  .fitem .q{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 0;cursor:pointer;font-size:18px;font-weight:600}
+  .fitem .q i{font-style:normal;color:var(--iris);transition:transform .2s;font-size:18px}
+  .fitem.open .q i{transform:rotate(180deg)}
+  .fitem .a{max-height:0;overflow:hidden;color:var(--steel);font-size:16px;transition:max-height .25s,padding .25s}
+  .fitem.open .a{max-height:240px;padding:0 0 22px}
+
+  /* cta */
+  .ctaband{background:var(--plum-deep);color:#fff;border-radius:16px;text-align:center;padding:72px 40px;position:relative;overflow:hidden;max-width:1080px;margin:0 auto}
+  .ctaband h2{font-size:52px;line-height:1.1;letter-spacing:-.04em}
+  .ctaband p{margin:18px auto 0;max-width:520px;font-size:18px;color:rgba(255,255,255,.82);font-weight:400}
+  .ctaband .cta{margin-top:30px;display:flex;gap:14px;justify-content:center}
+
+  /* footer */
+  footer{border-top:1px solid var(--iris-edge);padding:64px 0 36px}
+  .foot{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px}
+  .foot .brand{font-size:22px;margin-bottom:12px}
+  .foot p{color:var(--steel);font-size:15px;max-width:260px}
+  .foot b{display:block;font-size:14px;font-weight:600;margin-bottom:12px;font-family:var(--sans)}
+  .foot a{display:block;color:var(--steel);font-size:15px;margin-bottom:9px}.foot a:hover{color:var(--iris)}
+  .legal{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:36px;padding-top:24px;border-top:1px solid var(--iris-edge);font-size:13px;color:var(--steel)}
+  .legal a{color:var(--steel)}.copy{margin-top:18px;font-size:13px;color:var(--fog)}
+
+  /* version switcher */
+  #vswitch{position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #ddd;border-radius:10px;padding:6px 8px;box-shadow:0 4px 16px rgba(0,0,0,.16);font-family:var(--sans)}
+  #vswitch .vskin{font-size:10.5px;font-weight:600;color:#999;letter-spacing:.04em;margin-right:2px}
+  #vswitch a{padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none}
+  #vswitch a.act{background:var(--aubergine);color:#fff}
+
+  @media(max-width:920px){
+    .navmenu{display:none}
+    .hero h1{font-size:46px}.sechead h2,.dark h2,.faqL h2,.ctaband h2{font-size:34px}
+    .tabs{grid-template-columns:1fr}.tabs button{border-right:0;border-bottom:1px solid var(--ash)}
+    .grid3,.routes{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr;gap:36px}
+    .agrow.two,.agrow.four,.agentrow.four,.agentrow.bottom{grid-template-columns:1fr}
+    .secgrid{grid-template-columns:1fr}.seccell{border-right:0;border-bottom:1px solid rgba(255,255,255,.1);min-height:0}
+    .bento{grid-template-columns:1fr;grid-template-areas:"s1" "s2" "t1" "t2" "s3" "t3" "s4" "t4"}
+    .faqwrap{grid-template-columns:1fr;gap:24px}.foot{grid-template-columns:1fr 1fr}
+    .tquote .q{font-size:22px}
+  }
+  @media(max-width:560px){.wave-top{--wf:34px}.stats{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="banner">Nytt: AI-agenter som bevakar likviditeten dygnet runt. <a href="#cta">Läs mer →</a></div>
+
+<nav>
+  <div class="navin">
+    <a class="brand" href="#top"><span class="hash"><i></i><i></i><i></i><i></i></span>SEVR Insights</a>
+    <div class="navmenu">
+      <a href="byra.html">För byrå</a><a href="foretag.html">För företag</a><a href="pris.html">Pris</a><a href="faq.html">Vanliga frågor</a><a href="kontakt.html">Kontakta oss</a>
+    </div>
+    <div class="navcta">
+      <a class="signin" href="#">Logga in</a>
+      <a class="btn ghost sm" href="#cta">Boka demo</a>
+      <a class="btn fill sm" href="#cta">Kom igång</a>
+    </div>
+  </div>
+</nav>
+
+<a id="top"></a>
+<!-- HERO -->
+<header class="hero wash">
+  <div class="wrap">
+    <span class="pilltag"><span class="dt"></span>En AI-kollega för ekonomer</span>
+    <h1>AI som gör det <span class="gr">tråkiga jobbet</span> i ekonomin</h1>
+    <p class="lead">SEVR Insights är AI-plattformen för ekonomer. För redovisningsbyråer som vill skala rådgivning – och för företag som vill förstå sin ekonomi och fatta bättre beslut.</p>
+    <div class="cta">
+      <a class="btn fill" href="#cta">Kom igång</a>
+      <a class="btn ghost" href="#produkten">Boka en demo</a>
+    </div>
+
+    <!-- TAB MODULE -->
+    <div class="tabmod">
+      <div class="tabs">
+        <button class="on" data-t="rapporter"><span class="tt">Rapportering &amp; analys</span><span class="ts">Period, månad, kvartal, bokslut – skalat till många.</span></button>
+        <button data-t="vatsson"><span class="tt">Vatsson</span><span class="ts">Svar med källa, kopplat till kundens egen data.</span></button>
+        <button data-t="agenter"><span class="tt">AI-agenter</span><span class="ts">Avstämningar, konteringar, bokslut – i dina processer.</span></button>
+      </div>
+      <div class="panel o" id="panel"></div>
+    </div>
+
+    <!-- TRUST + LOGO WALL -->
+    <p class="trustrow">Redan betrott av <b>1&nbsp;000+</b> byråer och företag i Norden</p>
+    <div class="lwall">
+      <span><span class="d"></span>Nexora</span>
+      <span><span class="d"></span>Fluxenta</span>
+      <span><span class="d"></span>Veltriq</span>
+      <span><span class="d"></span>Fyntra</span>
+      <span><span class="d"></span>Trivexa</span>
+    </div>
+
+    <!-- ACCOUNTEC QUOTE -->
+    <div class="tquote">
+      <div class="accw">Accountec</div>
+      <div class="q"><span class="hl">”Vi testade flera AI-plattformar — SEVR stack ut direkt.”</span> Fart, träffsäkerhet och svensk regelkontext är oslagbart. Vi har minskat det manuella arbetet med över 60 % och hunnit med betydligt mer rådgivning.</div>
+      <div class="who">Peter · <span>VD, Accountec</span></div>
+      <div class="more"><a class="btn ghost sm" href="#">Läs berättelsen →</a></div>
+    </div>
+  </div>
+</header>
+
+<!-- SÄG ADJÖ + STATS -->
+<section class="wrap">
+  <div class="wave-top">
+    <h2 class="wave-h">Säg adjö till</h2>
+    <div class="wave-roll">
+      <div class="wave-layer wave-grey"><ul>
+        <li>manuella rapporter</li><li>sena bokslut</li><li>letande i system</li><li>”jag återkommer”</li><li>bortslösad tid</li><li>krångliga frågor</li><li>dubbelarbete</li>
+        <li>manuella rapporter</li><li>sena bokslut</li><li>letande i system</li><li>”jag återkommer”</li><li>bortslösad tid</li>
+      </ul></div>
+      <div class="wave-layer wave-active"><ul>
+        <li>manuella rapporter</li><li>sena bokslut</li><li>letande i system</li><li>”jag återkommer”</li><li>bortslösad tid</li><li>krångliga frågor</li><li>dubbelarbete</li>
+        <li>manuella rapporter</li><li>sena bokslut</li><li>letande i system</li><li>”jag återkommer”</li><li>bortslösad tid</li>
+      </ul></div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="n">90&nbsp;% <small>(est.)</small></div><div class="l">Mindre tid på manuella rapporter</div></div>
+    <div class="stat"><div class="n">2X <small>(est.)</small></div><div class="l">Snabbare svar till kund</div></div>
+    <div class="stat"><div class="n">1&nbsp;000+</div><div class="l">Byråer &amp; företag i Norden</div></div>
+    <div class="stat"><div class="n">24/7</div><div class="l">En AI-kollega som aldrig sover</div></div>
+  </div>
+</section>
+
+<!-- PRODUKTEN -->
+<section class="wrap wash" id="produkten">
+  <div class="sechead">
+    <span class="pilltag"><span class="dt"></span>Produkten</span>
+    <h2>En AI-motor, sex rådgivningsprodukter</h2>
+    <p>Varje leverans blir ett debiterbart rådgivningstillfälle — inte bara en sifferleverans.</p>
+  </div>
+  <div class="agwrap">
+    <div class="agrow two">
+      <div class="agc big"><span class="agnum">01</span><div class="agt"><h4>Personalisering — låt AI lära känna dina kunder</h4><p>Personalisera varje kund så AI får rätt förutsättningar för träffsäker analys — bransch, intäkter, kostnader och fokus just nu.</p></div><div class="phbox"><div class="pmock"><div class="prow"><span class="pav"></span><div><b>Nordstjärnan AB</b><div class="psub">Bygg · 12 anställda</div></div></div><div class="ptags"><span>Bransch</span><span>Intäkter</span><span>Kostnader</span><span>Fokus: tillväxt</span></div></div></div></div>
+      <div class="agc big"><span class="agnum">02</span><div class="agt"><h4>Planering, budget och prognos</h4><p>SEVR analyserar historiska trender och föreslår en realistisk budget. Kvartalsprognoser genereras automatiskt — du justerar när du vill.</p></div><div class="phbox"><div class="pmock"><div class="pbars"><i style="height:42%"></i><i style="height:60%"></i><i style="height:52%"></i><i style="height:78%"></i><i style="height:66%"></i><i style="height:92%"></i></div><div class="psub">Budget &amp; prognos · Q3</div></div></div></div>
+    </div>
+    <div class="agrow four">
+      <div class="agc"><span class="agnum">03</span><div class="agt"><h4>Generera rapporter på sekunder</h4><p>Det som tog timmar går nu på sekunder. Rapporter med omsättningsgrafer, nyckeltal och rekommendationer.</p></div></div>
+      <div class="agc"><span class="agnum">04</span><div class="agt"><h4>Resultatrapport med kommentar</h4><p>En strukturerad kommentar: intäktsanalys, periodiseringsvarningar, bruttomarginal, kostnadsdrivare och konkreta rekommendationer.</p></div></div>
+      <div class="agc"><span class="agnum">05</span><div class="agt"><h4>Likviditet och kassaflöde i realtid</h4><p>Se likviditeten i realtid — balans, kassaflöde, in- och utbetalningar. Skapa scenarier och jämför med kommande förpliktelser.</p></div></div>
+      <div class="agc"><span class="agnum">06</span><div class="agt"><h4>Reskontra — hjälp kunden få betalt snabbare</h4><p>Full koll på kundfordringar. AI:n kopplar reskontra till likviditeten — råd, inte bara siffror.</p></div></div>
+    </div>
+    <div class="agrow one">
+      <div class="agc wide"><span class="agnum">Fråga AI</span><div class="agt"><h4>Fråga AI — din digitala CFO</h4><p>Få svar på nolltid. AI identifierar rotorsaken, strukturerar svaret, ger följdfrågor och levererar ett underlag du kan presentera direkt.</p></div><div class="phbox"><div class="pmock" style="background:#fff"><svg viewBox="0 0 620 170" preserveAspectRatio="none" style="width:100%;height:150px;display:block"><path d="M0,150 C120,120 200,130 300,90 C400,55 500,72 620,30 L620,170 L0,170 Z" fill="rgba(209,125,254,.18)"/><path d="M0,150 C120,120 200,130 300,90 C400,55 500,72 620,30" fill="none" stroke="#9602c7" stroke-width="3"/><path d="M0,160 C120,150 220,153 320,126 C430,96 520,112 620,76" fill="none" stroke="#d17dfe" stroke-width="3"/><path d="M0,166 C140,160 240,162 340,148 C440,134 540,140 620,116" fill="none" stroke="#611f69" stroke-width="3"/></svg><div class="psub" style="margin-top:8px">Likviditet &amp; nyckeltal · realtid</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- VATSSON -->
+<section class="wrap">
+  <div class="sechead">
+    <span class="pilltag"><span class="dt"></span>Vatsson · AI-agent</span>
+    <h2>Få svaret på sekunder — med källa och sidnummer</h2>
+    <p>Moms, skatt och K3 besvarat med källa, sidnummer och bolagets egna siffror.</p>
+  </div>
+  <div class="grid3">
+    <div class="fcard">
+      <div class="ficon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+      <h4>Heltäckande webbsökning</h4>
+      <p class="fd">Vårt sökindex är live och täcker hela redovisningsbranschen. Vi söker i realtid hos myndigheter och Skatteverket.</p>
+      <div class="fmock"><div class="mk">
+        <div class="mr"><span><b>Live-källor</b></span><span style="color:#1FA971;font-size:11px">● live</span></div>
+        <div class="mr"><span>Skatteverket.se</span><span>✓</span></div>
+        <div class="mr"><span>BFN · K3</span><span>✓</span></div>
+        <div class="mr"><span>Bokföringslagen</span><span>✓</span></div>
+      </div></div>
+    </div>
+    <div class="fcard">
+      <div class="ficon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></div>
+      <h4>Arbeta med din egen data</h4>
+      <p class="fd">Ladda upp egna dokument, rutiner och kundhistorik. Vatsson indexerar din privata kunskapsbas tillsammans med publika regelverk.</p>
+      <div class="fmock"><div class="mk">
+        <div class="mr"><span><b>Din kunskapsbas</b></span></div>
+        <div class="mr"><span><i class="fi"></i>Kundhistorik.pdf</span><span>✓</span></div>
+        <div class="mr"><span><i class="fi"></i>Byråns rutiner.docx</span><span>✓</span></div>
+        <div class="mr"><span style="color:var(--aubergine);font-weight:600">+ Ladda upp dokument</span></div>
+      </div></div>
+    </div>
+    <div class="fcard">
+      <div class="ficon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 1.7 2.9-.2 1 2.8 2.3 1.8-.9 2.8.9 2.8-2.3 1.8-1 2.8-2.9-.2L12 22l-2.4-1.7-2.9.2-1-2.8L3.4 16l.9-2.8-.9-2.8 2.3-1.8 1-2.8 2.9.2z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <h4>Verifierbar träffsäkerhet</h4>
+      <p class="fd">Varje svar kommer med direkta källhänvisningar. Klicka och verifiera. Ingen black-box-AI.</p>
+      <div class="fmock"><div class="mk">
+        <div style="line-height:1.5">”Moms vid EU-försäljning redovisas enligt huvudregeln…”</div>
+        <span class="cite">Källa: ML 5 kap. · sid 142 ↗</span>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- AI-AGENTER -->
+<section class="wrap wash" id="agenter">
+  <div class="sechead">
+    <span class="pilltag"><span class="dt"></span>AI-agenter</span>
+    <h2>Varje redovisningsprocess får sin AI-specialist</h2>
+    <p>Det agentiska lagret — specialiserade agenter för varje process, dirigerade av en orchestrator.</p>
+  </div>
+  <div class="agentwrap">
+    <div class="agentrow four">
+      <div class="agcard"><svg class="ic" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"/><circle cx="12" cy="4.4" r="1.3"/><path d="M12 5.7V8"/><circle cx="9.2" cy="13" r="1.1"/><circle cx="14.8" cy="13" r="1.1"/><path d="M3 12.5V15M21 12.5V15"/></svg><div class="agt"><h4>Lön</h4><p>Arbetsgivaravgifter, förmåner</p></div></div>
+      <div class="agcard"><svg class="ic" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><div class="agt"><h4>Bokslut</h4><p>K2/K3, avstämning</p></div></div>
+      <div class="agcard"><svg class="ic" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg><div class="agt"><h4>Compliance</h4><p>Deadlines, BFL, ÅRL</p></div></div>
+      <div class="agcard"><svg class="ic" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 8l8 8M16 8l-8 8"/></svg><div class="agt"><h4>Skatt</h4><p>INK2, underskottsavdrag</p></div></div>
+    </div>
+    <div class="agentrow bottom">
+      <div class="agcard wide"><svg class="ic" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 7l3 3M17 7l-3 3M7 17l3-3M17 17l-3-3"/></svg><div class="agt"><h4>Orchestrator</h4><p>Dirigerar alla agenter — fördelar arbetet och håller ihop processen.</p></div></div>
+      <div class="agcard"><svg class="ic" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18M3 12h18M3 17h18"/></svg><div class="agt"><h4>Konsolidering</h4><p>Koncern, eliminering</p></div></div>
+      <div class="agcard"><svg class="ic" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><div class="agt"><h4>Moms</h4><p>Sverige &amp; EU, OSS/IOSS</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DARK BAND -->
+<section class="dark">
+  <span class="spark" style="top:30%;left:12%">✦</span><span class="spark" style="top:60%;left:8%;font-size:14px">✦</span><span class="spark" style="top:22%;left:22%;font-size:12px">✦</span>
+  <div class="wrap">
+    <h2>Mer rådgivning. Mindre tråkigt.</h2>
+    <p>SEVR tar det repetitiva — bokslut, rapporter, avstämningar — så att ert omdöme får ta plats där det räknas.</p>
+    <div class="cta"><a class="btn ondark" href="#cta">Boka en demo</a><a class="btn ondark ghost" href="#produkten">Se hur det fungerar</a></div>
+  </div>
+</section>
+
+<!-- KUNDER BENTO -->
+<section class="wrap wash">
+  <div class="sechead">
+    <span class="pilltag"><span class="dt"></span>Kunder</span>
+    <h2>Det säger byråer och företag om SEVR</h2>
+  </div>
+  <div class="bento">
+    <div class="bt s1 bstat g-lav"><div><div class="bnum">60&nbsp;% <small>(est.)</small></div><div class="blbl">Mindre manuellt arbete</div></div><div class="blogo">BYRÅ&nbsp;AB</div></div>
+    <div class="bt s2 bstat g-lilac"><div><div class="bnum">2X <small>(est.)</small></div><div class="blbl">Fler rådgivningstimmar</div></div><div class="blogo">REVISIO</div></div>
+    <div class="bt t1 bquote">
+      <p class="qt">”Vi gick från sifferleverans till rådgivning — utan att anställa fler. SEVR gör det tråkiga, vi gör bedömningen.”</p>
+      <div class="bqf"><span class="bqa"></span><div class="bqi"><strong>SEVR-kund</strong><span>VD, redovisningsbyrå · placeholder</span></div><a class="bqx" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.6c0-1.57-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V23h-4V8z"/></svg></a></div>
+    </div>
+    <div class="bt t2 bquote">
+      <p class="qt">”Likviditetssvackan syns innan den slår till. Vi hör av oss till kunden innan det blir ett problem — det är där förtroendet byggs.”</p>
+      <div class="bqf"><span class="bqa"></span><div class="bqi"><strong>SEVR-kund</strong><span>Rådgivningsansvarig · placeholder</span></div><a class="bqx" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.6c0-1.57-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V23h-4V8z"/></svg></a></div>
+    </div>
+    <div class="bt s3 bstat g-deep"><div><div class="bnum">30&nbsp;sek</div><div class="blbl">VD-rapport — förr en halv dag</div></div><div class="blogo">EKONOMI+</div></div>
+    <div class="bt t3 bquote">
+      <p class="qt">”Äntligen svenska svar med källa. Vi litar på siffran direkt och slipper dubbelkolla i tre system.”</p>
+      <div class="bqf"><span class="bqa"></span><div class="bqi"><strong>SEVR-kund</strong><span>Byråägare · placeholder</span></div><a class="bqx" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.6c0-1.57-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V23h-4V8z"/></svg></a></div>
+    </div>
+    <div class="bt s4 bstat g-lav"><div><div class="bnum">+40&nbsp;% <small>(est.)</small></div><div class="blbl">Fler kunder per ekonom</div></div><div class="blogo">NORD&nbsp;BYRÅ</div></div>
+    <div class="bt t4 bquote">
+      <p class="qt">”Vi förstår vår ekonomi i klartext nu. Inga fler ’jag återkommer’ — svaret finns direkt.”</p>
+      <div class="bqf"><span class="bqa"></span><div class="bqi"><strong>SEVR-kund</strong><span>Ekonomichef, företag · placeholder</span></div><a class="bqx" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.6c0-1.57-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V23h-4V8z"/></svg></a></div>
+    </div>
+  </div>
+</section>
+
+<!-- VÄLJ VÄG -->
+<section class="wrap">
+  <div class="sechead">
+    <span class="pilltag"><span class="dt"></span>Välj väg</span>
+    <h2>Vad är du ute efter?</h2>
+  </div>
+  <div class="routes">
+    <a class="route" href="byra.html"><span class="rk">För byråer</span><h3>Skala rådgivning</h3><p>Frigör hundratals timmar per kund och år. Gör rådgivning till norm — och en ny intäktsmodell.</p><span class="go">Till byråsidan →</span></a>
+    <a class="route" href="foretag.html"><span class="rk">För företag</span><h3>En digital CFO</h3><p>Förstå er ekonomi i klartext och fatta bättre beslut — utan att anställa en controller.</p><span class="go">Till företagssidan →</span></a>
+  </div>
+</section>
+
+<!-- TRYGGHET -->
+<section class="wrap">
+  <div class="secband">
+    <div class="shead"><span class="seclbl">+ Trygghet</span><h3 class="sechd">Tryggt för er. Tryggt för kunden.</h3></div>
+    <div class="secgrid">
+      <div class="seccell"><h4>GDPR</h4><p>Vårt team sitter i Sverige och vi arbetar enligt GDPR – Europas strängaste dataskydd.</p></div>
+      <div class="seccell"><h4>Ingen modellträning</h4><p>Er och kundens data används aldrig för att träna språkmodeller.</p></div>
+      <div class="seccell"><h4>Integritet</h4><p>Hur vi samlar in, använder och skyddar data – i klartext.</p><a class="readp" href="integritetspolicy.html">Läs policy →</a></div>
+      <div class="seccell"><h4>Personuppgiftsbiträdesavtal</h4><p>Vårt åtagande att skydda er information – tydligt reglerat i ett DPA.</p><a class="readp" href="dpa.html">Läs policy →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="wrap" id="faq">
+  <div class="faqwrap">
+    <div class="faqL">
+      <span class="pilltag"><span class="dt"></span>FAQ</span>
+      <h2>Vanliga frågor</h2>
+      <p>Hittar du inte svaret? <a href="#cta">Hör av dig</a> så hjälper vi dig.</p>
+    </div>
+    <div class="faqR">
+      <div class="fitem open"><div class="q">Ersätter AI:n konsulten?<i>⌄</i></div><div class="a">Nej. AI gör analysen, du gör bedömningen. Human in the loop, hela vägen — ditt omdöme går inte att automatisera.</div></div>
+      <div class="fitem"><div class="q">Vilka ekonomisystem stöds?<i>⌄</i></div><div class="a">Fortnox via API. Övriga system via SIE-filimport.</div></div>
+      <div class="fitem"><div class="q">Är datan säker?<i>⌄</i></div><div class="a">GDPR-säkert. Er data tränar aldrig någon annans AI-modell.</div></div>
+      <div class="fitem"><div class="q">Vad är AI-credits?<i>⌄</i></div><div class="a">Krediter som driver AI-funktionerna och delas av hela byrån. 30 dagars villkor.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="wrap" id="cta">
+  <div class="ctaband">
+    <h2>AI gör 80&nbsp;%.<br>Ditt omdöme gör resten.</h2>
+    <p>Se hur SEVR jämnar ut arbetsbördan och höjer marginalen.</p>
+    <div class="cta"><a class="btn ondark" href="#">Boka en 30-minuters demo</a><a class="btn ondark ghost" href="#produkten">Se produkten</a></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="wrap">
+  <div class="foot">
+    <div><div class="brand" style="font-family:var(--disp);display:flex;align-items:center;gap:9px"><span class="hash"><i></i><i></i><i></i><i></i></span>SEVR Insights</div><p>AI som gör det tråkiga jobbet i ekonomin — för byråer och företag i Norden.</p></div>
+    <div><b>Produkt</b><a href="#produkten">Produkten</a><a href="#agenter">AI-agenter</a><a href="faq.html">Vanliga frågor</a></div>
+    <div><b>Företag</b><a href="byra.html">För byrå</a><a href="kontakt.html">Kontakta oss</a><a href="#">Karriär</a></div>
+    <div><b>Trygghet</b><a href="integritetspolicy.html">GDPR-säkert</a><a href="dpa.html">Ingen modellträning</a><a href="#">Svar med källa</a></div>
+  </div>
+  <div class="legal">
+    <a href="villkor.html">Licensavtal &amp; allmänna användarvillkor</a>
+    <a href="integritetspolicy.html">Integritetspolicy</a>
+    <a href="cookiepolicy.html">Cookiepolicy</a>
+    <a href="dpa.html">Personuppgiftsbiträdesavtal</a>
+  </div>
+  <p class="copy">© 2026 SEVR Insights. Prototyp v5.2 · Slack-skin</p>
+</footer>
+
+<!-- VERSION SWITCHER -->
+<div id="vswitch" style="position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:flex-end;align-items:center;max-width:300px;gap:4px;background:#fff;border:1px solid #ddd;border-radius:10px;padding:6px;box-shadow:0 3px 12px rgba(0,0,0,.14);font-family:-apple-system,system-ui,sans-serif">
+<a href="version-0/index.html" title="V0 — startpunkt" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none;display:inline-flex;align-items:center;gap:5px">V0<span style="width:6px;height:6px;border-radius:50%;background:#F2901F;display:inline-block"></span></a>
+<a href="v1.html" title="V1" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V1</a>
+<a href="v2.html" title="V2" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V2</a>
+<a href="v3.html" title="V3 — Hormozi" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V3</a>
+<a href="v4.html" title="V4" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V4</a>
+<a href="index.html" title="V5 — startsida" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5</a>
+<a href="v5.1.html" title="Gleap" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.1</a>
+<a href="v5.2.html" title="Slack" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.2</a>
+<a href="v5.3.html" title="Apollo" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.3</a>
+<a href="v5.4.html" title="Vanta" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.4</a>
+<a href="v5.5.html" title="Maze" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.5</a>
+<a href="v5.6.html" title="Huddle" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.6</a>
+<a href="v5.7.html" title="Awesomic" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.7</a>
+</div>
+
+<script>
+var TAB={
+ rapporter:{grad:'o',mock:'<div class="mockw"><div class="h"><i></i><i></i><i></i><span>SEVR · rapport</span></div><div class="row"><span>Omsättning</span><span class="v">4,82 Mkr</span></div><div class="row"><span>Bruttovinst</span><span class="v">38,4 %</span></div><div class="row"><span>EBITDA</span><span class="v">612 tkr</span></div><div class="askbar">VD-rapport genererad på 30 sekunder</div></div>'},
+ vatsson:{grad:'b',mock:'<div class="mockw"><div class="h"><i></i><i></i><i></i><span>SEVR · Vatsson</span></div><div class="row"><span>Fråga</span><span class="v">”Vad säger K3?”</span></div><div class="row"><span>Svar</span><span class="v">Med källa</span></div><div class="row"><span>Källa</span><span class="v">K3, kap. 35</span></div><div class="askbar">Svar du kan stå för</div></div>'},
+ agenter:{grad:'l',mock:'<div class="mockw"><div class="h"><i></i><i></i><i></i><span>SEVR · agenter</span></div><div class="row"><span>Avstämning</span><span class="v">Klar ✓</span></div><div class="row"><span>Kontering</span><span class="v">142 förslag</span></div><div class="row"><span>Bokslut</span><span class="v">Pågår…</span></div><div class="askbar">Agenterna gör grovjobbet</div></div>'}
+};
+var panel=document.getElementById('panel');
+function setTab(k){var d=TAB[k];panel.className='panel '+d.grad;panel.innerHTML=d.mock;}
+document.querySelectorAll('.tabs button').forEach(function(b){b.onclick=function(){document.querySelectorAll('.tabs button').forEach(function(x){x.classList.remove('on');});b.classList.add('on');setTab(b.dataset.t);};});
+setTab('rapporter');
+document.querySelectorAll('.fitem .q').forEach(function(q){q.onclick=function(){q.parentElement.classList.toggle('open');};});
+</script>
+</body>
+</html>
