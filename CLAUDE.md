@@ -28,6 +28,7 @@ En statisk prototyp-sajt för **SEVR Insights** — en AI-plattform för ekonome
 | `v1.html, v2.html, v3.html, v4.html` | Äldre versioner V1–V4 (v3 = Hormozi-säljsajt). |
 | `version-0/index.html` | V0 — tidig rå version (referens). |
 | `prototyp-*.html`, `salj-sajt.html` | Redirect-stubbar från de gamla filnamnen → de nya. Rör ej. |
+| `sektioner.html` | Arbets-/referenssida ("Sektionsgalleri") — alla sektioner blockvis med ref-ID (S1…), källtaggar och status. INTE länkad publikt (nås bara via direkt URL). Bygger på `sektionsbank.md`. |
 | `byra.html`, `foretag.html`, `pris.html`, `faq.html`, `kontakt.html` | Undersidor byggda på V5:s formspråk. |
 | `villkor.html`, `integritetspolicy.html`, `cookiepolicy.html`, `dpa.html` | Juridiska sidor — **platshållartext**, ej färdig juridik. |
 | `VERSIONER.md` | Designlogg: varför V0→V5 + skin-beskrivningar. Läs för kontext. |

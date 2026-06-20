@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEVR — Sektionsgalleri</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#FFFBF5;--surface:#fff;--ink:#210D02;--muted:#6E6356;--line:#ECE3D4;--line-2:#DFD3BF;--yellow:#FCD519;--terra:#B5541E;--radius:10px}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .c{max-width:1180px;margin:0 auto;padding:0 40px}
+  serif,h1,h2,h3.serif{font-family:"Instrument Serif",Georgia,serif}
+
+  /* Topp */
+  header{padding:64px 0 0}
+  .eyebrow{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--terra);font-weight:600}
+  h1{font-family:"Instrument Serif",Georgia,serif;font-size:58px;line-height:1.02;letter-spacing:-.01em;font-weight:400;margin:14px 0 0}
+  .lede{font-size:18px;color:var(--muted);max-width:680px;margin:18px 0 0;line-height:1.5}
+  .lede code{background:#F3EEE4;border-radius:6px;padding:2px 7px;font-size:14px;font-weight:600;color:var(--ink)}
+
+  /* Legend */
+  .legend{display:flex;flex-wrap:wrap;gap:26px;margin:34px 0 0;padding:24px 26px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+  .legend .col{display:flex;flex-direction:column;gap:9px;min-width:230px}
+  .legend .lh{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
+  .legend .li{display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--ink)}
+
+  /* Badges & chips */
+  .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 11px;font-size:12px;font-weight:600;line-height:1;white-space:nowrap}
+  .b-use{background:#E4F4EA;color:#1A6E3C;border:1px solid #BfE5CC}
+  .b-sub{background:#EAF0FF;color:#28509C;border:1px solid #C9D7FA}
+  .b-dyn{background:#F6E9DC;color:#9A5417;border:1px solid #EBD2B6}
+  .b-off{background:#F1ECE3;color:#6E6356;border:1px solid var(--line-2)}
+  .chip{display:inline-flex;align-items:center;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;letter-spacing:.02em;background:#F3EEE4;color:#7A6E5C}
+  .chip.acc{background:#FBE9D7;color:#9A5417}
+  .chip.fig{background:#EDE7FA;color:#5A3FA0}
+  .chip.webb{background:#E4F0FB;color:#2A6093}
+  .chip.v3{background:#E6F2E9;color:#2A6B42}
+  .chip.taxxa{background:#FBE6E0;color:#A24330}
+  .chip.lynai{background:#EEEAE2;color:#6E6356}
+
+  /* Grupper */
+  .group{margin:56px 0 0}
+  .group-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:28px}
+  .group-head .gn{font-family:"Inter";font-size:13px;font-weight:700;color:var(--terra);letter-spacing:.04em}
+  .group-head h2{font-family:"Instrument Serif",Georgia,serif;font-size:34px;font-weight:400;letter-spacing:-.01em;margin:0}
+  .group-head .gc{margin-left:auto;font-size:13px;color:var(--muted)}
+
+  /* Sektionskort */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  .card{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:24px;display:flex;flex-direction:column;gap:0}
+  .card.wide{grid-column:1 / -1}
+  .card-top{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap}
+  .refid{font-family:"Inter";font-size:30px;font-weight:700;letter-spacing:-.03em;color:var(--ink);line-height:.9;flex:0 0 auto}
+  .refid small{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:0}
+  .meta{display:flex;flex-direction:column;gap:8px;flex:1;min-width:160px}
+  .chips{display:flex;flex-wrap:wrap;gap:5px}
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto;justify-content:flex-end}
+  .ctitle{font-family:"Instrument Serif",Georgia,serif;font-size:24px;font-weight:400;letter-spacing:-.005em;line-height:1.12;margin:18px 0 0}
+  .purpose{font-size:14.5px;color:var(--ink);margin:8px 0 0;line-height:1.5}
+  .purpose b{font-weight:600}
+  .content{font-size:13.5px;color:var(--muted);margin:10px 0 0;line-height:1.55}
+  .content ul{margin:8px 0 0;padding-left:18px}
+  .content li{margin:3px 0}
+  .content .ex{font-style:italic;color:#5c5346}
+
+  /* Visuell platshållare */
+  .ph{margin-top:18px;border-radius:12px;min-height:120px;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center;font-size:12px;font-weight:600;letter-spacing:.04em;color:rgba(255,255,255,.92);text-shadow:0 1px 2px rgba(0,0,0,.2);position:relative;overflow:hidden}
+  .ph .pt{position:relative;z-index:1;max-width:300px;line-height:1.4}
+  .ph.grad{background:linear-gradient(135deg,#C49A2B,#F2901F 30%,#ED8A6E 55%,#A6AEF0 82%,#CBD7FB)}
+  .ph.grad::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.34) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.34) 1px,transparent 1px);background-size:36px 36px}
+  .ph.dark{background:#16100A;color:rgba(255,255,255,.86);text-shadow:none}
+  .ph.dark::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(242,144,31,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(242,144,31,.18) 1px,transparent 1px);background-size:36px 36px}
+  .ph.light{background:#fff;border:1px solid var(--line);color:var(--muted);text-shadow:none}
+  .ph.light::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(33,13,2,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(33,13,2,.05) 1px,transparent 1px);background-size:32px 32px}
+  .ph .tag{display:inline-block;background:rgba(255,255,255,.22);border-radius:999px;padding:3px 10px;font-size:10.5px;margin-top:8px}
+  .phnote{font-size:11.5px;color:var(--muted);margin-top:7px;font-style:italic}
+
+  /* 8 funktioner grid */
+  .feat-note{font-size:13px;color:var(--muted);background:#F8F2E8;border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:0 0 22px;line-height:1.5}
+  .f8{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .f8 .fc{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:18px;display:flex;flex-direction:column;gap:6px}
+  .f8 .fi{width:34px;height:34px;color:var(--terra);margin-bottom:4px}
+  .f8 .fi svg{width:30px;height:30px}
+  .f8 h4{margin:0;font-size:15px;font-weight:600;letter-spacing:-.01em}
+  .f8 .fs{margin:0;font-size:12.5px;color:var(--muted);line-height:1.45}
+  .f8 .fph{margin-top:auto;height:48px;border-radius:8px;background:linear-gradient(135deg,#C49A2B,#F2901F 30%,#ED8A6E 55%,#A6AEF0 82%,#CBD7FB);opacity:.9}
+
+  footer{margin:72px 0 0;border-top:1px solid var(--line);padding:28px 0 60px;font-size:12.5px;color:var(--muted)}
+
+  @media(max-width:900px){.c{padding:0 22px}h1{font-size:40px}.grid{grid-template-columns:1fr}.f8{grid-template-columns:1fr 1fr}.badges{margin-left:0;justify-content:flex-start}}
+</style>
+</head>
+<body>
+
+<header><div class="c">
+  <span class="eyebrow">SEVR Insights · arbetsmaterial</span>
+  <h1>Sektionsgalleri</h1>
+  <p class="lede">Referensbibliotek över alla sektioner från våra källor. Påverkar inte sidorna. Hänvisa med ID, t.ex. <code>använd S5</code> eller <code>skriv om S13</code>.</p>
+
+  <div class="legend">
+    <div class="col">
+      <span class="lh">Statusbadges</span>
+      <span class="li"><span class="badge b-use">✅ Används på V5</span></span>
+      <span class="li"><span class="badge b-sub">↗ Finns på undersida</span> byrå / företag</span>
+      <span class="li"><span class="badge b-dyn">🔁 Dynamisk</span> rörligt inslag</span>
+      <span class="li"><span class="badge b-off">⚪ Oanvänd</span> ej på V5 ännu</span>
+    </div>
+    <div class="col">
+      <span class="lh">Källtaggar</span>
+      <span class="li"><span class="chip acc">[ACC]</span> accountec.se / ai-co-worker</span>
+      <span class="li"><span class="chip fig">[FIG]</span> Figma SEVR Flow</span>
+      <span class="li"><span class="chip webb">[WEBB]</span> SEVR_Insights_Webbcopy</span>
+      <span class="li"><span class="chip v3">[V3]</span> Accountec-Reports V3</span>
+      <span class="li"><span class="chip taxxa">[TAXXA]</span> taxxa.ai (Vatsson)</span>
+      <span class="li"><span class="chip lynai">[lynai]</span> köpt Framer-tema</span>
+    </div>
+  </div>
+</div></header>
+
+<main class="c">
+
+<!-- GRUPP 1 -->
+<section class="group">
+  <div class="group-head"><span class="gn">Grupp 1</span><h2>Öppning &amp; förtroende</h2><span class="gc">5 sektioner</span></div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S1 <small>Hero</small></div>
+        <div class="badges"><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="chips"><span class="chip acc">[ACC]</span><span class="chip fig">[FIG]</span><span class="chip webb">[WEBB]</span></div>
+      <div class="ctitle">Hero — ett löfte, en handling</div>
+      <p class="purpose"><b>Syfte:</b> förstaintryck, ett löfte + CTA.</p>
+      <p class="content">"Säg hej till din nya kollega" / "Generera smarta och insiktsfulla rapporter med stöd av AI" / "AI som gör grovjobbet i ekonomin". På V5: "AI som gör det <em>tråkiga</em> jobbet i ekonomin" med roterande ord (se S-DYN-1). Primär CTA "Boka demo" + "Se hur det fungerar".</p>
+      <div class="ph grad"><div class="pt">🖼 Produktskärm — AI-kollega-vy<span class="tag">CTA: Boka demo</span></div></div>
+      <div class="phnote">Presentation: produktskärm + primär/sekundär CTA.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S2 <small>Trygghetsrad</small></div>
+        <div class="badges"><span class="badge b-off">⚪ Oanvänd</span></div>
+      </div>
+      <div class="chips"><span class="chip webb">[WEBB]</span></div>
+      <div class="ctitle">Trygghetsrad — tre snabba bevis</div>
+      <p class="purpose"><b>Syfte:</b> 3 snabba bevis direkt under hero.</p>
+      <p class="content">Byggd för byrå · GDPR – ingen modellträning · Data till analys på sekunder.</p>
+      <div class="ph light"><div class="pt">3 ikoner + kort text<br>● ─── ● ─── ●</div></div>
+      <div class="phnote">Presentation: 3 ikoner + kort text. (V5 har trygghet via S7, inte denna smala rad.)</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S19 <small>Social proof</small></div>
+        <div class="badges"><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="chips"><span class="chip acc">[ACC]</span></div>
+      <div class="ctitle">Logotyp- / social proof-rad</div>
+      <p class="purpose"><b>Syfte:</b> socialt bevis genom kända namn.</p>
+      <p class="content">På V5 som logotypvägg under hero ("Redan betrott av 1 000+ byråer och företag i Norden"). Platshållarnamn tills egna logotyper finns.</p>
+      <div class="ph light"><div class="pt">🖼 4–8 logotyper<br>▢ ▢ ▢ ▢ ▢</div></div>
+      <div class="phnote">Presentation: 4–8 logotyper. Platshållare tills egna.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S22 <small>Kundcitat</small></div>
+        <div class="badges"><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="chips"><span class="chip lynai">[lynai]</span></div>
+      <div class="ctitle">Kundcitat — lynai two-tone</div>
+      <p class="purpose"><b>Syfte:</b> ett starkt citat som ankare.</p>
+      <p class="content">Logotyp + stort citat där <b>första meningen är mörk</b> och resten dämpad, + "Läs berättelsen →". På V5 sitter det direkt under logotypväggen. Platshållartext tills egen SEVR-referens finns.</p>
+      <div class="ph light"><div class="pt">▢ logo<br>"Första meningen mörk." resten dämpad<br>Läs berättelsen →</div></div>
+      <div class="phnote">Presentation: logo + two-tone citat. Implementerad i V5.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S10 <small>Omdömen</small></div>
+        <div class="badges"><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="chips"><span class="chip acc">[ACC]</span></div>
+      <div class="ctitle">Omdömen — riktiga röster</div>
+      <p class="purpose"><b>Syfte:</b> trovärdighet via kundröster. <b>FLAGGA:</b> byt till egna SEVR-referenser.</p>
+      <p class="content">ACC har 9 namngivna omdömen — vi får INTE använda deras kunders citat som våra. På V5 renderat som bento (omdömen + resultatrutor med kundlogga), alla märkta "placeholder".</p>
+      <div class="ph light"><div class="pt">Bento: citat + sifferrutor<br>▢ "..." ▢ tal ▢ "..."</div></div>
+      <div class="phnote">Presentation: 2–3 kort (citat/namn/roll/byrå) — platshållare tills egna.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GRUPP 2 -->
+<section class="group">
+  <div class="group-head"><span class="gn">Grupp 2</span><h2>Produkt &amp; funktioner</h2><span class="gc">6 block</span></div>
+  <div class="grid">
+
+    <div class="card wide">
+      <div class="card-top">
+        <div class="refid">PM <small>Produktmodell — 3 områden</small></div>
+        <div class="badges"><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="chips"><span class="chip acc">[ACC]</span><span class="chip fig">[FIG]</span><span class="chip taxxa">[TAXXA]</span><span class="chip v3">[V3]</span></div>
+      <div class="ctitle">En AI-motor, tre produktområden</div>
+      <p class="purpose"><b>Syfte:</b> ge ordning åt funktionssoppan — produkten = tre områden (A Planering/rapportering/analys · B Vatsson regelverket · C Agenter).</p>
+      <p class="content">På startsidan visas områdena stort; underfunktioner antyds (tabs/ikoner/lista). På V5 ligger en tab-växlare i hero: <b>Rapportering &amp; analys · Vatsson · AI-agenter</b>, vardera med 3–5 underfunktioner + chat/sifferskärm-mock.</p>
+      <div class="ph grad"><div class="pt">Tab-växlare: Planering · Vatsson · Agenter — varje tab = ikoner + kort text + mockup</div></div>
+      <div class="phnote">Presentation: stor sektion per område, ev. 3 tabs. Detaljer bor på Funktioner-sida.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S3 <small>Översikt</small></div>
+        <div class="badges"><span class="badge b-off">⚪ Oanvänd</span></div>
+      </div>
+      <div class="chips"><span class="chip acc">[ACC]</span></div>
+      <div class="ctitle">Vad assistenten hjälper dig med</div>
+      <p class="purpose"><b>Syfte:</b> ram för funktionerna.</p>
+      <p class="content">"Detta kan din AI-kollega hjälpa dig med" → Personalisering (AI lär känna kunderna), Budgetplaneraren.</p>
+      <div class="ph light"><div class="pt">🖼 + 2 textblock</div></div>
+      <div class="phnote">Presentation: bild + 2 textblock. (På V5 ersatt av Produkten-griden direkt.)</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S5 <small>Fråga AI</small></div>
+        <div class="badges"><span class="badge b-sub">↗ Finns på undersida</span></div>
+      </div>
+      <div class="chips"><span class="chip acc">[ACC]</span></div>
+      <div class="ctitle">Fråga AI — exempel från verkligheten ⭐</div>
+      <p class="purpose"><b>Syfte:</b> visa värdet konkret med riktiga fråga→svar. Stark, unik.</p>
+      <p class="content">3 flikar — Planering · Likviditetsanalys · Reskontraanalys — med exempel:
+        <ul>
+          <li class="ex">"Kvartalsprognos Q2, hur tänka kring intäkter för break-even?"</li>
+          <li class="ex">"Har vi råd med inköp 200 000 kr och ändå moms + lön?"</li>
+          <li class="ex">"Likviditetsproblem trots hög omsättning – varför?" (0–7 / 8–30 / 31–90 dagars plan)</li>
+        </ul>
+        Används på undersidorna (start/byrå/företag enl. DEL 7). På V5-start finns "Fråga AI" som funktionskort, men inte denna chat-mockup-sektion.</p>
+      <div class="ph light"><div class="pt">💬 Chat-mockup med tabs<br>fråga ▸ svar ▸ underlag</div></div>
+      <div class="phnote">Presentation: chat-mockup med tabs, chattbubblor. Mycket övertygande — behåll.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">VAT <small>Vatsson</small></div>
+        <div class="badges"><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="chips"><span class="chip taxxa">[TAXXA]</span></div>
+      <div class="ctitle">Vatsson — regelverket (Område B)</div>
+      <p class="purpose"><b>Syfte:</b> svar på moms/skatt/K3 med källa och sidnummer, kopplat till bolagets data.</p>
+      <p class="content">Underfunktioner (DEL 4): live-sökning i regelverket · egna dokument ("Forge") · källhänvisning/verifierbarhet · flerstegs-resonemang. På V5 som 3 funktionskort under rubriken "Få svaret på sekunder — med källa och sidnummer".</p>
+      <div class="ph grad"><div class="pt">3–4 underfunktioner som ikoner + källa-mock<span class="tag">Källa: ML 5 kap · sid 142 ↗</span></div></div>
+      <div class="phnote">Presentation: en stor Vatsson-sektion, ikoner/små kort. Inte utblåst.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">AG <small>Agenter</small></div>
+        <div class="badges"><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="chips"><span class="chip acc">[ACC]</span></div>
+      <div class="ctitle">AI-agenter (Område C)</div>
+      <p class="purpose"><b>Syfte:</b> visa det agentiska lagret — en specialist per process.</p>
+      <p class="content">Avstämning · kontering · bokslut · moms · lön (m.fl.), dirigerade av en orchestrator. På V5 ikon-rutnät: Lön, Bokslut, Compliance, Skatt, Orchestrator (bred), Konsolidering, Moms. Status bekräftas med Bartek innan publikt.</p>
+      <div class="ph dark"><div class="pt">Ikon + en rad per agent · orchestrator dirigerar</div></div>
+      <div class="phnote">Presentation: ikoner + kort text, ev. "kommer snart"-märkning.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S20 <small>Integration</small></div>
+        <div class="badges"><span class="badge b-sub">↗ Finns på undersida</span></div>
+      </div>
+      <div class="chips"><span class="chip v3">[V3]</span></div>
+      <div class="ctitle">Integration / teknik</div>
+      <p class="purpose"><b>Syfte:</b> visa hur det kopplas ihop tekniskt.</p>
+      <p class="content">Fortnox-synk, SIE-import, kontomappning med AI, rapportdelning.</p>
+      <div class="ph light"><div class="pt">Ikon-rad + 🖼<br>Fortnox · SIE · mappning</div></div>
+      <div class="phnote">Presentation: ikon-rad + bild. (Antyds i V5:s FAQ/footer, ej egen sektion.)</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SPECIALBLOCK: 8 funktioner -->
+<section class="group">
+  <div class="group-head"><span class="gn">S4 · DEL 3</span><h2>De 8 produktfunktionerna</h2><span class="badge b-use" style="margin-left:auto">✅ Används på V5</span></div>
+  <div class="chips" style="margin-bottom:16px"><span class="chip acc">[ACC]</span><span class="chip fig">[FIG]</span></div>
+  <p class="feat-note">Accountec visar 9 funktioner via ikon; vi har 8, illustrerade. Här som lista: rubrik + underrubrik + ikon/placeholder. På startsidan visas 3 utvalda + "se alla"; full 4×2-grid på Funktioner-sidan.</p>
+  <div class="f8">
+
+    <div class="fc">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg></div>
+      <h4>1 · Personalisering</h4>
+      <p class="fs">AI lär känna varje kund (bransch, intäkter, kostnader, fokus) för träffsäker analys.</p>
+      <div class="fph"></div>
+    </div>
+
+    <div class="fc">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><path d="M4 19h16"/><rect x="7" y="11" width="3" height="6"/><rect x="12" y="7" width="3" height="10"/><rect x="17" y="13" width="3" height="4"/></svg></div>
+      <h4>2 · Planering, budget &amp; prognos</h4>
+      <p class="fs">Svara på några frågor; AI föreslår realistisk budget och kvartalsprognos. Du justerar.</p>
+      <div class="fph"></div>
+    </div>
+
+    <div class="fc">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+      <h4>3 · Rapporter på sekunder</h4>
+      <p class="fs">Omsättningsgrafer, nyckeltal, rekommendationer. Granska, justera, publicera.</p>
+      <div class="fph"></div>
+    </div>
+
+    <div class="fc">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+      <h4>4 · Resultatrapport med kommentar</h4>
+      <p class="fs">Strukturerad kommentar: intäktsanalys, periodiseringsvarningar, marginal, kostnadsdrivare, råd.</p>
+      <div class="fph"></div>
+    </div>
+
+    <div class="fc">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2 6 4-14 2 8h6"/></svg></div>
+      <h4>5 · Likviditet &amp; kassaflöde</h4>
+      <p class="fs">IB/UB, kassaflöde per period, scenarier ("vad händer om vi köper X?") i realtid.</p>
+      <div class="fph"></div>
+    </div>
+
+    <div class="fc">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg></div>
+      <h4>6 · Reskontra</h4>
+      <p class="fs">Förfallna fakturor, sena betalare, bundet kapital; kopplar reskontra till likviditet.</p>
+      <div class="fph"></div>
+    </div>
+
+    <div class="fc">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg></div>
+      <h4>7 · Fråga AI — din digitala CFO</h4>
+      <p class="fs">Svar på nolltid, hittar rotorsak, ger följdfrågor + underlag att visa kunden.</p>
+      <div class="fph"></div>
+    </div>
+
+    <div class="fc">
+      <div class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V5z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <h4>8 · Tryggt &amp; GDPR-säkert</h4>
+      <p class="fs">Data delas aldrig och tränar ingen annans modell.</p>
+      <div class="fph"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GRUPP 3 -->
+<section class="group">
+  <div class="group-head"><span class="gn">Grupp 3</span><h2>Värde &amp; berättelse</h2><span class="gc">8 sektioner</span></div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S6 <small>Du är experten</small></div>
+        <div class="badges"><span class="badge b-sub">↗ Finns på undersida</span></div>
+      </div>
+      <div class="chips"><span class="chip acc">[ACC]</span><span class="chip fig">[FIG]</span></div>
+      <div class="ctitle">Du är experten. AI gör analysen. ⭐</div>
+      <p class="purpose"><b>Syfte:</b> human-in-the-loop-budskapet, du behåller omdömet.</p>
+      <p class="content">"Istället för att lägga timmar på en resultaträkning får du ett genomarbetat underlag på sekunder… Du behåller omdömet och kundrelationen." Bullets: smartare/snabbare rapportering · insikter i realtid · kunden får snabbare svar. (V5 bär budskapet i hero/CTA, inte som egen videosektion.)</p>
+      <div class="ph grad"><div class="pt">🎬 Video + text + 3 bullets</div></div>
+      <div class="phnote">Presentation: text + video (ACC har faktisk video här).</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S13 <small>Två vardagar</small></div>
+        <div class="badges"><span class="badge b-sub">↗ Finns på undersida</span></div>
+      </div>
+      <div class="chips"><span class="chip v3">[V3]</span></div>
+      <div class="ctitle">Två vardagar (konsult &amp; entreprenör) ⭐</div>
+      <p class="purpose"><b>Syfte:</b> unik berättelse — bron mellan två världar.</p>
+      <p class="content">Konsultens vardag vs entreprenörens vardag → "bron mellan två världar". Hör hemma på byråsidan (DEL 7), inte V5-start.</p>
+      <div class="ph light"><div class="pt">Två spalter + 🖼 per spalt<br>konsult ┃ entreprenör</div></div>
+      <div class="phnote">Presentation: två spalter + bild per spalt.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S14 <small>Före &amp; efter</small></div>
+        <div class="badges"><span class="badge b-sub">↗ Finns på undersida</span></div>
+      </div>
+      <div class="chips"><span class="chip v3">[V3]</span></div>
+      <div class="ctitle">Före och efter</div>
+      <p class="purpose"><b>Syfte:</b> visa skillnaden konkret.</p>
+      <p class="content">Jämförelsetabell byråns vardag före vs med SEVR (tid, kvalitet, rådgivning). Hör hemma på byråsidan.</p>
+      <div class="ph light"><div class="pt">2-kolumns tabell / split<br>Före │ Med SEVR</div></div>
+      <div class="phnote">Presentation: 2-kolumns tabell eller slider/split.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S15 <small>Tre krafter</small></div>
+        <div class="badges"><span class="badge b-sub">↗ Finns på undersida</span></div>
+      </div>
+      <div class="chips"><span class="chip v3">[V3]</span></div>
+      <div class="ctitle">Tre krafter som pressar byrån</div>
+      <p class="purpose"><b>Syfte:</b> spegla problemet före lösningen.</p>
+      <p class="content">Fastprispress · Kompetensbrist · Kunderna vill ha mer. Hör hemma på byråsidan (öppnar problemet).</p>
+      <div class="ph light"><div class="pt">3 kort<br>▢ ▢ ▢</div></div>
+      <div class="phnote">Presentation: 3 kort.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S16 <small>Affärsvärde</small></div>
+        <div class="badges"><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="chips"><span class="chip v3">[V3]</span></div>
+      <div class="ctitle">Affärsvärdet för byrån</div>
+      <p class="purpose"><b>Syfte:</b> visa intäktslogiken med hårda tal.</p>
+      <p class="content">Sälj mer rådgivning · öka intäkt per kund · skala utan rekrytering. Siffror "(est.)": ~2× kunder/konsult, +100 % merförsäljning/kund. På V5 syns dessa tal i wave-stats och kund-benton (alla märkta est.).</p>
+      <div class="ph grad"><div class="pt">3 stora tal med "(est.)"<br>2× · +100 % · skala</div></div>
+      <div class="phnote">Presentation: 3 stora tal, märk "(est.)" och använd varsamt.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S18 <small>Värdet: tid</small></div>
+        <div class="badges"><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="chips"><span class="chip v3">[V3]</span><span class="chip webb">[WEBB]</span></div>
+      <div class="ctitle">Värdet: tid</div>
+      <p class="purpose"><b>Syfte:</b> sätt en stor, känslomässig siffra på sparad tid.</p>
+      <p class="content">"Veckor tillbaka. Per kund. Varje år." Manuellt rapportarbete = hundratals timmar/kund/år → bråkdel. På V5 i "Säg adjö"-statsraden (90 % mindre tid, 24/7 m.m.) med count-up.</p>
+      <div class="ph grad"><div class="pt">Stor siffra + text<br>90 % mindre manuell tid</div></div>
+      <div class="phnote">Presentation: stor siffra + text.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S7 <small>Trygghet</small></div>
+        <div class="badges"><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="chips"><span class="chip acc">[ACC]</span><span class="chip fig">[FIG]</span><span class="chip v3">[V3]</span></div>
+      <div class="ctitle">Tryggt och GDPR-säkert ⭐</div>
+      <p class="purpose"><b>Syfte:</b> differentiator — data är trygg.</p>
+      <p class="content">"Idag kopierar konsulter in resultat-/balansräkningar och SIE-filer i ChatGPT/Copilot – utan avtal… Med SEVR är datan trygg och tränar aldrig någon annans modell." På V5 mörkt "Trygghet"-band: GDPR · ingen modellträning · integritet · DPA.</p>
+      <div class="ph dark"><div class="pt">✦ GDPR-/säkerhetsmärke som ankare</div></div>
+      <div class="phnote">Presentation: GDPR-/säkerhetsmärke som ankare.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S8 <small>Så fungerar det</small></div>
+        <div class="badges"><span class="badge b-sub">↗ Finns på undersida</span></div>
+      </div>
+      <div class="chips"><span class="chip fig">[FIG]</span><span class="chip v3">[V3]</span></div>
+      <div class="ctitle">Så här fungerar det</div>
+      <p class="purpose"><b>Syfte:</b> visa processen i ordning.</p>
+      <p class="content">Synka med Fortnox → datan analyseras → AI genererar insikter → du validerar → beslutsstöd. Hör hemma på byrå/företag-sidorna.</p>
+      <div class="ph light"><div class="pt">Horisontellt numrerat flöde med pilar<br>① → ② → ③ → ④ → ⑤</div></div>
+      <div class="phnote">Presentation: horisontellt numrerat flöde med pilar.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GRUPP 4 -->
+<section class="group">
+  <div class="group-head"><span class="gn">Grupp 4</span><h2>Navigering &amp; avslut</h2><span class="gc">6 sektioner</span></div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S17 <small>Spårval</small></div>
+        <div class="badges"><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="chips"><span class="chip webb">[WEBB]</span></div>
+      <div class="ctitle">Spårval (byrå / företag)</div>
+      <p class="purpose"><b>Syfte:</b> dela trafiken i två målgrupper.</p>
+      <p class="content">"Vad är du ute efter?" → två kort. På V5: "Skala rådgivning" (byrå) och "En digital CFO" (företag) som klickbara rutor.</p>
+      <div class="ph light"><div class="pt">2 klickbara kort<br>Byrå ┃ Företag</div></div>
+      <div class="phnote">Presentation: 2 klickbara kort.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S21 <small>Kunskapsartikel</small></div>
+        <div class="badges"><span class="badge b-off">⚪ Oanvänd</span></div>
+      </div>
+      <div class="chips"><span class="chip lynai">[lynai]</span><span class="chip acc">[ACC]</span></div>
+      <div class="ctitle">Kunskapsartikel (feature-large)</div>
+      <p class="purpose"><b>Syfte:</b> bygga auktoritet via rådgivningsvinkel.</p>
+      <p class="content">Omskriven Accountec-bloggartikel ("Hjälp dina kunder att fatta rätt ekonomiska beslut – AI som strategisk hävstång"), de-Accountec'ad. Layout: lynai "feature-large" — text vänster (kicker + rubrik + brödtext + ghost-knapp), bild höger. Implementerad i prototyp-v5.html men inte i nuvarande V5-start.</p>
+      <div class="ph light"><div class="pt">Text vänster ┃ 🖼 höger</div></div>
+      <div class="phnote">Presentation: feature-large, text + bild. (Se även S9, samma artikelkälla.)</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S9 <small>Rådgivningsvinkel</small></div>
+        <div class="badges"><span class="badge b-off">⚪ Oanvänd</span></div>
+      </div>
+      <div class="chips"><span class="chip acc">[ACC]</span></div>
+      <div class="ctitle">Kunskapsartikel / rådgivningsvinkel</div>
+      <p class="purpose"><b>Syfte:</b> bygga auktoritet, koppla till blogg.</p>
+      <p class="content">"Hjälp dina kunder att fatta rätt ekonomiska beslut – AI som strategisk hävstång." Många konkurser bottnar i magkänslobeslut; du sitter på datan men tiden saknas. Varna för likviditetssvacka 3 mån innan. (Källtvilling till S21.)</p>
+      <div class="ph light"><div class="pt">🖼 + länk till artikel/blogg</div></div>
+      <div class="phnote">Presentation: bild + länk till artikel/blogg.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S11 <small>FAQ</small></div>
+        <div class="badges"><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="chips"><span class="chip acc">[ACC]</span><span class="chip v3">[V3]</span></div>
+      <div class="ctitle">Vanliga frågor (FAQ)</div>
+      <p class="purpose"><b>Syfte:</b> avväpna invändningar.</p>
+      <p class="content">Ersätter AI:n mitt arbete? (Nej – din digitala kollega; du bedömer) · GDPR? · Vilka system? (Fortnox API, SIE) · Hur snabbt igång? · Behöver jag installera något? På V5 accordion med 4 frågor + AI-credits.</p>
+      <div class="ph light"><div class="pt">Accordion<br>▾ Fråga 1 · ▸ Fråga 2 · ▸ Fråga 3</div></div>
+      <div class="phnote">Presentation: accordion.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">S12 <small>Avslutande CTA</small></div>
+        <div class="badges"><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="chips"><span class="chip acc">[ACC]</span><span class="chip fig">[FIG]</span></div>
+      <div class="ctitle">Avslutande CTA</div>
+      <p class="purpose"><b>Syfte:</b> sista uppmaningen.</p>
+      <p class="content">"Prova SEVR gratis i 14 dagar. Boka en kostnadsfri demo." / "AI gör 80 %. Ditt omdöme gör resten." På V5 gradient-band: "AI gör 80 %. Ditt omdöme gör resten." + "Boka en 30-minuters demo".</p>
+      <div class="ph grad"><div class="pt">Färgat band + en knapp<span class="tag">Boka demo</span></div></div>
+      <div class="phnote">Presentation: mörkt/färgat band + en knapp.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">PRIS <small>Pris</small></div>
+        <div class="badges"><span class="badge b-sub">↗ Finns på undersida</span></div>
+      </div>
+      <div class="chips"><span class="chip webb">[WEBB]</span></div>
+      <div class="ctitle">Pris (pricing)</div>
+      <p class="purpose"><b>Syfte:</b> visa modellen tydligt.</p>
+      <p class="content">Byrå 19 kr/kund + credits · företag från 799 kr/mån. Ligger på pris-/undersidorna, inte V5-start. (Bronze/Silver/Gold är frysta.)</p>
+      <div class="ph light"><div class="pt">1–3 paket-kort + ev. credit-tillägg</div></div>
+      <div class="phnote">Presentation: paket/rader (namn, pris, ingår, CTA).</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GRUPP 5: DYNAMISKA -->
+<section class="group">
+  <div class="group-head"><span class="gn">Grupp 5</span><h2>Dynamiska element</h2><span class="gc">4 inslag · alla på V5</span></div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">D1 <small>Roterande hero-ord</small></div>
+        <div class="badges"><span class="badge b-dyn">🔁 Dynamisk</span><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="ctitle">Roterande hero-ord (#rotw)</div>
+      <p class="content">I H1 byts ett ord ut var ~2,4 sek med mjuk fade: <em>tråkiga → grova → tunga → sega → repetitiva → manuella</em>. Ordet är kursivt och terrakottafärgat med gradientunderstrykning. "AI som gör det [ord] jobbet i ekonomin."</p>
+      <div class="ph light"><div class="pt">AI som gör det <span style="color:var(--terra);font-style:italic;font-weight:600">tråkiga</span> jobbet…<br><span style="font-size:10px;opacity:.7">↻ grova · tunga · sega · repetitiva · manuella</span></div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">D2 <small>"Säg adjö"-lista</small></div>
+        <div class="badges"><span class="badge b-dyn">🔁 Dynamisk</span><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="ctitle">Rullande "Säg adjö"-lista (wave-roll)</div>
+      <p class="content">Bredvid "Säg adjö till" rullar en lista vertikalt (16 s loop, cubic-bezier): manuella rapporter · sena bokslut · letande i system · "jag återkommer" · bortslösad tid · krångliga frågor · dubbelarbete. Mittraden är skarp, raderna över/under nedtonade.</p>
+      <div class="ph light"><div class="pt">Säg adjö till ↑<span style="color:var(--terra);font-weight:600">manuella rapporter</span>↓<br><span style="font-size:10px;opacity:.6">sena bokslut · letande i system…</span></div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">D3 <small>Count-up</small></div>
+        <div class="badges"><span class="badge b-dyn">🔁 Dynamisk</span><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="ctitle">Count-up på siffrorna (.cup)</div>
+      <p class="content">När statsraden scrollas in räknas talen upp från 0 (1,5 s, ease-out) via IntersectionObserver: 90 % (est.) · 2X (est.) · 1 000+ · 24/7. Tusentalsavgränsare i sv-SE. Triggas en gång.</p>
+      <div class="ph light"><div class="pt"><span style="font-size:22px;font-weight:700;color:var(--ink)">0 → 90 %</span><br><span style="font-size:10px;opacity:.7">räknas upp vid scroll-in</span></div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="refid">D4 <small>Fade-in</small></div>
+        <div class="badges"><span class="badge b-dyn">🔁 Dynamisk</span><span class="badge b-use">✅ Används på V5</span></div>
+      </div>
+      <div class="ctitle">Mjuk fade-in på sektioner (.reveal)</div>
+      <p class="content">Varje &lt;section&gt; får klassen <code style="font-size:11px;background:#F3EEE4;padding:1px 5px;border-radius:4px">reveal</code> och tonas in (opacity + translateY) när den når viewporten. Respekterar <code style="font-size:11px;background:#F3EEE4;padding:1px 5px;border-radius:4px">prefers-reduced-motion</code> — då visas allt direkt.</p>
+      <div class="ph light"><div class="pt">▢ ↑ tonas in vid scroll<br><span style="font-size:10px;opacity:.7">opacity 0→1 · translateY 20px→0</span></div></div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer><div class="c">
+  Arbetssida — Sektionsgalleri. Källor: sektionsbank.md (S1–S22) + index.html (V5). Inga riktiga bilder; platshållare antyder presentationen. Påverkar inte de publika sidorna.
+</div></footer>
+
+</body>
+</html>
