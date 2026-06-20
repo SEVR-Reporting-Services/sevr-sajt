@@ -641,12 +641,12 @@
 
 <!-- VERSION SWITCHER -->
 <div id="vswitch" style="position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:flex-end;align-items:center;max-width:300px;gap:4px;background:#fff;border:1px solid #ddd;border-radius:10px;padding:6px;box-shadow:0 3px 12px rgba(0,0,0,.14);font-family:-apple-system,system-ui,sans-serif">
-<a href="version-0/index.html" title="V0 — startpunkt" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none;display:inline-flex;align-items:center;gap:5px">V0<span style="width:6px;height:6px;border-radius:50%;background:#F2901F;display:inline-block"></span></a>
+<a href="version-0/index.html" title="V0 — startpunkt" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V0</a>
 <a href="v1.html" title="V1" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V1</a>
 <a href="v2.html" title="V2" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V2</a>
 <a href="v3.html" title="V3 — Hormozi" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V3</a>
 <a href="v4.html" title="V4" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V4</a>
-<a href="index.html" title="V5 — startsida" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5</a>
+<a href="index.html" title="V5 — huvudversion (favorit)" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:700;color:#1a1a1a;text-decoration:none">V5&nbsp;<span style="font-size:9px;font-weight:600;color:#C77A2E">favorit</span></a>
 <a href="v5.1.html" title="Gleap" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.1</a>
 <a href="v5.2.html" title="Slack" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.2</a>
 <a href="v5.3.html" title="Apollo" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.3</a>
@@ -655,6 +655,7 @@
 <a href="v5.6.html" title="Huddle" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.6</a>
 <a href="v5.7.html" title="Awesomic" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.7</a>
 </div>
+<script>(function(){var b=document.getElementById('vswitch');if(!b)return;function n(p){return p.replace(/index\.html$/,'');}var cur=n(location.pathname);b.querySelectorAll('a').forEach(function(a){if(n(a.pathname)===cur){a.style.color='#1a1a1a';var d=document.createElement('span');d.style.cssText='width:6px;height:6px;border-radius:50%;background:#F2901F;display:inline-block;margin-left:5px;flex:0 0 auto';a.appendChild(d);}});})();</script>
 
 <script>
 var TAB={

@@ -282,14 +282,22 @@
 @media(max-width:980px){.hsplit{grid-template-columns:1fr}.hsplit .hleft{padding:16px 0 40px}.hvis{min-height:320px;border-left:0}.hsplit h1{font-size:38px}.agrow.three{grid-template-columns:1fr}.psplit{grid-template-columns:1fr}.pvis{min-height:300px;border-right:0;border-bottom:1px solid var(--line)}.pright{padding:28px}.pgrid{grid-template-columns:1fr}.pgrid .agc,.pmid{grid-column:1!important;grid-row:auto!important;border-right:0!important;border-bottom:1px solid var(--line)}.pmid{min-height:240px}.tline{grid-template-columns:1fr;gap:0}.tstep{padding:0 0 26px}.tstep::after{display:none}.vstats{grid-template-columns:1fr}.vstat{border-right:0;border-bottom:1px solid var(--line)}.vsplit{grid-template-columns:1fr}.vimg{border-left:0;border-top:1px solid var(--line);min-height:240px}.vleft{padding:28px}.penterprise{grid-template-columns:1fr}}
 </style>
 
-<div id="vswitch" style="position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;gap:3px;background:#fff;border:1px solid #ddd;border-radius:9px;padding:4px;box-shadow:0 3px 12px rgba(0,0,0,.14);font-family:-apple-system,sans-serif">
-<a href="version-0/index.html" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V0</a>
-<a href="index.html" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V1</a>
-<a href="prototyp-v2.html" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V2</a>
-<a href="salj-sajt.html" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V3</a>
-<a href="prototyp-v4.html" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#666;text-decoration:none">V4</a>
-<a href="prototyp-v5.html" style="padding:6px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#fff;background:#1a1a1a;text-decoration:none">V5</a>
+<div id="vswitch" style="position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:flex-end;align-items:center;max-width:300px;gap:4px;background:#fff;border:1px solid #ddd;border-radius:10px;padding:6px;box-shadow:0 3px 12px rgba(0,0,0,.14);font-family:-apple-system,system-ui,sans-serif">
+<a href="version-0/index.html" title="V0 — startpunkt" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V0</a>
+<a href="v1.html" title="V1" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V1</a>
+<a href="v2.html" title="V2" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V2</a>
+<a href="v3.html" title="V3 — Hormozi" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V3</a>
+<a href="v4.html" title="V4" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V4</a>
+<a href="index.html" title="V5 — huvudversion (favorit)" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:700;color:#1a1a1a;text-decoration:none">V5&nbsp;<span style="font-size:9px;font-weight:600;color:#C77A2E">favorit</span></a>
+<a href="v5.1.html" title="Gleap" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.1</a>
+<a href="v5.2.html" title="Slack" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.2</a>
+<a href="v5.3.html" title="Apollo" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.3</a>
+<a href="v5.4.html" title="Vanta" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.4</a>
+<a href="v5.5.html" title="Maze" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.5</a>
+<a href="v5.6.html" title="Huddle" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.6</a>
+<a href="v5.7.html" title="Awesomic" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.7</a>
 </div>
+<script>(function(){var b=document.getElementById('vswitch');if(!b)return;function n(p){return p.replace(/index\.html$/,'');}var cur=n(location.pathname);b.querySelectorAll('a').forEach(function(a){if(n(a.pathname)===cur){a.style.color='#1a1a1a';var d=document.createElement('span');d.style.cssText='width:6px;height:6px;border-radius:50%;background:#F2901F;display:inline-block;margin-left:5px;flex:0 0 auto';a.appendChild(d);}});})();</script>
 
 <header><div class="c nav">
   <a href="prototyp-v5.html"><img src="logo.svg" alt="SEVR Insights" style="height:28px;width:auto;display:block"></a>
@@ -456,7 +464,6 @@
 </div></footer>
 
 <script>
-document.querySelectorAll('#vswitch a').forEach(function(a){if(a.getAttribute('href')===(location.pathname.split('/').pop()||'index.html')){a.style.background='#1a1a1a';a.style.color='#fff';}});
 document.querySelectorAll('.acch').forEach(function(b){b.onclick=function(){var it=b.parentElement;var open=it.classList.contains('open');it.closest('.acc').querySelectorAll('.acci').forEach(function(x){x.classList.remove('open');});if(!open)it.classList.add('open');};});
 </script>
 </body>
