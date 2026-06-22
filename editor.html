@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SEVR — Copy-editor (light)</title>
+<style>
+  :root{--bg:#FFFBF5;--surface:#fff;--ink:#210D02;--muted:#6E6356;--line:#ECE3D4;--line2:#DFD3BF;--yellow:#FCD519;--orange:#E8973A;--green:#1FA971}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+  /* top bar */
+  .bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--line);flex:0 0 auto;flex-wrap:wrap}
+  .brand{font-weight:700;letter-spacing:-.02em;font-size:15px;margin-right:6px}
+  .brand i{font-style:italic;font-weight:400;color:var(--muted)}
+  button.b{border:1px solid var(--line2);background:var(--surface);color:var(--ink);border-radius:8px;padding:8px 13px;font-size:13.5px;font-weight:500;cursor:pointer;font-family:inherit;transition:.12s}
+  button.b:hover{background:#F4ECDD}
+  button.b.y{background:var(--yellow);border-color:var(--yellow);font-weight:600}
+  button.b.on{background:var(--green);border-color:var(--green);color:#fff}
+  button.b:disabled{opacity:.45;cursor:not-allowed}
+  .fname{font-size:13px;color:var(--muted);margin-left:4px}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#bbb;margin-right:6px;vertical-align:middle}
+  .dot.dirty{background:var(--orange)}
+  .spacer{flex:1}
+  .hint{font-size:12px;color:var(--muted)}
+  /* layout */
+  .main{flex:1;display:flex;min-height:0}
+  .side{width:280px;flex:0 0 auto;background:var(--surface);border-right:1px solid var(--line);overflow:auto;padding:10px}
+  .side h4{margin:8px 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .sec{display:flex;align-items:center;gap:8px;padding:8px 9px;border-radius:9px;cursor:pointer;border:1px solid transparent}
+  .sec:hover{background:#F6EFE2}
+  .sec.active{background:#F1E7D5;border-color:var(--line2)}
+  .sec .nm{flex:1;font-size:13.5px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sec .st{font-size:15px;cursor:pointer;flex:0 0 auto;user-select:none}
+  .stage{flex:1;position:relative;background:#efe7d8;min-width:0}
+  iframe{width:100%;height:100%;border:0;background:#fff;display:block}
+  .empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;color:var(--muted);padding:30px}
+  .empty h2{font-size:22px;color:var(--ink);margin:0;font-weight:600}
+  .empty p{margin:0;max-width:440px;font-size:14px;line-height:1.5}
+  .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:10px;font-size:13.5px;opacity:0;transition:.25s;pointer-events:none;z-index:99}
+  .toast.show{opacity:1}
+  kbd{background:#F4ECDD;border:1px solid var(--line2);border-radius:5px;padding:1px 6px;font-size:12px;font-family:inherit}
+</style>
+</head>
+<body>
+<div class="bar">
+  <span class="brand">SEVR <i>Copy-editor</i></span>
+  <button class="b" id="open">📂 Öppna sida…</button>
+  <button class="b on" id="toggle" disabled>✏️ Edit-läge: PÅ</button>
+  <button class="b y" id="save" disabled>💾 Spara</button>
+  <span class="dot" id="dirty"></span>
+  <span class="fname" id="fname">ingen fil öppen</span>
+  <span class="spacer"></span>
+  <span class="hint">Klicka i en text och skriv. <kbd>Ctrl</kbd>+<kbd>S</kbd> sparar.</span>
+</div>
+<div class="main">
+  <aside class="side" id="side"><h4>Sektioner</h4><div id="seclist" style="color:var(--muted);font-size:13px;padding:6px">Öppna en sida för att se sektionerna.</div></aside>
+  <div class="stage">
+    <iframe id="frame" title="förhandsvisning"></iframe>
+    <div class="empty" id="empty">
+      <h2>Öppna en sida att redigera</h2>
+      <p>Klicka <b>📂 Öppna sida…</b> och välj t.ex. <code>index.html</code>. Sedan kan du klicka direkt i rubriker, brödtext och knappar och skriva om copyn — sektion för sektion. Spara tillbaka till filen med <b>💾 Spara</b>.</p>
+      <p class="hint">Tips: kör editorn via en lokal server (t.ex. <code>python -m http.server</code> i repo-mappen och gå till <code>localhost:8000/editor.html</code>) så fungerar både bilder och direkt-sparning bäst.</p>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const frame = $('#frame');
+let fileHandle = null;     // FileSystemFileHandle om tillgängligt
+let fileName = '';
+let editMode = true;
+let dirty = false;
+const EDTAGS = new Set(['H1','H2','H3','H4','H5','H6','P','LI','A','SPAN','B','STRONG','EM','SMALL','DIV','BUTTON','TD','TH','BLOCKQUOTE','FIGCAPTION','LABEL']);
+
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);}
+function setDirty(v){dirty=v;$('#dirty').classList.toggle('dirty',v);}
+
+/* ---------- Öppna fil ---------- */
+$('#open').onclick = async () => {
+  if (window.showOpenFilePicker){
+    try{
+      const [h] = await window.showOpenFilePicker({types:[{description:'HTML',accept:{'text/html':['.html','.htm']}}]});
+      fileHandle = h; fileName = h.name;
+      const txt = await (await h.getFile()).text();
+      loadHTML(txt);
+    }catch(e){ if(e.name!=='AbortError') fallbackOpen(); }
+  } else { fallbackOpen(); }
+};
+function fallbackOpen(){
+  const inp=document.createElement('input');inp.type='file';inp.accept='.html,.htm';
+  inp.onchange=()=>{const f=inp.files[0];if(!f)return;fileHandle=null;fileName=f.name;
+    const r=new FileReader();r.onload=()=>loadHTML(r.result);r.readAsText(f);};
+  inp.click();
+}
+
+/* ---------- Ladda HTML i iframe ---------- */
+function loadHTML(txt){
+  $('#empty').style.display='none';
+  $('#fname').textContent = fileName + (fileHandle ? '' : '  (sparas som nedladdning)');
+  frame.onload = afterLoad;
+  frame.srcdoc = txt;        // srcdoc => relativa sökvägar (bilder) löses mot repo-roten
+  setDirty(false);
+}
+
+function afterLoad(){
+  const doc = frame.contentDocument;
+  if(!doc || !doc.body) return;
+  // stoppa sidans egna intervaller (roterande hero-ord m.m.) så texten står still vid redigering
+  try{const w=frame.contentWindow;const top=w.setTimeout(()=>{},0);for(let i=0;i<top;i++){w.clearInterval(i);w.clearTimeout(i);}}catch(e){}
+  injectStyle(doc);
+  if(editMode) applyEditable(doc);
+  buildSections(doc);
+  $('#toggle').disabled=false; $('#save').disabled=false;
+}
+
+function injectStyle(doc){
+  let s=doc.getElementById('__ed_style'); if(s) return;
+  s=doc.createElement('style'); s.id='__ed_style';
+  s.textContent='.__ed{outline:1px dashed rgba(232,151,58,.0);transition:outline-color .1s,background .1s}'
+    +'body.__editing .__ed:hover{outline:2px solid #E8973A!important;outline-offset:2px;cursor:text}'
+    +'.__ed:focus{outline:2px solid #1FA971!important;outline-offset:2px;background:rgba(31,169,113,.07)}'
+    +'.__sechi{animation:__sechi 1.2s ease}@keyframes __sechi{0%,40%{box-shadow:inset 0 0 0 3px rgba(232,151,58,.65)}100%{box-shadow:inset 0 0 0 3px transparent}}';
+  doc.head.appendChild(s);
+}
+
+/* ---------- Gör texter redigerbara ---------- */
+function hasText(el){for(const n of el.childNodes){if(n.nodeType===3 && n.textContent.trim())return true;}return false;}
+function applyEditable(doc){
+  doc.body.classList.add('__editing');
+  (function walk(el){
+    for(const c of el.children){
+      if(EDTAGS.has(c.tagName) && hasText(c)){
+        c.classList.add('__ed');
+        c.setAttribute('contenteditable','true');
+        c.addEventListener('input', onEdit, {passive:true});
+        c.addEventListener('click', e=>{ if(c.tagName==='A') e.preventDefault(); });
+      } else {
+        walk(c);
+      }
+    }
+  })(doc.body);
+}
+function removeEditable(doc){
+  doc.body.classList.remove('__editing');
+  doc.querySelectorAll('.__ed').forEach(el=>{el.classList.remove('__ed');el.removeAttribute('contenteditable');});
+}
+function onEdit(){ setDirty(true); }
+
+$('#toggle').onclick = () => {
+  const doc=frame.contentDocument; if(!doc) return;
+  editMode=!editMode;
+  $('#toggle').textContent='✏️ Edit-läge: '+(editMode?'PÅ':'AV');
+  $('#toggle').classList.toggle('on',editMode);
+  editMode ? applyEditable(doc) : removeEditable(doc);
+};
+
+/* ---------- Sektionslista ---------- */
+function secLabel(el,i){
+  if(el.tagName==='HEADER') return 'Nav (sidhuvud)';
+  if(el.tagName==='FOOTER') return 'Footer';
+  const h=el.querySelector('h1,h2,h3,h4');
+  let t = h ? h.textContent.trim() : (el.id||('Sektion '+(i+1)));
+  t = t.replace(/\s+/g,' ');
+  return (el.id?('#'+el.id+' · '):'') + (t.length>34?t.slice(0,34)+'…':t);
+}
+function buildSections(doc){
+  const els=[...doc.querySelectorAll('header, body > section, section, footer')];
+  // unika & i dokumentordning
+  const seen=new Set(); const list=els.filter(e=>{if(seen.has(e))return false;seen.add(e);return true;});
+  const wrap=$('#seclist'); wrap.innerHTML='';
+  const statuses=loadStatus();
+  list.forEach((el,i)=>{
+    const key = el.id || (el.tagName.toLowerCase()+'-'+i);
+    const row=document.createElement('div'); row.className='sec';
+    const st=document.createElement('span'); st.className='st'; const cur=statuses[key]||'🔴'; st.textContent=cur;
+    st.title='Klicka för att växla status';
+    st.onclick=ev=>{ev.stopPropagation();const order=['🔴','🟡','✅'];const next=order[(order.indexOf(st.textContent)+1)%3];st.textContent=next;statuses[key]=next;saveStatus(statuses);};
+    const nm=document.createElement('span'); nm.className='nm'; nm.textContent=secLabel(el,i);
+    row.appendChild(st); row.appendChild(nm);
+    row.onclick=()=>{document.querySelectorAll('.sec').forEach(r=>r.classList.remove('active'));row.classList.add('active');
+      el.scrollIntoView({behavior:'smooth',block:'start'});el.classList.add('__sechi');setTimeout(()=>el.classList.remove('__sechi'),1300);};
+    wrap.appendChild(row);
+  });
+}
+function statusKey(){return 'sevr_status_'+fileName;}
+function loadStatus(){try{return JSON.parse(localStorage.getItem(statusKey())||'{}');}catch(e){return {};}}
+function saveStatus(o){try{localStorage.setItem(statusKey(),JSON.stringify(o));}catch(e){}}
+
+/* ---------- Spara ---------- */
+async function save(){
+  const doc=frame.contentDocument; if(!doc) return;
+  const wasEdit=editMode;
+  removeEditable(doc);
+  const style=doc.getElementById('__ed_style'); if(style) style.remove();
+  doc.querySelectorAll('.__sechi').forEach(e=>e.classList.remove('__sechi'));
+  const dt=doc.doctype?'<!DOCTYPE '+doc.doctype.name+'>\n':'<!DOCTYPE html>\n';
+  const html=dt+doc.documentElement.outerHTML+'\n';
+  // återställ redigeringsläget direkt
+  injectStyle(doc); if(wasEdit) applyEditable(doc);
+  try{
+    if(fileHandle){
+      const w=await fileHandle.createWritable(); await w.write(html); await w.close();
+      toast('💾 Sparat till '+fileName);
+    }else{
+      const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.download=fileName||'index.html';a.click();
+      toast('⬇️ Nedladdad — lägg filen i repo-mappen');
+    }
+    setDirty(false);
+  }catch(e){ toast('⚠️ Kunde inte spara: '+e.message); }
+}
+$('#save').onclick=save;
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();if(!$('#save').disabled)save();}});
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
+</script>
+</body>
+</html>
