@@ -349,15 +349,15 @@
   </div>
   <div class="wave-stats">
     <div class="wstat">
-      <div class="wnum"><span class="cup" data-to="90" data-suf="&nbsp;%">90&nbsp;%</span> <small>(est.)</small></div>
+      <div class="wnum"><span class="cup" data-to="40" data-suf="&nbsp;%">40&nbsp;%</span> <small>(est.)</small></div>
       <div class="wlbl">&nbsp;Högre marginal på fast pris uppdrag</div>
     </div>
     <div class="wstat">
-      <div class="wnum"><span class="cup" data-to="2" data-suf="X">2X</span> <small>(est.)</small></div>
+      <div class="wnum"><span class="cup" data-to="3" data-suf="X">3X</span> <small>(est.)</small></div>
       <div class="wlbl">Fler kunder per medarbetare</div>
     </div>
     <div class="wstat">
-      <div class="wnum"><span class="cup" data-to="1000" data-grp="1" data-suf="+">1&nbsp;000+</span></div>
+      <div class="wnum">+<span class="cup" data-to="50" data-suf="&nbsp;%">50&nbsp;%</span> <small>(est.)</small></div>
       <div class="wlbl">&nbsp;Kapacitet utan nyanställning</div>
     </div>
     <div class="wstat">
@@ -429,7 +429,7 @@
     <div class="agrow">
       <div class="agc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"></rect><circle cx="12" cy="4.4" r="1.3"></circle><path d="M12 5.7V8"></path><circle cx="9.2" cy="13" r="1.1"></circle><circle cx="14.8" cy="13" r="1.1"></circle><path d="M3 12.5V15M21 12.5V15"></path></svg><div class="agt"><h4>Lön</h4><p>Arbetsgivaravgifter, förmåner</p></div></div>
       <div class="agc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"></rect><circle cx="12" cy="4.4" r="1.3"></circle><path d="M12 5.7V8"></path><circle cx="9.2" cy="13" r="1.1"></circle><circle cx="14.8" cy="13" r="1.1"></circle><path d="M3 12.5V15M21 12.5V15"></path></svg><div class="agt"><h4>Bokslut</h4><p>K2/K3, avstämning</p></div></div>
-      <div class="agc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"></rect><circle cx="12" cy="4.4" r="1.3"></circle><path d="M12 5.7V8"></path><circle cx="9.2" cy="13" r="1.1"></circle><circle cx="14.8" cy="13" r="1.1"></circle><path d="M3 12.5V15M21 12.5V15"></path></svg><div class="agt"><h4>Compliance</h4><p>Deadlines, BFL, ÅRL</p></div></div>
+      <div class="agc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"></rect><circle cx="12" cy="4.4" r="1.3"></circle><path d="M12 5.7V8"></path><circle cx="9.2" cy="13" r="1.1"></circle><circle cx="14.8" cy="13" r="1.1"></circle><path d="M3 12.5V15M21 12.5V15"></path></svg><div class="agt"><h4>Löpande bokföring</h4><p>95 % hands off på leverantörsreskontra – din ekonomiassistent som aldrig sover</p></div></div>
       <div class="agc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"></rect><circle cx="12" cy="4.4" r="1.3"></circle><path d="M12 5.7V8"></path><circle cx="9.2" cy="13" r="1.1"></circle><circle cx="14.8" cy="13" r="1.1"></circle><path d="M3 12.5V15M21 12.5V15"></path></svg><div class="agt"><h4>Skatt</h4><p>INK2, underskottsavdrag</p></div></div>
     </div>
     <div class="agrow bottom">
@@ -603,6 +603,7 @@ document.querySelectorAll('.fitem .q').forEach(function(q){q.onclick=function(){
 (function(){var words=['grovjobbet','det tunga','det manuella','det repetitiva','det tidskrävande'];var i=0;var el=document.getElementById('rotw');if(!el)return;setInterval(function(){el.style.opacity='0';setTimeout(function(){i=(i+1)%words.length;el.textContent=words[i];el.style.opacity='1';},300);},2400);})();
 (function(){var grid=document.querySelector('.wave-stats');if(!grid||!('IntersectionObserver'in window))return;function run(){grid.querySelectorAll('.cup').forEach(function(el){var to=parseFloat(el.dataset.to),suf=el.dataset.suf||'',grp=el.dataset.grp,dur=1500,t0=null;function fmt(v){v=Math.round(v);return grp?v.toLocaleString('sv-SE'):v;}function step(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/dur,1);var e=1-Math.pow(1-p,3);el.innerHTML=fmt(to*e)+suf;if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);});}var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){run();io.disconnect();}});},{threshold:.4});io.observe(grid);})();
 (function(){if(!('IntersectionObserver'in window))return;var secs=document.querySelectorAll('section');secs.forEach(function(s){s.classList.add('reveal');});var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12,rootMargin:'0px 0px -8% 0px'});secs.forEach(function(s){io.observe(s);});})();</script>
+
 
 
 
