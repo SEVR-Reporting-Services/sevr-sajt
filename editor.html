@@ -111,6 +111,7 @@ function afterLoad(){
   // stoppa sidans egna intervaller (roterande hero-ord m.m.) så texten står still vid redigering
   try{const w=frame.contentWindow;const top=w.setTimeout(()=>{},0);for(let i=0;i<top;i++){w.clearInterval(i);w.clearTimeout(i);}}catch(e){}
   injectStyle(doc);
+  installClickGuard(doc);
   if(editMode) applyEditable(doc);
   buildSections(doc);
   $('#toggle').disabled=false; $('#save').disabled=false;
@@ -136,7 +137,6 @@ function applyEditable(doc){
         c.classList.add('__ed');
         c.setAttribute('contenteditable','true');
         c.addEventListener('input', onEdit, {passive:true});
-        c.addEventListener('click', e=>{ if(c.tagName==='A') e.preventDefault(); });
       } else {
         walk(c);
       }
@@ -148,6 +148,18 @@ function removeEditable(doc){
   doc.querySelectorAll('.__ed').forEach(el=>{el.classList.remove('__ed');el.removeAttribute('contenteditable');});
 }
 function onEdit(){ setDirty(true); }
+// I edit-läge: blockera all länk-navigering (även kort som är inslagna i <a>) så klick = redigera
+function installClickGuard(doc){
+  if(doc.__clickGuard) return; doc.__clickGuard=true;
+  const stop = e=>{
+    if(!editMode) return;
+    const a = e.target.closest && e.target.closest('a[href]');
+    if(a){ e.preventDefault(); e.stopPropagation(); }
+  };
+  doc.addEventListener('click', stop, true);
+  // fånga även mitt-klick / tangent-aktivering av länkar
+  doc.addEventListener('auxclick', stop, true);
+}
 
 $('#toggle').onclick = () => {
   const doc=frame.contentDocument; if(!doc) return;
