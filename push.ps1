@@ -11,6 +11,8 @@ Get-ChildItem -Path $PSScriptRoot -Filter *.html | ForEach-Object {
   $c = $c -replace ' class=""', ''            # tomma class-attribut
   $c = $c -replace ' class="reveal in"', ''   # inbakade reveal-klasser (fristaende)
   $c = $c -replace ' reveal in"', '"'         # inbakade reveal-klasser (kombinerade)
+  $c = [regex]::Replace($c, '<span\s+data-teams="[^"]*"\s*>([\s\S]*?)</span>', '$1')  # paste-rester fran Teams/Word
+  $c = $c -replace ' data-final="[^"]*"', ''  # ev. inbakad count-up-mall
   if ($c -ne $orig) {
     [IO.File]::WriteAllText($p, $c, $enc)
     Write-Host "     stadat: $($_.Name)" -ForegroundColor DarkGray
