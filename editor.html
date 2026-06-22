@@ -137,6 +137,8 @@ function injectStyle(doc){
 function hasText(el){for(const n of el.childNodes){if(n.nodeType===3 && n.textContent.trim())return true;}return false;}
 function applyEditable(doc){
   doc.body.classList.add('__editing');
+  // stoppa count-up-animationen så siffror (.cup) står still och går att redigera
+  try{const w=frame.contentWindow; if(!w.__rAF){w.__rAF=w.requestAnimationFrame; w.requestAnimationFrame=function(){return 0;};}}catch(e){}
   (function walk(el){
     for(const c of el.children){
       if(EDTAGS.has(c.tagName) && hasText(c)){
@@ -151,6 +153,7 @@ function applyEditable(doc){
 }
 function removeEditable(doc){
   doc.body.classList.remove('__editing');
+  try{const w=frame.contentWindow; if(w.__rAF){w.requestAnimationFrame=w.__rAF; w.__rAF=null;}}catch(e){}
   doc.querySelectorAll('.__ed').forEach(el=>{el.classList.remove('__ed');el.removeAttribute('contenteditable');if(!el.classList.length)el.removeAttribute('class');});
 }
 function onEdit(){ setDirty(true); }
@@ -214,6 +217,11 @@ async function save(){
   removeEditable(doc);
   const style=doc.getElementById('__ed_style'); if(style) style.remove();
   doc.querySelectorAll('.__sechi').forEach(e=>e.classList.remove('__sechi'));
+  // synka count-up-siffror: skriv in det redigerade talet i data-to så det fastnar live
+  doc.querySelectorAll('.cup').forEach(el=>{
+    const n=parseFloat((el.textContent||'').replace(/ /g,'').replace(/\s/g,'').replace(/[^0-9.,]/g,'').replace(',','.'));
+    if(!isNaN(n)) el.setAttribute('data-to', String(n));
+  });
   const dt=doc.doctype?'<!DOCTYPE '+doc.doctype.name+'>\n':'<!DOCTYPE html>\n';
   const html=dt+doc.documentElement.outerHTML+'\n';
   // återställ redigeringsläget direkt
