@@ -98,6 +98,12 @@ function fallbackOpen(){
 
 /* ---------- Ladda HTML i iframe ---------- */
 function loadHTML(txt){
+  if(/<meta[^>]+http-equiv=["']?refresh/i.test(txt)){
+    alert('⚠️ Den här filen är bara en omdirigering (redirect-stub), inte en riktig sida.\n\n'
+      +'Öppna istället sidan den pekar på — för V5 är det "index.html".\n\n'
+      +'(Det var därför tidigare ändringar hamnade i fel fil.)');
+    fileHandle=null; return;
+  }
   $('#empty').style.display='none';
   $('#fname').textContent = fileName + (fileHandle ? '' : '  (sparas som nedladdning)');
   frame.onload = afterLoad;
@@ -145,7 +151,7 @@ function applyEditable(doc){
 }
 function removeEditable(doc){
   doc.body.classList.remove('__editing');
-  doc.querySelectorAll('.__ed').forEach(el=>{el.classList.remove('__ed');el.removeAttribute('contenteditable');});
+  doc.querySelectorAll('.__ed').forEach(el=>{el.classList.remove('__ed');el.removeAttribute('contenteditable');if(!el.classList.length)el.removeAttribute('class');});
 }
 function onEdit(){ setDirty(true); }
 // I edit-läge: blockera all länk-navigering (även kort som är inslagna i <a>) så klick = redigera
