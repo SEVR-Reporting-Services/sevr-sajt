@@ -129,7 +129,11 @@ function injectStyle(doc){
   s.textContent='.__ed{outline:1px dashed rgba(232,151,58,.0);transition:outline-color .1s,background .1s}'
     +'body.__editing .__ed:hover{outline:2px solid #E8973A!important;outline-offset:2px;cursor:text}'
     +'.__ed:focus{outline:2px solid #1FA971!important;outline-offset:2px;background:rgba(31,169,113,.07)}'
-    +'.__sechi{animation:__sechi 1.2s ease}@keyframes __sechi{0%,40%{box-shadow:inset 0 0 0 3px rgba(232,151,58,.65)}100%{box-shadow:inset 0 0 0 3px transparent}}';
+    +'.__sechi{animation:__sechi 1.2s ease}@keyframes __sechi{0%,40%{box-shadow:inset 0 0 0 3px rgba(232,151,58,.65)}100%{box-shadow:inset 0 0 0 3px transparent}}'
+    // i edit-lage: fall ut allt som annars ar gomt bakom en klick (FAQ-svar, dolda flik-paneler)
+    +'body.__editing .fitem .a{max-height:none!important;overflow:visible!important;padding-bottom:22px!important}'
+    +'body.__editing .panel[hidden]{display:flex!important}'
+    +'body.__editing .fitem{outline:1px dashed rgba(232,151,58,.25)}';
   doc.head.appendChild(s);
 }
 
