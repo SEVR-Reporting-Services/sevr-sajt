@@ -2,6 +2,8 @@
 
 Läs det här först. Det förklarar vad projektet är, hur filerna hänger ihop och vilka regler du ska följa när du gör ändringar. För **varför**-resonemanget bakom varje version, läs `VERSIONER.md`.
 
+> ⛔ **MASTER = KLIENTENS VERSION (VC5).** Den senaste versionen som kunden själv redigerat är källan till sanning. `index.html` (startsidan/V5) speglar kundens senaste ändringar och är master. En **fryst, oföränderlig kopia** finns i `vc5.html` och i git-taggen **`vc5`** — den får ALDRIG ändras. Ändra inte kundens copy (inkl. "Vatsson/VATsson" som kunden skrivit det) utan uttryckligt tillstånd. Varje ny push från kunden blir den nya master och behandlas likadant: arbeta i en branch + PR, rör aldrig mastern direkt.
+
 ---
 
 ## Vad det här är
