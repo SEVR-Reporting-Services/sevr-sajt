@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="sv"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEVR Insights — AI som gör grovjobbet i ekonomin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#FFFBF5;--surface:#fff;--ink:#210D02;--muted:#6E6356;--line:#ECE3D4;--line-2:#DFD3BF;--yellow:#FCD519;--radius:8px}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .c{max-width:1240px;margin:0 auto;padding:0 40px}
+  header{position:sticky;top:0;z-index:50;background:rgba(255,251,245,.85);backdrop-filter:blur(10px)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:76px}
+  .nav .links{display:flex;gap:6px}
+  .nav .links a{font-size:15px;color:var(--ink);padding:8px 14px;border-radius:8px;cursor:pointer}
+  .nav .links a:hover{background:#F4ECDD}
+  .nav-right{display:flex;align-items:center;gap:14px}
+  .login{font-size:15px;cursor:pointer}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line-2);background:var(--surface);border-radius:var(--radius);padding:10px 18px;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer;transition:.15s}
+  .btn:hover{transform:translateY(-1px)}
+  .btn.y{background:var(--yellow);border-color:var(--yellow);color:#210D02;font-weight:600}
+  .btn.eq{min-width:170px}
+  .pill{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line-2);border-radius:999px;padding:6px 14px 6px 6px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .pill b{background:#E8973A;color:#fff;border-radius:999px;padding:3px 10px;font-size:11px}
+  .pill .dot{width:9px;height:9px;border-radius:50%;background:#E8973A;display:inline-block;flex:0 0 9px;margin-left:4px}
+  section{padding:0}
+  section>.c{padding:84px 40px;border-bottom:1px solid var(--line)}
+  .hero{text-align:center;padding:0}
+  .hero>.c{padding-top:48px}
+  h1{font-family:"Instrument Serif",Georgia,serif;font-size:82px;line-height:1.02;letter-spacing:-.01em;font-weight:400;margin:26px auto 0;max-width:1000px}
+  .rotw{position:relative;font-style:italic;color:#B5541E;white-space:nowrap;transition:opacity .3s ease;padding:0 .04em}
+  .rotw::after{content:"";position:absolute;left:0;right:0;bottom:.04em;height:.08em;border-radius:4px;background:linear-gradient(90deg,#C49A2B,#F2901F 35%,#ED8A6E 60%,#A6AEF0);}
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s cubic-bezier(.22,.61,.36,1)}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important}}
+  .hero .sub{font-size:19px;color:var(--muted);max-width:600px;margin:24px auto 28px;line-height:1.5}
+  .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  h2{font-family:"Instrument Serif",Georgia,serif;font-size:50px;line-height:1.05;letter-spacing:-.005em;font-weight:400;margin:0 0 14px}
+  h3{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:0 0 8px}
+  .sub{font-size:19px;color:var(--muted);line-height:1.5}
+  .center{text-align:center;max-width:840px;margin:0 auto}
+  .tabmod{margin-top:60px}
+  .tabs{display:flex;gap:4px;position:relative;z-index:2}
+  .tabs button{flex:1;border:0;background:rgba(33,13,2,.045);padding:15px 18px 18px;border-radius:14px 14px 0 0;cursor:pointer;display:flex;flex-direction:column;gap:3px;text-align:left;transition:background .15s,color .15s;font-family:inherit}
+  .tabs button:hover{background:rgba(33,13,2,.08)}
+  .tabs .tt{font-size:16px;font-weight:600;color:var(--muted);letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+  .tabs .ts{font-size:12.5px;font-weight:400;color:var(--muted);opacity:.8;line-height:1.35}
+  .tabs button.on{background:#fff;box-shadow:0 -4px 12px rgba(0,0,0,.05)}
+  .tabs button.on .tt{color:var(--ink)}
+  .tabs button .tt::before{content:"";width:9px;height:9px;border-radius:50%;background:transparent;border:1.5px solid var(--line-2);flex:0 0 9px;transition:.15s}
+  .tabs button.on .tt::before{background:linear-gradient(135deg,#F2901F,#A6AEF0);border-color:transparent}
+  .tabmod .panel{margin-top:0;border-top-left-radius:0;border-top-right-radius:0}
+  .panel[hidden]{display:none}
+  .gridtex{background-image:linear-gradient(rgba(33,13,2,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(33,13,2,.06) 1px,transparent 1px);background-size:30px 30px}
+  .panel{position:relative;overflow:hidden;border-radius:14px;padding:48px;display:flex;align-items:center;justify-content:center;min-height:340px;transition:background .4s ease}
+  .panel.o{background:linear-gradient(120deg,#C49A2B,#F2901F 28%,#ED8A6E 54%,#A6AEF0 80%,#CBD7FB)}
+  .panel.b{background:linear-gradient(300deg,#C49A2B,#F2901F 28%,#ED8A6E 54%,#A6AEF0 80%,#CBD7FB)}
+  .panel.l{background:linear-gradient(45deg,#C49A2B,#F2901F 28%,#ED8A6E 54%,#A6AEF0 80%,#CBD7FB)}
+  .panel::before{content:"";position:absolute;inset:0;pointer-events:none}
+  .panel.o::before{background-image:linear-gradient(rgba(255,255,255,.42) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.42) 1px,transparent 1px);background-size:44px 44px}
+  .panel.b::before{background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.42) 0 1px,transparent 1px 22px)}
+  .panel.l::before{background-image:radial-gradient(rgba(255,255,255,.42) 1.4px,transparent 1.6px);background-size:24px 24px}
+  .panel .mock{position:relative;z-index:1;margin:0 auto}
+  .ptext{position:relative;z-index:2;max-width:560px;text-align:left;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .ptext h3{font-size:30px;font-weight:600;letter-spacing:-.01em;margin:0 0 8px;color:#fff}
+  .ptext .psub{font-size:16px;opacity:.94;margin:0 0 18px;max-width:340px}
+  .ptext ul{list-style:none;padding:0;margin:0}.ptext li{padding:7px 0 7px 28px;position:relative;font-size:15px}
+  .ptext li::before{content:"✓";position:absolute;left:0;font-weight:700}
+  .mock{background:#fff;border-radius:16px;box-shadow:0 36px 70px -38px rgba(33,13,2,.5);padding:22px;width:100%;max-width:520px}
+  .mock .h{display:flex;align-items:center;gap:7px;margin-bottom:14px}
+  .mock .h i{width:9px;height:9px;border-radius:50%;background:var(--line-2)}
+  .mock .h span{margin-left:8px;font-size:12px;color:var(--muted)}
+  .mock .row{display:flex;justify-content:space-between;font-size:14px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .mock .row:last-child{border:0}.mock .v{font-weight:600}
+  .mock .askbar{margin-top:8px;background:var(--ink);color:#fff;border-radius:12px;padding:13px 15px;font-size:13.5px}
+  .trustrow{text-align:center;color:var(--muted);font-size:13.5px;margin:36px 0 0;letter-spacing:.01em}
+  .trustrow b{color:var(--ink);font-weight:700}
+  .lwall{margin-top:20px;border:1px solid var(--line);overflow:hidden;background:#fff}
+  .lwall .strip{height:14px;background:linear-gradient(90deg,#C49A2B,#F2901F 28%,#ED8A6E 54%,#A6AEF0 80%,#CBD7FB)}
+  .lwall .lrow{display:grid;grid-template-columns:repeat(5,1fr)}
+  .lwall .lg{display:flex;align-items:center;justify-content:center;gap:9px;padding:30px 10px;font-size:20px;font-weight:700;color:var(--ink);border-right:1px solid var(--line)}
+  .lwall .lg:last-child{border-right:0}
+  .lwall .lg .d{width:20px;height:20px;background:var(--ink);border-radius:6px;flex:0 0 20px}
+  .lwall .lines{height:58px;background-image:repeating-linear-gradient(90deg,rgba(33,13,2,.07) 0 1px,transparent 1px 9px);border-top:1px solid var(--line)}
+  .bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:200px;gap:18px;margin-top:48px}
+  .cell{border:1px solid var(--line);border-radius:18px;padding:26px;overflow:hidden;display:flex;flex-direction:column;background:var(--surface)}
+  .cell.w2{grid-column:span 2}.cell.h2{grid-row:span 2}
+  .cell .k{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600}
+  .cell h3{margin-top:8px}.cell p{color:var(--muted);font-size:14px;margin:6px 0 0}
+  .cell.fo{background:linear-gradient(160deg,#F4C079,#E8973A)}.cell.fo p,.cell.fo .k{color:#3a2a14}
+  .cell.fb{background:linear-gradient(160deg,#C7D6FA,#9FB3F5)}.cell.fb p,.cell.fb .k{color:#1c3c78}
+  .cell.fl{background:linear-gradient(160deg,#E0D5F8,#C9B8F2)}.cell.fl p,.cell.fl .k{color:#3a2a5a}
+  .cell.fd{background:var(--ink);color:#fff}.cell.fd p,.cell.fd .k{color:#cdbfae}
+  .cell .big{font-size:44px;font-weight:600;letter-spacing:-.02em;margin-top:auto}
+  .cell .shelf{margin-top:auto;height:90px;border-radius:12px;background:rgba(255,255,255,.5);border:1px solid rgba(33,13,2,.08)}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:48px}
+  .stepc{border:1px solid var(--line);border-radius:16px;padding:24px;background:var(--surface)}
+  .stepc .n{width:38px;height:38px;border-radius:10px;background:var(--yellow);color:#210D02;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+  .stepc p{color:var(--muted);font-size:14px;margin:0}
+  .prices{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:44px;max-width:900px;margin-left:auto;margin-right:auto}
+  .pcard{border:1px solid var(--line);border-radius:20px;padding:34px;background:var(--surface);position:relative}
+  .pcard.pop{border:2px solid var(--ink)}
+  .poplbl{position:absolute;top:-13px;left:34px;background:var(--yellow);color:#210D02;font-size:12px;font-weight:700;padding:5px 14px;border-radius:999px}
+  .pcard .amt{font-size:42px;font-weight:600;margin:10px 0 2px}.pcard .per{color:var(--muted);font-size:14px;margin-bottom:18px}
+  .pcard ul{list-style:none;padding:0;margin:0 0 24px}.pcard li{padding:7px 0 7px 26px;position:relative;font-size:14.5px}.pcard li::before{content:"✓";position:absolute;left:0;font-weight:700}
+  .pcard .btn{width:100%}
+  .faqwrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px;align-items:start}
+  .faqhead h2{font-size:46px;line-height:1.05;letter-spacing:-.025em;margin:18px 0 0}
+  .faq{display:flex;flex-direction:column;gap:16px}
+  .fitem{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:0 26px}
+  .fitem .q{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px 0;cursor:pointer;font-size:18px;font-weight:600;color:var(--ink)}
+  .fitem .q i{font-style:normal;color:var(--muted);transition:transform .2s;font-size:18px}
+  .fitem.open .q i{transform:rotate(180deg)}
+  .fitem .a{font-size:15px;color:var(--muted);line-height:1.6;max-height:0;overflow:hidden;transition:max-height .25s ease,padding .25s ease}
+  .fitem.open .a{max-height:260px;padding:0 0 24px}
+  .ctaband{position:relative;overflow:hidden;background:linear-gradient(120deg,#C49A2B,#F2901F 28%,#ED8A6E 54%,#A6AEF0 80%,#CBD7FB);padding:84px 40px;text-align:center;color:#fff}
+  .ctaband::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.3) 1px,transparent 1px);background-size:46px 46px}
+  .ctaband h2,.ctaband .sub,.ctaband .btn{position:relative;z-index:1}
+  .ctaband h2{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.18)}.ctaband .sub{color:rgba(255,255,255,.92);margin:0 auto 26px}
+  footer{padding:64px 0 32px;background:#16100A;color:rgba(255,255,255,.6);font-size:13.5px}
+  .foot{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:24px}.foot b{color:#fff;display:block;margin-bottom:10px}.foot a{display:block;padding:4px 0;color:rgba(255,255,255,.6)}
+  footer .foot img{filter:brightness(0) invert(1)}
+  .legal{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.12);font-size:12.5px}
+  .legal a{color:rgba(255,255,255,.55);text-decoration:none}
+  .note{font-size:12px;color:var(--muted);font-style:italic;text-align:center;margin-top:12px}
+  .kicker{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#C77A2E;font-weight:600}
+  .flarge{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+  .flarge .img{background:linear-gradient(150deg,#F4C079,#E8973A);border-radius:18px;min-height:360px;border:1px solid var(--line)}
+  .flarge h3{font-size:34px;font-weight:500;letter-spacing:-.02em;line-height:1.12;margin:14px 0}
+  .flarge p{color:var(--muted);font-size:16px;line-height:1.6}
+  .agwrap{margin-top:48px;border:1px solid var(--line);overflow:hidden;background:var(--surface)}
+  .agrow{display:grid;grid-template-columns:repeat(4,1fr)}
+  .agrow.bottom{grid-template-columns:2fr 1fr 1fr;border-top:1px solid var(--line)}
+  .agc{padding:32px;border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-height:240px}
+  .agrow .agc:last-child{border-right:0}
+  .agc .ic{width:28px;height:28px;color:var(--ink)}
+  .agnum{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+  .agrow.two{grid-template-columns:1fr 1fr}
+  .agrow.one{grid-template-columns:1fr}
+  .agwrap .agrow + .agrow{border-top:1px solid var(--line)}
+  .agc.big{min-height:300px}
+  .agc.big .agt{margin-top:0}
+  .phbox{margin-top:18px;flex:1;width:100%;align-self:stretch;min-height:150px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;padding:18px;background:linear-gradient(rgba(255,255,255,.30) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,rgba(255,255,255,.30) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(135deg,#C49A2B,#F2901F 30%,#ED8A6E 55%,#A6AEF0 82%,#CBD7FB)}
+  .phbox.tall{min-height:200px}
+  .pmock{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;width:100%;max-width:none;box-shadow:0 16px 32px -24px rgba(33,13,2,.4);display:flex;flex-direction:column;justify-content:center}
+  .pmock .prow{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .pmock .pav{width:40px;height:40px;border-radius:50%;background:linear-gradient(150deg,#F4C079,#E8973A);flex:0 0 40px}
+  .pmock b{font-size:14px}.pmock .psub{font-size:12px;color:var(--muted)}
+  .ptags{display:flex;flex-wrap:wrap;gap:7px}
+  .ptags span{font-size:11px;background:#F3EEE4;border-radius:999px;padding:4px 10px;color:var(--muted)}
+  .pbars{display:flex;align-items:flex-end;gap:8px;height:86px;margin-bottom:10px}
+  .pbars i{flex:1;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#F2901F,#E8973A)}
+  .agt{margin-top:auto;display:flex;flex-direction:column;gap:6px}
+  .agc h4{margin:0;font-size:17px;font-weight:600;letter-spacing:-.01em}
+  .agc p{margin:0;font-size:14px;color:var(--muted);line-height:1.5}
+  .agc.wide{background:radial-gradient(rgba(255,255,255,.42) 1.6px,transparent 1.6px) 0 0/18px 18px,linear-gradient(135deg,#C49A2B,#F2901F 30%,#ED8A6E 55%,#A6AEF0 82%,#CBD7FB)}
+  .agc.wide h4{color:#fff}.agc.wide p{color:rgba(255,255,255,.92)}.agc.wide .ic,.agc.wide .agnum{color:#fff}
+  .agbars{display:flex;align-items:flex-end;gap:14px;height:84px;margin-top:auto}
+  .agbars .grp{display:flex;align-items:flex-end;gap:5px;height:100%}
+  .agbars i{width:8px;border-radius:99px;display:block}
+  .feat3{display:grid;grid-template-columns:repeat(3,1fr);margin-top:48px;border:1px solid var(--line);overflow:hidden;background:var(--surface)}
+  .fcard{padding:32px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:12px}
+  .feat3 .fcard:last-child{border-right:0}
+  .ficon{width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+  .ficon svg{width:30px;height:30px}
+  .fcard h4{margin:8px 0 0;font-size:19px;font-weight:600;letter-spacing:-.01em}
+  .fcard .fd{margin:0;font-size:14.5px;color:var(--muted);line-height:1.55}
+  .fmock{margin-top:18px;flex:1;border-radius:14px;padding:18px;min-height:170px;display:flex;background:repeating-linear-gradient(0deg,rgba(255,255,255,.34) 0 1px,transparent 1px 12px),linear-gradient(135deg,#C49A2B,#F2901F 30%,#ED8A6E 55%,#A6AEF0 82%,#CBD7FB)}
+  .fmock .mk{background:#fff;border-radius:10px;box-shadow:0 16px 32px -22px rgba(33,13,2,.45);padding:16px;font-size:12.5px;color:var(--ink);flex:1;width:100%;display:flex;flex-direction:column;justify-content:center}
+  .fmock .mr{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid #f0ece4}
+  .fmock .mr:first-of-type{border-top:0}
+  .fmock .fi{width:14px;height:14px;border-radius:4px;background:#C9D7FA;flex:0 0 14px;display:inline-block;margin-right:8px}
+  .fmock .cite{display:inline-flex;align-items:center;gap:6px;background:#EAF0FF;border-radius:999px;padding:5px 11px;font-size:11px;font-weight:600;margin-top:10px}
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);margin-top:44px;border:1px solid var(--line);background:var(--surface)}
+  .qcard{border-right:1px solid var(--line);padding:28px;display:flex;flex-direction:column;gap:22px}
+  .quotes .qcard:last-child{border-right:0}
+  .qcard .q{font-size:17px;line-height:1.5;color:var(--ink);font-weight:500;margin:0;flex:1}
+  .qcard .who{display:flex;align-items:center;gap:12px}
+  .qcard .ava{width:40px;height:40px;border-radius:50%;background:linear-gradient(150deg,#F4C079,#E8973A);flex:0 0 40px}
+  .qcard .ava.a2{background:linear-gradient(150deg,#C7D6FA,#9FB3F5)}
+  .qcard .who strong{display:block;font-size:14px}.qcard .who span{font-size:12.5px;color:var(--muted)}
+  .routes{display:grid;grid-template-columns:1fr 1fr;margin-top:44px;border:1px solid var(--line);background:var(--surface)}
+  .route{border-right:1px solid var(--line);padding:40px;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:6px;transition:background .15s}
+  .routes .route:last-child{border-right:0}
+  .route:hover{background:#FBF6EC}
+  .route .rk{font-size:12px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;color:var(--muted)}
+  .route h3{margin:4px 0 0;font-size:25px;letter-spacing:-.01em}
+  .route p{margin:0;font-size:14.5px;line-height:1.55;color:var(--muted)}
+  .route .go{margin-top:14px;font-weight:600;font-size:14px}
+  .secband{margin-top:48px;background:#16100A;border:1px solid #2a2018;color:#fff;overflow:hidden}
+  .sechead{padding:26px 32px;border-bottom:1px solid rgba(255,255,255,.08)}
+  .seclbl{color:#F2901F;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+  .sechd{color:#fff;font-size:24px;font-weight:600;letter-spacing:-.01em;margin:10px 0 0}
+  .secgrid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .seccell{padding:32px;border-right:1px solid rgba(255,255,255,.08);min-height:280px;display:flex;flex-direction:column}
+  .secgrid .seccell:last-child{border-right:0}
+  .seccell h4{color:#fff;margin:0 0 10px;font-size:17px;font-weight:600}
+  .seccell p{color:rgba(255,255,255,.6);font-size:14px;line-height:1.55;margin:0}
+  .secbadge{align-self:flex-start;border:1px solid #F2901F;color:#F2901F;border-radius:999px;padding:3px 11px;font-size:10.5px;font-weight:700;letter-spacing:.08em;margin-bottom:12px}
+  .secfoot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;color:rgba(255,255,255,.5)}
+  .secfoot svg{width:30px;height:30px}
+  .secfoot .readp{color:rgba(255,255,255,.85);font-size:12.5px;font-weight:600;letter-spacing:.04em;text-decoration:none}
+  .tquote{max-width:980px;margin:0 auto;text-align:left}
+  .tquote .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:22px;margin-bottom:26px}
+  .tquote .logo .d{width:26px;height:26px;border-radius:8px;background:#E8973A;flex:0 0 26px}
+  .tquote .q{display:block;font-size:34px;line-height:1.32;letter-spacing:-.015em;font-weight:500;color:var(--muted)}
+  .tquote .hl{color:var(--ink)}
+  .tquote .who{margin-top:24px;font-weight:600;font-size:17px;color:var(--ink)}
+  .tquote .who span{color:var(--muted);font-weight:500}
+  .tquote .logo .accw{font-weight:700;color:#38414F;letter-spacing:-.01em}
+  .tquote .more{margin-top:24px}
+  @media(max-width:980px){.c{padding:0 22px}.nav .links,.login{display:none}h1{font-size:42px}h2{font-size:32px}.flarge{grid-template-columns:1fr;gap:28px}.tquote .q{font-size:24px}.panel{flex-direction:column;gap:24px}.ptext{position:static;transform:none;max-width:none;margin-bottom:4px}.faqwrap{grid-template-columns:1fr;gap:28px}.faqhead h2{font-size:32px}.agrow,.agrow.bottom,.agrow.two{grid-template-columns:1fr}.agc{border-right:0;border-bottom:1px solid var(--line)}.quotes{grid-template-columns:1fr}.routes{grid-template-columns:1fr}.feat3{grid-template-columns:1fr}.fcard,.qcard,.route{border-right:0;border-bottom:1px solid var(--line)}.secgrid{grid-template-columns:1fr}.seccell{border-right:0;border-bottom:1px solid rgba(255,255,255,.08);min-height:0}
+    .bento{grid-template-columns:1fr 1fr;grid-auto-rows:auto}.cell{min-height:160px}.cell.w2,.cell.h2{grid-column:auto;grid-row:auto}
+    .steps,.prices,.foot{grid-template-columns:1fr 1fr}.panel{padding:30px}}
+</style>
+</head>
+<body>
+<div id="vswitch" style="position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:flex-end;align-items:center;max-width:300px;gap:4px;background:#fff;border:1px solid #ddd;border-radius:10px;padding:6px;box-shadow:0 3px 12px rgba(0,0,0,.14);font-family:-apple-system,system-ui,sans-serif">
+<a href="version-0/index.html" title="V0 — startpunkt" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V0</a>
+<a href="v1.html" title="V1" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V1</a>
+<a href="v2.html" title="V2" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V2</a>
+<a href="v3.html" title="V3 — Hormozi" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V3</a>
+<a href="v4.html" title="V4" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V4</a>
+<a href="index.html" title="V5 — huvudversion (favorit)" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:700;color:#1a1a1a;text-decoration:none">V5&nbsp;<span style="font-size:9px;font-weight:600;color:#C77A2E">favorit</span><span style="width: 6px; height: 6px; border-radius: 50%; background: rgb(242, 144, 31); display: inline-block; margin-left: 5px; flex: 0 0 auto;"></span></a>
+<a href="v5.1.html" title="Gleap" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.1</a>
+<a href="v5.2.html" title="Slack" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.2</a>
+<a href="v5.3.html" title="Apollo" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.3</a>
+<a href="v5.4.html" title="Vanta" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.4</a>
+<a href="v5.5.html" title="Maze" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.5</a>
+<a href="v5.6.html" title="Huddle" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.6</a>
+<a href="v5.7.html" title="Awesomic" style="padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;color:#444;text-decoration:none">V5.7</a>
+</div>
+<script>(function(){var b=document.getElementById('vswitch');if(!b)return;function n(p){return p.replace(/index\.html$/,'');}var cur=n(location.pathname);b.querySelectorAll('a').forEach(function(a){if(n(a.pathname)===cur){a.style.color='#1a1a1a';var d=document.createElement('span');d.style.cssText='width:6px;height:6px;border-radius:50%;background:#F2901F;display:inline-block;margin-left:5px;flex:0 0 auto';a.appendChild(d);}});})();</script>
+
+<header><div class="c nav">
+  <a href="#top" style="display:flex;align-items:baseline;gap:6px;text-decoration:none"><span style="font-family:'Inter',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.03em;color:var(--ink)">SEVR</span><span style="font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:24px;color:var(--ink)">Insights</span></a>
+  <nav class="links"><a href="byra.html">För byrå</a><a href="foretag.html">För företag</a><a href="pris.html">Pris</a><a href="faq.html">Vanliga frågor</a><a href="kontakt.html">Kontakta oss</a></nav>
+  <div class="nav-right"><span class="login">Login</span><a class="btn y" href="#cta">Boka demo</a></div>
+</div></header>
+
+<a id="top"></a>
+<section class="hero"><div class="c">
+  <span class="pill"><b>NYTT</b> En AI-kollega för ekonomer</span>
+  <h1>AI gör <span class="rotw" id="rotw">grovjobbet</span>. Du gör bedömningen.</h1>
+  <p class="sub">Plattformen för ekonomer som vill lägga tiden på analys och bedömning – inte på manuellt arbete och rapporter</p>
+  <div class="ctas"><a class="btn y eq" href="#cta">Boka en demo</a></div>
+
+  <div class="tabmod">
+    <div class="tabs">
+      <button data-t="rapporter"><span class="tt">Rapportering &amp; analys</span><span class="ts">Automatiserad analys, rapportering och planering. <br>Skala din rapportering.&nbsp;</span></button>
+      <button data-t="vatsson"><span class="tt">Vatsson</span><span class="ts">Chatta mot regelverket - svar med källa, kopplat till kundens egen data.</span></button>
+      <button data-t="agenter" class="on"><span class="tt">AI-agenter</span><span class="ts">Avstämningar, löpande bokföring, bokslut. En AI-kollega som gör jobbet, håller koll och hör av sig när det behövs</span></button>
+    </div>
+    <div class="panel o" data-p="rapporter" hidden=""><div class="mock"><div class="h"><i></i><i></i><i></i><span>SEVR · rapport</span></div><div class="row"><span>Omsättning</span><span class="v">4,82 Mkr</span></div><div class="row"><span>Bruttovinst</span><span class="v">38,4 %</span></div><div class="row"><span>EBITDA</span><span class="v">612 tkr</span></div><div class="askbar">Periodrapporter genererad på 30 sekunder</div></div></div>
+    <div class="panel b" data-p="vatsson" hidden=""><div class="mock"><div class="h"><i></i><i></i><i></i><span>SEVR · Vatsson</span></div><div class="row"><span>Fråga</span><span class="v">”Får vi aktivera egna utvecklingsutgifter?”</span></div><div class="row"><span>Svar</span><span class="v">Med källa</span></div><div class="row"><span>Källa</span><span class="v">K3, kap. 18</span></div><div class="askbar">Hitta rätt i regelverket på sekunder</div></div></div>
+    <div class="panel l" data-p="agenter"><div class="mock"><div class="h"><i></i><i></i><i></i><span>SEVR · agenter</span></div><div class="row"><span>Avstämning</span><span class="v">Klar ✓</span></div><div class="row"><span>Kontering</span><span class="v">142 förslag</span></div><div class="row"><span>Bokslut</span><span class="v">Pågår…</span></div><div class="askbar">Agenterna gör grovjobbet, du står för omdömet</div></div></div>
+  </div>
+
+  <p class="trustrow">Redan betrott av <b>100+</b> byråer och företag i Norden</p>
+
+  <div class="lwall">
+    <div class="lrow">
+      <span class="lg"><span class="d"></span>Nexora</span>
+      <span class="lg"><span class="d"></span>Fluxenta</span>
+      <span class="lg"><span class="d"></span>Veltriq</span>
+      <span class="lg"><span class="d"></span>Fyntra</span>
+      <span class="lg"><span class="d"></span>Trivexa</span>
+    </div>
+    <div class="lines"></div>
+  </div>
+
+  <!-- Kundcitat — lynai two-tone, under logotypväggen i hero-sektionen -->
+  <div class="tquote" style="max-width:none;margin-top:-1px;background:#fff;border:1px solid var(--line);padding:44px">
+    <div class="logo"><img src="accountec-logo.svg" alt="Accountec" style="height:30px;width:auto"></div>
+    <div class="q"><span class="hl">”Vi testade flera AI-plattformar — SEVR stack ut direkt.”</span> Fart, träffsäkerhet och svensk regelkontext är oslagbart. Vi har minskat det manuella arbetet med över 60 % och hunnit med betydligt mer rådgivning.</div>
+    <div class="who">Peter · <span>VD, Accountec</span></div>
+    <div class="more"><a class="btn" href="#">Läs berättelsen →</a></div>
+  </div>
+</div></section>
+
+<!-- Säg adjö till — rullande problemord + statsrad (lynai-stil i SEVR-tappning) -->
+<style>
+  #wave .c{padding-top:84px;padding-bottom:0}
+  .wave-top{--wf:44px;--L:1.28em;display:flex;align-items:center;justify-content:center;gap:26px;flex-wrap:wrap;padding-bottom:76px}
+  .wave-h{font-size:var(--wf);line-height:1.06;letter-spacing:-.025em;font-weight:500;color:var(--ink);margin:0}
+  .wave-roll{position:relative;font-size:var(--wf);line-height:var(--L);font-weight:600;letter-spacing:-.025em;height:calc(var(--L)*5);overflow:hidden;min-width:430px}
+  .wave-layer{position:absolute;left:0;top:0;right:0}
+  .wave-layer ul{list-style:none;margin:0;padding:0;animation:waveroll 16s cubic-bezier(.7,0,.3,1) infinite}
+  .wave-layer li{height:var(--L);line-height:var(--L);white-space:nowrap}
+  .wave-grey li{color:rgba(33,13,2,.24)}
+  .wave-active{clip-path:inset(calc(var(--L)*2) 0 calc(var(--L)*2) 0)}
+  .wave-active li{color:var(--ink)}
+  @keyframes waveroll{
+    0%,10.5%    {transform:translateY(0)}
+    14.3%,24.8% {transform:translateY(calc(var(--L)*-1))}
+    28.6%,39.1% {transform:translateY(calc(var(--L)*-2))}
+    42.9%,53.4% {transform:translateY(calc(var(--L)*-3))}
+    57.2%,67.7% {transform:translateY(calc(var(--L)*-4))}
+    71.5%,82.0% {transform:translateY(calc(var(--L)*-5))}
+    85.8%,96.3% {transform:translateY(calc(var(--L)*-6))}
+    100%        {transform:translateY(calc(var(--L)*-7))}
+  }
+  .wave-stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-bottom:0}
+  .wave-stats .wstat{padding:46px 28px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;border-right:1px solid var(--line)}
+  .wave-stats .wstat:last-child{border-right:0}
+  .wnum{font-family:"Inter",ui-monospace,monospace;font-size:46px;font-weight:600;letter-spacing:-.04em;color:var(--ink);line-height:1;font-feature-settings:"tnum"}
+  .wnum small{font-family:"Inter",sans-serif;font-size:14px;font-weight:500;color:var(--muted);letter-spacing:0;margin-left:2px}
+  .wlbl{font-size:14.5px;color:var(--muted);max-width:200px}
+  @media(max-width:860px){.wave-top{--wf:34px}.wave-stats{grid-template-columns:repeat(2,1fr)}.wave-stats .wstat:nth-child(2){border-right:0}.wave-stats .wstat:nth-child(1),.wave-stats .wstat:nth-child(2){border-bottom:1px solid var(--line)}.wnum{font-size:38px}}
+</style>
+<section id="wave" class="reveal"><div class="c">
+  <div class="wave-top">
+    <h2 class="wave-h">Säg adjö till</h2>
+    <div class="wave-roll">
+      <div class="wave-layer wave-grey">
+        <ul>
+          <li>manuella rapporter</li>
+          <li>sena bokslut</li>
+          <li>letande i system</li>
+          <li>”jag återkommer”</li>
+          <li>stress</li>
+          <li>krångliga frågor</li>
+          <li><br></li>
+          <li>manuella rapporter</li>
+          <li>sena bokslut</li>
+          <li>letande i system</li>
+          <li>”jag återkommer”</li>
+          <li>bortslösad tid</li>
+        </ul>
+      </div>
+      <div class="wave-layer wave-active">
+        <ul>
+          <li>manuella rapporter</li>
+          <li>sena bokslut</li>
+          <li>letande i system</li>
+          <li>”jag återkommer”</li>
+          <li><br></li>
+          <li>krångliga frågor</li>
+          <li>högsäsong</li>
+          <li>manuella rapporter</li>
+          <li>sena bokslut</li>
+          <li>letande i system</li>
+          <li>”jag återkommer”</li>
+          <li>bortslösad tid</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="wave-stats">
+    <div class="wstat">
+      <div class="wnum"><span class="cup" data-to="40" data-suf="&nbsp;%">40&nbsp;%</span> <small>(est.)</small></div>
+      <div class="wlbl">&nbsp;Högre marginal på fast pris uppdrag</div>
+    </div>
+    <div class="wstat">
+      <div class="wnum"><span class="cup" data-to="3" data-suf="X">3X</span> <small>(est.)</small></div>
+      <div class="wlbl">Fler kunder per medarbetare</div>
+    </div>
+    <div class="wstat">
+      <div class="wnum"><span class="cup" data-to="50" data-grp="1" data-suf="+">+50 %</span></div>
+      <div class="wlbl">&nbsp;Kapacitet utan nyanställning</div>
+    </div>
+    <div class="wstat">
+      <div class="wnum"><span class="cup" data-to="80" data-suf="&nbsp;%">80&nbsp;%</span> <small>(est.)</small></div>
+      <div class="wlbl">&nbsp;Av rutinarbetet automatiserat</div>
+    </div>
+  </div>
+</div></section>
+
+<section id="produkten" class="reveal"><div class="c">
+  <div class="center"><span class="pill"><span class="dot"></span>Produkten</span><h2 style="margin-top:18px">En AI-motor, sex rådgivningsprodukter</h2><p class="sub" style="margin:0 auto;max-width:640px">Varje leverans blir ett debiterbart rådgivningstillfälle — inte bara en sifferleverans.</p></div>
+  <div class="agwrap">
+    <div class="agrow two">
+      <div class="agc big"><span class="agnum">01</span><div class="agt"><h4>AI-agenter</h4><p>Löpande bokföring, avstämningar och bokslut sköts i bakgrunden. Din AI-kollega bevakar vad som händer och hör av sig först när något behöver dig.</p></div><div class="phbox"><div class="pmock"><div class="prow"><span class="pav"></span><div><b>Nordstjärnan AB</b><div class="psub">Bygg · 12 anställda</div></div></div><div class="ptags"><span>Bransch</span><span>Intäkter</span><span>Kostnader</span><span>Fokus: tillväxt</span></div></div></div></div>
+      <div class="agc big"><span class="agnum">02</span><div class="agt"><h4>Planering – likviditet, budget och prognos</h4><p>Budget, prognoser och likviditetsplanering drivet av AI. Beskriv läget framåt i ord eller svara på några frågor, så bygger AI:n ett realistiskt utgångsläge som du justerar när du vill. Du kan lika gärna chatta dig fram till en färdig likviditetsrapport eller likviditetsbudget. AI-kollegan är assistenten, du är experten.</p></div><div class="phbox"><div class="pmock"><div class="pbars"><i style="height:42%"></i><i style="height:60%"></i><i style="height:52%"></i><i style="height:78%"></i><i style="height:66%"></i><i style="height:92%"></i></div><div class="psub">Budget &amp; prognos · Q3</div></div></div></div>
+    </div>
+    <div class="agrow">
+      <div class="agc"><span class="agnum">03</span><div class="agt"><h4>Rapportering &amp; analys</h4><p>Periodrapporter, likviditet och helt egna nyckeltal på sekunder. AI:n tar fram underlaget, du granskar och presenterar.</p></div></div>
+      <div class="agc"><span class="agnum">04</span><div class="agt"><h4>VATsson</h4><p>Fråga rakt mot regelverket och få svar direkt. VATsson tolkar din situation, förklarar vad som gäller och pekar på källan – istället för att du letar dig fram i lagtext och vägledningar själv.</p></div></div>
+      <div class="agc"><span class="agnum">05</span><div class="agt"><h4>Likviditet och kassaflöde i realtid</h4><p>Se likviditeten i realtid — balans, kassaflöde per period, in- och utbetalningar, visualiserat och förklarat. Lägg till egna transaktioner, skapa scenarier (”vad händer om vi gör det där inköpet?”) och jämför kassan med kommande förpliktelser.</p></div></div>
+      <div class="agc"><span class="agnum">06</span><div class="agt"><h4>Personalisering – låt AI lära känna företaget</h4><p>Genom att personalisera ger du din AI-kollega rätt förutsättningar för träffsäker kommunikation och analys - vilken bransch, var intäkterna kommer från, vilka kostnader och vilket fokus framåt som gäller.</p></div></div>
+    </div>
+    <div class="agrow one">
+      <div class="agc"><span class="agnum">Fråga AI</span><div class="agt"><h4>Fråga AI — en hel ekonomifunktion på en fråga</h4><p>Ställ en fråga i klartext, så går en hel ekonomifunktion av specialister igång. Var och en kan sin sak – en läser siffrorna, en stämmer av mot regelverket, en tar fram rapporten, en uppdaterar prognosen. De stannar inte vid att förklara, de föreslår konkreta åtgärder och utför det som går att utföra. Avstämningen redan gjord, rapporten redan skissad, prognosen redan uppdaterad. Vill du kan du lämna över stående uppdrag – så sköter de det löpande och hör av sig när något behöver dig. Du får inte ett svar att tolka, utan arbete som redan är gjort. Sista ordet är alltid ditt.</p></div><div class="phbox tall"><div class="pmock" style="max-width:none"><svg viewBox="0 0 620 170" preserveAspectRatio="none" style="width:100%;height:160px;display:block"><path d="M0,150 C120,120 200,130 300,90 C400,55 500,72 620,30 L620,170 L0,170 Z" fill="rgba(232,151,58,.14)"></path><path d="M0,150 C120,120 200,130 300,90 C400,55 500,72 620,30" fill="none" stroke="#E8973A" stroke-width="3"></path><path d="M0,160 C120,150 220,153 320,126 C430,96 520,112 620,76" fill="none" stroke="#A6AEF0" stroke-width="3"></path><path d="M0,166 C140,160 240,162 340,148 C440,134 540,140 620,116" fill="none" stroke="#ED8A6E" stroke-width="3"></path></svg><div class="psub" style="margin-top:8px">Likviditet &amp; nyckeltal · realtid</div></div></div></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="reveal"><div class="c">
+  <div class="center"><span class="pill"><span class="dot"></span>Vatsson AI-agent</span><h2 style="margin-top:18px">Få svaret på sekunder — med källa och sidnummer</h2><p class="sub" style="margin:0 auto;max-width:640px">Moms, skatt och K3 besvarat med källa, sidnummer och bolagets egna siffror.</p></div>
+  <div class="feat3">
+    <div class="fcard">
+      <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg></div>
+      <h4>Heltäckande webbsökning</h4>
+      <p class="fd">Vårt sökindex är live och täcker hela redovisningsbranschen. Vi förlitar oss inte bara på träningsdata, vi söker i realtid hos myndigheter och Skatteverket så att du alltid har den senaste informationen.</p>
+      <div class="fmock"><div class="mk">
+        <div class="mr"><span><b>Live-källor</b></span><span style="color:#1FA971;font-size:11px">● live</span></div>
+        <div class="mr"><span>Skatteverket.se</span><span>✓</span></div>
+        <div class="mr"><span>BFN · K3</span><span>✓</span></div>
+        <div class="mr"><span>Bokföringslagen</span><span>✓</span></div>
+      </div></div>
+    </div>
+    <div class="fcard">
+      <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"></ellipse><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"></path><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"></path></svg></div>
+      <h4>Arbeta med din egen data</h4>
+      <p class="fd">Ladda upp egna dokument, rutiner och kundhistorik. Vatsson indexerar din privata kunskapsbas tillsammans med publika regelverk, en samlad sanningskälla.</p>
+      <div class="fmock"><div class="mk">
+        <div class="mr"><span><b>Din kunskapsbas</b></span></div>
+        <div class="mr"><span><i class="fi"></i>Kundhistorik.pdf</span><span>✓</span></div>
+        <div class="mr"><span><i class="fi"></i>Byråns rutiner.docx</span><span>✓</span></div>
+        <div class="mr"><span style="color:#C77A2E;font-weight:600">+ Ladda upp dokument</span></div>
+      </div></div>
+    </div>
+    <div class="fcard">
+      <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 1.7 2.9-.2 1 2.8 2.3 1.8-.9 2.8.9 2.8-2.3 1.8-1 2.8-2.9-.2L12 22l-2.4-1.7-2.9.2-1-2.8L3.4 16l.9-2.8-.9-2.8 2.3-1.8 1-2.8 2.9.2z"></path><path d="M9 12l2 2 4-4"></path></svg></div>
+      <h4>Verifierbar träffsäkerhet</h4>
+      <p class="fd">Varje svar kommer med direkta källhänvisningar. Klicka och verifiera källan direkt. Ingen black-box-AI — granska resonemang och källmaterial med ett enda klick.</p>
+      <div class="fmock"><div class="mk">
+        <div style="line-height:1.5">”Moms vid EU-försäljning redovisas enligt huvudregeln…”</div>
+        <span class="cite">Källa: ML 5 kap. · sid 142 ↗</span>
+      </div></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="agenter" class="reveal"><div class="c">
+  <div class="center"><span class="pill"><span class="dot"></span>AI Agenter</span><h2 style="margin-top:18px">Varje redovisningsprocess får sin AI-specialist</h2><p class="sub" style="margin:0 auto;max-width:640px">Det agentiska lagret — specialiserade agenter för varje process, dirigerade av en orchestrator.</p></div>
+  <div class="agwrap">
+    <div class="agrow">
+      <div class="agc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"></rect><circle cx="12" cy="4.4" r="1.3"></circle><path d="M12 5.7V8"></path><circle cx="9.2" cy="13" r="1.1"></circle><circle cx="14.8" cy="13" r="1.1"></circle><path d="M3 12.5V15M21 12.5V15"></path></svg><div class="agt"><h4>Lön</h4><p>Arbetsgivaravgifter, förmåner</p></div></div>
+      <div class="agc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"></rect><circle cx="12" cy="4.4" r="1.3"></circle><path d="M12 5.7V8"></path><circle cx="9.2" cy="13" r="1.1"></circle><circle cx="14.8" cy="13" r="1.1"></circle><path d="M3 12.5V15M21 12.5V15"></path></svg><div class="agt"><h4>Bokslut</h4><p>K2/K3, avstämning</p></div></div>
+      <div class="agc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"></rect><circle cx="12" cy="4.4" r="1.3"></circle><path d="M12 5.7V8"></path><circle cx="9.2" cy="13" r="1.1"></circle><circle cx="14.8" cy="13" r="1.1"></circle><path d="M3 12.5V15M21 12.5V15"></path></svg><div class="agt"><h4>Löpande bokföring</h4><p>95 % hands off på leverantörsreskontra – din ekonomiassistent som aldrig sover</p></div></div>
+      <div class="agc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"></rect><circle cx="12" cy="4.4" r="1.3"></circle><path d="M12 5.7V8"></path><circle cx="9.2" cy="13" r="1.1"></circle><circle cx="14.8" cy="13" r="1.1"></circle><path d="M3 12.5V15M21 12.5V15"></path></svg><div class="agt"><h4>Skatt</h4><p>INK2, underskottsavdrag</p></div></div>
+    </div>
+    <div class="agrow bottom">
+      <div class="agc wide"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="8" width="17" height="12" rx="3.5"></rect><circle cx="12" cy="3.8" r="1.4"></circle><path d="M12 5.2V8"></path><circle cx="9" cy="13.5" r="1.3"></circle><circle cx="15" cy="13.5" r="1.3"></circle><path d="M2 12v4M22 12v4"></path></svg><div class="agt"><h4>Orkestratorn - din ekonomifunktion</h4><p>Dirigerar alla agenter — fördelar arbetet och håller ihop processen.</p></div>
+      </div>
+      <div class="agc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"></rect><circle cx="12" cy="4.4" r="1.3"></circle><path d="M12 5.7V8"></path><circle cx="9.2" cy="13" r="1.1"></circle><circle cx="14.8" cy="13" r="1.1"></circle><path d="M3 12.5V15M21 12.5V15"></path></svg><div class="agt"><h4>Konsolidering</h4><p>Koncern, eliminering</p></div></div>
+      <div class="agc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"></rect><circle cx="12" cy="4.4" r="1.3"></circle><path d="M12 5.7V8"></path><circle cx="9.2" cy="13" r="1.1"></circle><circle cx="14.8" cy="13" r="1.1"></circle><path d="M3 12.5V15M21 12.5V15"></path></svg><div class="agt"><h4>Moms</h4><p>Sverige &amp; EU, OSS/IOSS</p></div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- Kunder — bento (omdömen + resultatrutor med kundlogga), gradienter i SEVR-tappning -->
+<style>
+  .bento-t{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:42px;background:var(--line);border:1px solid var(--line);
+    grid-template-areas:
+      "s1 s2 t1"
+      "t2 t2 t1"
+      "s3 t3 t3"
+      "s4 t4 t4";}
+  .bt{border-radius:0;padding:30px;display:flex;flex-direction:column}
+  .bt.t1{grid-area:t1}.bt.t2{grid-area:t2}.bt.t3{grid-area:t3}.bt.t4{grid-area:t4}
+  .bt.s1{grid-area:s1}.bt.s2{grid-area:s2}.bt.s3{grid-area:s3}.bt.s4{grid-area:s4}
+  .bstat{justify-content:space-between;min-height:236px}
+  .bnum{font-family:"Inter",ui-monospace,monospace;font-size:34px;font-weight:600;letter-spacing:-.03em;color:var(--ink);line-height:1}
+  .bnum small{font-family:"Inter",sans-serif;font-size:13px;font-weight:500;color:var(--muted);margin-left:3px}
+  .blbl{font-size:15px;color:#5c5346;margin-top:8px}
+  .blogo{margin-top:auto;padding-top:26px;font-weight:700;font-size:18px;letter-spacing:-.01em;color:rgba(33,13,2,.42)}
+  .g-gold{background:linear-gradient(150deg,#F7EEDC,#EFD8AC)}
+  .g-lilac{background:linear-gradient(150deg,#ECEAFB,#D5DAF7)}
+  .g-terra{background:linear-gradient(150deg,#FBEBE3,#F4D1C2)}
+  .g-sand{background:linear-gradient(150deg,#F0EBE0,#E2D7BE)}
+  .bquote{background:#fff;justify-content:space-between}
+  .qt{font-size:17.5px;line-height:1.5;color:#2c2620;margin:0 0 26px}
+  .bt.t1 .qt{font-size:19px}
+  .bq-foot{display:flex;align-items:center;gap:12px}
+  .bq-ava{width:46px;height:46px;border-radius:8px;flex:0 0 auto;background:linear-gradient(135deg,#C49A2B,#F2901F 30%,#ED8A6E 55%,#A6AEF0 82%,#CBD7FB)}
+  .bq-id{flex:1;line-height:1.3}.bq-id strong{display:block;font-size:15px;font-weight:600;color:var(--ink)}.bq-id span{font-size:14px;color:var(--muted)}
+  .bq-x{width:42px;height:42px;border-radius:9px;background:#16100A;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .bq-x svg{width:18px;height:18px;fill:#fff}
+  @media(max-width:860px){.bento-t{grid-template-columns:1fr 1fr;grid-template-areas:"s1 s2" "t1 t1" "t2 t2" "s3 s4" "t3 t3" "t4 t4"}}
+  @media(max-width:560px){.bento-t{grid-template-columns:1fr;grid-template-areas:"s1" "s2" "t1" "t2" "s3" "t3" "s4" "t4"}.bstat{min-height:180px}}
+</style>
+<section class="reveal"><div class="c">
+  <div class="center"><span class="pill"><span class="dot"></span>kunder</span><h2 style="margin-top:18px">Det säger byråer och företag om SEVR</h2></div>
+  <div class="bento-t">
+    <div class="bt s1 bstat g-gold">
+      <div><div class="bnum">60&nbsp;% <small>(est.)</small></div><div class="blbl">Mindre manuellt arbete</div></div>
+      <div class="blogo">BYRÅ&nbsp;AB</div>
+    </div>
+    <div class="bt s2 bstat g-lilac">
+      <div><div class="bnum">2X <small>(est.)</small></div><div class="blbl">Fler rådgivningstimmar</div></div>
+      <div class="blogo">REVISIO</div>
+    </div>
+    <div class="bt t1 bquote">
+      <p class="qt">”Vi gick från sifferleverans till rådgivning — utan att anställa fler. SEVR gör det tråkiga, vi gör bedömningen.”</p>
+      <div class="bq-foot">
+        <span class="bq-ava"></span>
+        <div class="bq-id"><strong>SEVR-kund</strong><span>VD, redovisningsbyrå · placeholder</span></div>
+        <a class="bq-x" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.6c0-1.57-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V23h-4V8z"></path></svg></a>
+      </div>
+    </div>
+    <div class="bt t2 bquote">
+      <p class="qt">”Likviditetssvackan syns innan den slår till. Vi hör av oss till kunden innan det blir ett problem — det är där förtroendet byggs.”</p>
+      <div class="bq-foot">
+        <span class="bq-ava"></span>
+        <div class="bq-id"><strong>SEVR-kund</strong><span>Rådgivningsansvarig · placeholder</span></div>
+        <a class="bq-x" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.6c0-1.57-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V23h-4V8z"></path></svg></a>
+      </div>
+    </div>
+    <div class="bt s3 bstat g-terra">
+      <div><div class="bnum">30&nbsp;sek</div><div class="blbl">VD-rapport — förr en halv dag</div></div>
+      <div class="blogo">EKONOMI+</div>
+    </div>
+    <div class="bt t3 bquote">
+      <p class="qt">”Äntligen svenska svar med källa. Vi litar på siffran direkt och slipper dubbelkolla i tre system.”</p>
+      <div class="bq-foot">
+        <span class="bq-ava"></span>
+        <div class="bq-id"><strong>SEVR-kund</strong><span>Byråägare · placeholder</span></div>
+        <a class="bq-x" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.6c0-1.57-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V23h-4V8z"></path></svg></a>
+      </div>
+    </div>
+    <div class="bt s4 bstat g-sand">
+      <div><div class="bnum">+40&nbsp;% <small>(est.)</small></div><div class="blbl">Fler kunder per ekonom</div></div>
+      <div class="blogo">NORD&nbsp;BYRÅ</div>
+    </div>
+    <div class="bt t4 bquote">
+      <p class="qt">”Vi förstår vår ekonomi i klartext nu. Inga fler ’jag återkommer’ — svaret finns direkt.”</p>
+      <div class="bq-foot">
+        <span class="bq-ava"></span>
+        <div class="bq-id"><strong>SEVR-kund</strong><span>Ekonomichef, företag · placeholder</span></div>
+        <a class="bq-x" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.8v2.05h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V23h-4v-6.6c0-1.57-.03-3.6-2.2-3.6-2.2 0-2.54 1.72-2.54 3.49V23h-4V8z"></path></svg></a>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="reveal"><div class="c">
+  <div class="center"><span class="pill"><span class="dot"></span>välj väg</span><h2 style="margin-top:18px">Vad är du ute efter?</h2></div>
+  <div class="routes">
+    <a class="route lilac" href="byra.html"><span class="rk">För byråer</span><h3>Skala din byrå</h3><p>Bär fler kunder med samma team. Det rutinmässiga sköts av AI, du säljer rådgivningen – en ny intäktsmodell på köpet.</p><span class="go">Till byråsidan →</span></a>
+    <a class="route sky" href="#"><span class="rk">För företag</span><h3>En digital ekonomifunktion</h3><p>Hela ekonomifunktionen – utan att anställa den<br>
+Ställ en fråga, få tillbaka utfört arbete och fatta tryggare beslut. Du styr, AI:n jobbar.</p><span class="go">Till företagssidan →</span></a>
+  </div>
+</div></section>
+
+<section class="reveal"><div class="c">
+  <div class="secband">
+    <div class="sechead"><span class="seclbl">+ Trygghet</span><h3 class="sechd">Tryggt för er. Tryggt för kunden.</h3></div>
+    <div class="secgrid">
+      <div class="seccell">
+        <h4>GDPR</h4>
+        <p>Vårt team sitter i Sverige och vi arbetar enligt GDPR – Europas strängaste standard för dataskydd.</p>
+      </div>
+      <div class="seccell">
+        <h4>Ingen modellträning</h4>
+        <p>Er och kundens data används aldrig för att träna språkmodeller. Det ni lägger in stannar hos er.</p>
+      </div>
+      <div class="seccell">
+        <h4>Integritet</h4>
+        <p>Hur vi samlar in, använder och skyddar data – i klartext.</p>
+        <div class="secfoot"><a class="readp" href="#">Läs policy →</a></div>
+      </div>
+      <div class="seccell">
+        <h4>Personuppgiftsbiträdesavtal</h4>
+        <p>Vårt åtagande att skydda er och kundens information – tydligt reglerat i ett DPA.</p>
+        <div class="secfoot"><a class="readp" href="#">Läs policy →</a></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section id="faq" class="reveal"><div class="c faqwrap">
+  <div class="faqhead"><span class="pill"><span class="dot"></span>FAQ</span><h2>Vanliga frågor</h2></div>
+  <div class="faq">
+    <div class="fitem open"><div class="q">Ersätter AI:n konsulten?<i>⌄</i></div><div class="a">Nej. AI gör analysen, du gör bedömningen. Human in the loop, hela vägen — ditt omdöme går inte att automatisera.</div></div>
+    <div class="fitem"><div class="q">Vilka ekonomisystem stöds?<i>⌄</i></div><div class="a">Fortnox via API. Övriga system via SIE-filimport.</div></div>
+    <div class="fitem"><div class="q">Är datan säker?<i>⌄</i></div><div class="a">GDPR-säkert. Er data tränar aldrig någon annans AI-modell.</div></div>
+    <div class="fitem"><div class="q">Vad är AI-credits?<i>⌄</i></div><div class="a">Krediter som driver AI-funktionerna och delas av hela byrån. 30 dagars villkor.</div></div>
+  </div>
+</div></section>
+
+<section class="reveal"><div class="c"><div class="ctaband" id="cta"><h2>AI gör 80 %. Ditt omdöme gör resten.</h2><p class="sub">Se hur SEVR jämnar ut arbetsbördan och höjer marginalen.</p><a class="btn y" href="#cta">Boka en 30-minuters demo</a></div></div></section>
+
+<footer><div class="c">
+  <div class="foot">
+    <div><img src="logo.svg" alt="SEVR Insights" style="height:24px;width:auto;margin-bottom:12px"><div><br></div></div>
+    <div><b>Produkt</b><a href="#produkten">Produkten</a><a href="#agenter">AI-agenter</a><a href="faq.html">Vanliga frågor</a></div>
+    <div><b>Företag</b><a href="byra.html">För byrå</a><a href="#cta">Boka demo</a><a>Kontakt</a></div>
+    <div><b>Trygghet</b><a>GDPR-säkert</a><a>Ingen modellträning</a><a>Svar med källa</a></div>
+  </div>
+  <div class="legal">
+    <a href="villkor.html">Licensavtal &amp; allmänna användarvillkor</a>
+    <a href="integritetspolicy.html">Integritetspolicy</a>
+    <a href="cookiepolicy.html">Cookiepolicy</a>
+    <a href="dpa.html">Personuppgiftsbiträdesavtal</a>
+  </div>
+  <p style="margin-top:24px;font-size:12px">© SEVR Reporting Services AB · Prototyp V5 — bento/lynai-stil</p>
+</div></footer>
+
+<script>
+// Flikmodul: all copy bor nu i HTML (panelerna ovan). Skriptet visar/doljer bara.
+function setTab(k){
+  document.querySelectorAll('.tabmod .panel').forEach(function(p){p.hidden=(p.getAttribute('data-p')!==k);});
+  document.querySelectorAll('.tabs button').forEach(function(x){x.classList.toggle('on', x.getAttribute('data-t')===k);});
+}
+document.querySelectorAll('.tabs button').forEach(function(b){b.addEventListener('click',function(){setTab(b.getAttribute('data-t'));});});
+setTab('rapporter');
+document.querySelectorAll('.fitem .q').forEach(function(q){q.onclick=function(){q.parentElement.classList.toggle('open');};});
+(function(){var words=['grovjobbet','det tunga','det manuella','det repetitiva','det tidskrävande'];var i=0;var el=document.getElementById('rotw');if(!el)return;setInterval(function(){el.style.opacity='0';setTimeout(function(){i=(i+1)%words.length;el.textContent=words[i];el.style.opacity='1';},300);},2400);})();
+(function(){var grid=document.querySelector('.wave-stats');if(!grid||!('IntersectionObserver'in window))return;function run(){grid.querySelectorAll('.cup').forEach(function(el){var tpl=el._cupTpl;if(tpl==null){tpl=el.textContent;el._cupTpl=tpl;}var m=tpl.match(/^(\D*?)(\d[\d.,]*(?:[  ]\d{3})*)([\s\S]*)$/);if(!m)return;var pre=m[1],numStr=m[2],suf=m[3];var grp=/[  ]/.test(numStr);var to=parseFloat(numStr.replace(/[  .]/g,'').replace(',','.'));if(isNaN(to))return;var dur=1500,t0=null;function fmt(v){v=Math.round(v);return grp?v.toLocaleString('sv-SE'):String(v);}function step(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/dur,1);var e=1-Math.pow(1-p,3);el.textContent=pre+fmt(to*e)+suf;if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);});}var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){run();io.disconnect();}});},{threshold:.4});io.observe(grid);})();
+(function(){if(!('IntersectionObserver'in window))return;var secs=document.querySelectorAll('section');secs.forEach(function(s){s.classList.add('reveal');});var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12,rootMargin:'0px 0px -8% 0px'});secs.forEach(function(s){io.observe(s);});})();</script>
+
+
+
+
+
+
+
+
+
+</body></html>

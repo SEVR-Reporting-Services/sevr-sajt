@@ -2,6 +2,13 @@
 
 Läs det här först. Det förklarar vad projektet är, hur filerna hänger ihop och vilka regler du ska följa när du gör ändringar. För **varför**-resonemanget bakom varje version, läs `VERSIONER.md`.
 
+> 📌 **MASTER = KLIENTENS VERSION + versionsspårning (så vi inte tappar bort oss).** Kunden och kundens agent **får redigera mastern fritt** — `index.html` (startsidan/V5) speglar alltid kundens senaste version. Det är meningen. Vårt jobb är att **se och förstå vad som ändrats**, inte att låsa kunden.
+>
+> - Git-historiken är facit: `git fetch` + `git log`/`git diff` visar exakt varje ändring kunden gjort.
+> - **Frysta checkpoints** sparas som snapshot-fil (`vc5.html`) + git-tagg (`vc5`) — referenslägen vi kan jämföra mot, så vi ser diffen och inte råkar skriva över kundens copy. Ändra inte själva snapshot-filen/taggen.
+> - När **vi** gör ändringar: utgå från senaste master, jobba i en **branch + PR**, skriv inte om kundens text (inkl. "Vatsson/VATsson" som kunden skrivit det) utan att först se diffen och stämma av.
+> - Vid nästa kund-milstolpe: ta en **ny checkpoint** (`vc6` …) på samma sätt.
+
 ---
 
 ## Vad det här är
