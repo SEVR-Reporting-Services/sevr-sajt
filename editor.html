@@ -45,7 +45,9 @@
 <body>
 <div class="bar">
   <span class="brand">SEVR <i>Copy-editor</i></span>
-  <button class="b" id="open">📂 Öppna sida…</button>
+  <button class="b" id="openDir">📁 Öppna projektmapp</button>
+  <select class="b" id="pagesel" style="display:none;max-width:220px"><option value="">— välj sida —</option></select>
+  <button class="b" id="open">📂 Öppna enskild fil…</button>
   <button class="b on" id="toggle" disabled>✏️ Edit-läge: PÅ</button>
   <button class="b y" id="save" disabled>💾 Spara</button>
   <span class="dot" id="dirty"></span>
@@ -59,7 +61,7 @@
     <iframe id="frame" title="förhandsvisning"></iframe>
     <div class="empty" id="empty">
       <h2>Öppna en sida att redigera</h2>
-      <p>Klicka <b>📂 Öppna sida…</b> och välj t.ex. <code>index.html</code>. Sedan kan du klicka direkt i rubriker, brödtext och knappar och skriva om copyn — sektion för sektion. Spara tillbaka till filen med <b>💾 Spara</b>.</p>
+      <p>Klicka <b>📁 Öppna projektmapp</b> en gång — sedan väljer du sida (index, byrå, <b>företag</b>, pris…) i listan och hoppar fritt mellan dem. Eller öppna en enskild fil. Klicka sedan direkt i rubriker, brödtext och knappar och skriv om copyn. Spara med <b>💾 Spara</b>.</p>
       <p class="hint">Tips: kör editorn via en lokal server (t.ex. <code>python -m http.server</code> i repo-mappen och gå till <code>localhost:8000/editor.html</code>) så fungerar både bilder och direkt-sparning bäst.</p>
     </div>
   </div>
@@ -96,6 +98,35 @@ function fallbackOpen(){
   inp.click();
 }
 
+/* ---------- Öppna hel projektmapp (växla mellan sidor) ---------- */
+let dirHandle = null;
+$('#openDir').onclick = async () => {
+  if(!window.showDirectoryPicker){ toast('Webbläsaren stöder inte mappöppning – använd "Öppna enskild fil".'); return; }
+  try{
+    dirHandle = await window.showDirectoryPicker();
+    if(dirHandle.requestPermission && (await dirHandle.requestPermission({mode:'readwrite'}))!=='granted'){ toast('Skrivåtkomst nekad.'); return; }
+    const names=[];
+    for await (const [name,handle] of dirHandle.entries()){
+      if(handle.kind==='file' && /\.html?$/i.test(name) && !/^(v\d|prototyp-|salj-|editor)/i.test(name)) names.push(name);
+    }
+    names.sort();
+    const i=names.indexOf('index.html'); if(i>0){names.splice(i,1);names.unshift('index.html');}
+    const sel=$('#pagesel');
+    sel.innerHTML='<option value="">— välj sida —</option>'+names.map(n=>'<option value="'+n+'">'+n+'</option>').join('');
+    sel.style.display='';
+    toast('Mapp öppnad – välj en sida i listan.');
+  }catch(e){ if(e.name!=='AbortError') toast('Kunde inte öppna mapp: '+e.message); }
+};
+$('#pagesel').onchange = async (e) => {
+  const name=e.target.value; if(!name||!dirHandle){return;}
+  if(dirty && !confirm('Du har osparade ändringar. Byta sida ändå (ändringarna förloras)?')){ e.target.value=fileName; return; }
+  try{
+    const h=await dirHandle.getFileHandle(name);
+    fileHandle=h; fileName=name;
+    loadHTML(await (await h.getFile()).text());
+  }catch(err){ toast('Kunde inte öppna '+name+': '+err.message); }
+};
+
 /* ---------- Ladda HTML i iframe ---------- */
 function loadHTML(txt){
   if(/<meta[^>]+http-equiv=["']?refresh/i.test(txt)){
@@ -106,6 +137,7 @@ function loadHTML(txt){
   }
   $('#empty').style.display='none';
   $('#fname').textContent = fileName + (fileHandle ? '' : '  (sparas som nedladdning)');
+  const sel=$('#pagesel'); if(sel && [...sel.options].some(o=>o.value===fileName)) sel.value=fileName;
   frame.onload = afterLoad;
   frame.srcdoc = txt;        // srcdoc => relativa sökvägar (bilder) löses mot repo-roten
   setDirty(false);
