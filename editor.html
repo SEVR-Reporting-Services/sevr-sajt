@@ -165,7 +165,8 @@ function injectStyle(doc){
     // i edit-lage: fall ut allt som annars ar gomt bakom en klick (FAQ-svar, dolda flik-paneler)
     +'body.__editing .fitem .a{max-height:none!important;overflow:visible!important;padding-bottom:22px!important}'
     +'body.__editing .panel[hidden]{display:flex!important}'
-    +'body.__editing .fitem{outline:1px dashed rgba(232,151,58,.25)}';
+    +'body.__editing .fitem{outline:1px dashed rgba(232,151,58,.25)}'
+    +'body.__editing .__phed{outline:2px dashed rgba(232,151,58,.5)!important;color:var(--ink, #210D02)!important}';
   doc.head.appendChild(s);
 }
 
@@ -186,11 +187,19 @@ function applyEditable(doc){
       }
     }
   })(doc.body);
+  // formulärfält: visa platshållartexten som redigerbart innehåll (ändras tillbaka till placeholder vid sparning)
+  doc.querySelectorAll('input[placeholder],textarea[placeholder]').forEach(function(f){
+    f.value = f.getAttribute('placeholder') || '';
+    f.classList.add('__phed');
+    if(!f._phBound){ f._phBound=true; f.addEventListener('input', onEdit, {passive:true}); }
+  });
 }
 function removeEditable(doc){
   doc.body.classList.remove('__editing');
   try{const w=frame.contentWindow; if(w.__rAF){w.requestAnimationFrame=w.__rAF; w.__rAF=null;}}catch(e){}
   doc.querySelectorAll('.__ed').forEach(el=>{el.classList.remove('__ed');el.removeAttribute('contenteditable');if(!el.classList.length)el.removeAttribute('class');});
+  // skriv tillbaka redigerad platshållartext till placeholder-attributet
+  doc.querySelectorAll('.__phed').forEach(f=>{f.setAttribute('placeholder', f.value);f.value='';f.removeAttribute('value');f.classList.remove('__phed');if(!f.classList.length)f.removeAttribute('class');});
 }
 function onEdit(){ setDirty(true); }
 // I edit-läge: blockera all länk-navigering (även kort som är inslagna i <a>) så klick = redigera
