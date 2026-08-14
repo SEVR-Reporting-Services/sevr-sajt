@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Resultatrapport med AI-genererad kommentar</title>
+    <style>
+      /* Inter (c) The Inter Project Authors, SIL Open Font License 1.1
+         (https://github.com/rsms/inter). Nedbantad till exakt de tecken som
+         animationen anvander och inbaddad - inga externa anrop. */
+      @font-face {
+        font-family: "Rapport";
+        font-weight: 400;
+        font-display: block;
+        src: url(data:font/woff2;base64,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) format("woff2");
+      }
+      @font-face {
+        font-family: "Rapport";
+        font-weight: 550;
+        font-display: block;
+        src: url(data:font/woff2;base64,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) format("woff2");
+      }
+
+      :root {
+        --vit: #ffffff;
+        --pill: #fafafa;
+        --kant: #e2e8f0;
+        --text: #030712;
+        --dammig: #64748b;
+        --handtag: #94a3b8;
+        --violett: #8b5cf6;
+        --rosa: #e80869;
+        --teal: #14b8a6;
+        --himmel: #0ea5e9;
+        --mjuk: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background: transparent; /* genomskinlig bakgrund */
+        overflow: hidden;
+      }
+
+      #scen {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        max-height: 100%;
+        margin: 0 auto;
+        font-family: "Rapport", ui-sans-serif, system-ui, sans-serif;
+        font-weight: 400;
+        color: var(--text);
+      }
+      #scenrum {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1440px;
+        height: 1440px;
+        transform-origin: 0 0;
+        transform: scale(var(--k, 1));
+      }
+
+      /* ── Valfri bakgrundsgradient (klassen "med-bakgrund" pa #scen) ─────── */
+      .bakgrund {
+        display: none;
+      }
+      #scen.med-bakgrund .bakgrund {
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 1900px;
+        height: 1900px;
+        margin: -950px 0 0 -950px;
+        border-radius: 640px;
+        background: linear-gradient(135deg, var(--teal), var(--himmel));
+        filter: blur(30px);
+        animation: snurra-bakgrund 10s linear infinite;
+      }
+      @keyframes snurra-bakgrund {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ── Kamera ────────────────────────────────────────────────────────── */
+      .kamera {
+        position: absolute;
+        inset: 0;
+        transform-origin: 50% 50%;
+        animation: kamera 10s var(--mjuk) infinite both;
+      }
+      @keyframes kamera {
+        0%,
+        3.5% {
+          transform: translate(-70px, 80px) scale(0.46);
+          animation-timing-function: cubic-bezier(0.65, 0, 0.3, 1);
+        }
+        14% {
+          transform: translate(0, 0) scale(1);
+        }
+        88% {
+          transform: translate(-14px, -10px) scale(1.035);
+          animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        100% {
+          transform: translate(-70px, 80px) scale(0.46);
+        }
+      }
+
+      /* ── Kortet ────────────────────────────────────────────────────────── */
+      .kort {
+        position: absolute;
+        left: 40px;
+        top: 40px;
+        width: 1360px;
+        height: 1360px;
+        border-radius: 44px;
+        background: var(--vit);
+        overflow: hidden;
+        box-shadow:
+          0 4px 14px rgba(3, 7, 18, 0.05),
+          0 44px 90px rgba(3, 7, 18, 0.16);
+      }
+
+      /* ── Diagram ───────────────────────────────────────────────────────── */
+      .diagram {
+        position: absolute;
+        left: -40px;
+        top: -40px;
+        width: 1440px;
+        height: 1440px;
+      }
+      .stapel {
+        fill: var(--violett);
+      }
+      .trend {
+        fill: none;
+        stroke: var(--text);
+        stroke-width: 6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .nod {
+        fill: var(--vit);
+        stroke: var(--text);
+        stroke-width: 5;
+      }
+      .axel-y,
+      .axel-x {
+        fill: var(--text);
+        font-family: "Rapport", ui-sans-serif, system-ui, sans-serif;
+        font-size: 34px;
+      }
+      .axel-x {
+        font-size: 31px;
+        letter-spacing: -0.01em;
+      }
+
+      /* ── Verktygsrad ───────────────────────────────────────────────────── */
+      .verktygsrad-plats {
+        position: absolute;
+        left: 50%;
+        top: 80px;
+        width: 820px;
+        margin-left: -410px;
+      }
+      .verktygsrad {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+        height: 132px;
+        padding: 0 30px;
+        border: 2px solid var(--kant);
+        border-radius: 36px;
+        background: var(--pill);
+        box-shadow: 0 2px 10px rgba(3, 7, 18, 0.04);
+        transform-origin: 50% 50%;
+        animation: klicktryck 10s var(--mjuk) infinite both;
+      }
+      @keyframes klicktryck {
+        0%,
+        15.2% {
+          transform: scale(1);
+        }
+        16.1% {
+          transform: scale(0.972);
+        }
+        17.4%,
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .handtag {
+        display: grid;
+        grid-template-columns: repeat(2, 9px);
+        gap: 8px 9px;
+        flex: none;
+      }
+      .handtag i {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--handtag);
+      }
+      .avdelare {
+        width: 2px;
+        height: 58px;
+        background: var(--kant);
+        flex: none;
+      }
+
+      .etiketter {
+        position: relative;
+        flex: 1;
+        align-self: stretch;
+      }
+      .etikett {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        font-size: 52px;
+        font-weight: 550;
+        letter-spacing: -0.01em;
+        white-space: nowrap;
+      }
+      .etikett-a {
+        animation: etikett-a 10s var(--mjuk) infinite both;
+      }
+      .etikett-b {
+        animation: etikett-b 10s var(--mjuk) infinite both;
+      }
+      .etikett-c {
+        animation: etikett-c 10s var(--mjuk) infinite both;
+      }
+      /* Texten byts med en kort suddig overtoning, som i originalet. */
+      @keyframes etikett-a {
+        0%,
+        16.2% {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+        18.2%,
+        92.8% {
+          opacity: 0;
+          transform: translateY(-14px);
+          filter: blur(6px);
+        }
+        96.2%,
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+      }
+      @keyframes etikett-b {
+        0%,
+        16.2% {
+          opacity: 0;
+          transform: translateY(14px);
+          filter: blur(6px);
+        }
+        18.2%,
+        43% {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+        45.4%,
+        100% {
+          opacity: 0;
+          transform: translateY(-14px);
+          filter: blur(6px);
+        }
+      }
+      @keyframes etikett-c {
+        0%,
+        43% {
+          opacity: 0;
+          transform: translateY(14px);
+          filter: blur(6px);
+        }
+        45.4%,
+        91.5% {
+          opacity: 1;
+          transform: translateY(0);
+          filter: blur(0);
+        }
+        94%,
+        100% {
+          opacity: 0;
+          transform: translateY(-14px);
+          filter: blur(6px);
+        }
+      }
+      /* Gnistan i "Klart" studsar in nar sammanfattningen ar fardig. */
+      .etikett-c .gnista {
+        transform-origin: 50% 50%;
+        animation: gnista-in 10s var(--mjuk) infinite both;
+      }
+      @keyframes gnista-in {
+        0%,
+        43.4% {
+          transform: scale(0.2) rotate(-90deg);
+        }
+        47.5%,
+        100% {
+          transform: scale(1) rotate(0deg);
+        }
+      }
+
+      .knappar {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+        flex: none;
+      }
+      .ikon {
+        width: 46px;
+        height: 46px;
+        flex: none;
+        display: block;
+      }
+      .gnista {
+        fill: var(--text);
+      }
+      .kugg {
+        fill: var(--dammig);
+      }
+      .korg {
+        fill: none;
+        stroke: var(--rosa);
+        stroke-width: 2.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .snurra {
+        fill: none;
+        stroke: var(--dammig);
+        stroke-width: 3.4;
+        stroke-linecap: round;
+        animation: snurr 0.9s linear infinite;
+      }
+      @keyframes snurr {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ── Muspekare ─────────────────────────────────────────────────────── */
+      .pekare {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 84px;
+        height: 84px;
+        animation: pekare 10s var(--mjuk) infinite both;
+      }
+      @keyframes pekare {
+        0% {
+          opacity: 0;
+          transform: translate(1180px, 1330px) scale(1);
+        }
+        6% {
+          opacity: 1;
+          transform: translate(1150px, 1290px) scale(1);
+        }
+        15.2% {
+          opacity: 1;
+          transform: translate(628px, 214px) scale(1);
+        }
+        16.1% {
+          transform: translate(628px, 214px) scale(0.88);
+        }
+        17.4% {
+          opacity: 1;
+          transform: translate(628px, 214px) scale(1);
+        }
+        24% {
+          opacity: 0;
+          transform: translate(1180px, 1330px) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(1180px, 1330px) scale(1);
+        }
+      }
+
+      /* ── Pausat lage (utanfor vyn) och stillbild (reducerad rorelse) ───── */
+      #scen.pausad,
+      #scen.pausad * {
+        animation-play-state: paused !important;
+      }
+      #scen.stillbild *,
+      #scen.stillbild {
+        animation: none !important;
+      }
+      #scen.stillbild .kamera {
+        transform: translate(0, 0) scale(1);
+      }
+      #scen.stillbild .etikett-a,
+      #scen.stillbild .etikett-b,
+      #scen.stillbild .pekare {
+        opacity: 0;
+      }
+      #scen.stillbild .etikett-c {
+        opacity: 1;
+        transform: none;
+        filter: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="scen" role="img" aria-label="Animerad resultatrapport dar knappen Sammanfatta klickas och en AI-genererad sammanfattning blir klar">
+      <div id="scenrum">
+        <div class="bakgrund"></div>
+
+        <div class="kamera">
+          <div class="kort">
+            <svg class="diagram" viewBox="0 0 1440 1440" aria-hidden="true">
+        <path class="stapel" d="M120 630.0000000000002 a14 14 0 0 1 14-14 h112 a14 14 0 0 1 14 14 V1200 H120 Z" />
+        <path class="stapel" d="M312 557.9999999999998 a14 14 0 0 1 14-14 h112 a14 14 0 0 1 14 14 V1200 H312 Z" />
+        <path class="stapel" d="M504 517.9999999999998 a14 14 0 0 1 14-14 h112 a14 14 0 0 1 14 14 V1200 H504 Z" />
+        <path class="stapel" d="M696 470.0000000000002 a14 14 0 0 1 14-14 h112 a14 14 0 0 1 14 14 V1200 H696 Z" />
+        <path class="stapel" d="M888 461.99999999999955 a14 14 0 0 1 14-14 h112 a14 14 0 0 1 14 14 V1200 H888 Z" />
+        <path class="stapel" d="M1080 437.9999999999998 a14 14 0 0 1 14-14 h112 a14 14 0 0 1 14 14 V1200 H1080 Z" />
+        <polyline class="trend" points="190,704 382,648 574,608 766,560 958,512 1150,472" />
+        <circle class="nod" cx="190" cy="704" r="13" />
+        <circle class="nod" cx="382" cy="648" r="13" />
+        <circle class="nod" cx="574" cy="608" r="13" />
+        <circle class="nod" cx="766" cy="560" r="13" />
+        <circle class="nod" cx="958" cy="512" r="13" />
+        <circle class="nod" cx="1150" cy="472" r="13" />
+        <text class="axel-y" x="1320" y="400" text-anchor="end" dominant-baseline="middle">70%</text>
+        <text class="axel-y" x="1320" y="667" text-anchor="end" dominant-baseline="middle">66%</text>
+        <text class="axel-y" x="1320" y="933" text-anchor="end" dominant-baseline="middle">63%</text>
+        <text class="axel-y" x="1320" y="1200" text-anchor="end" dominant-baseline="middle">60%</text>
+        <text class="axel-x" x="190" y="1262" text-anchor="middle">Sep 2025</text>
+        <text class="axel-x" x="382" y="1262" text-anchor="middle">Oct 2025</text>
+        <text class="axel-x" x="574" y="1262" text-anchor="middle">Nov 2025</text>
+        <text class="axel-x" x="766" y="1262" text-anchor="middle">Dec 2025</text>
+        <text class="axel-x" x="958" y="1262" text-anchor="middle">Jan 2026</text>
+        <text class="axel-x" x="1150" y="1262" text-anchor="middle">Feb 2026</text>
+            </svg>
+
+            <div class="verktygsrad-plats">
+              <div class="verktygsrad">
+                <span class="handtag" aria-hidden="true"
+                  ><i></i><i></i><i></i><i></i><i></i><i></i
+                ></span>
+                <span class="avdelare" aria-hidden="true"></span>
+
+                <span class="etiketter">
+                  <span class="etikett etikett-a">
+                    <svg class="ikon gnista" viewBox="-24 -24 48 48" aria-hidden="true">
+                      <path d="M0-19C1.7-6.9 6.9-1.7 19 0 6.9 1.7 1.7 6.9 0 19-1.7 6.9-6.9 1.7-19 0-6.9-1.7-1.7-6.9 0-19Z" />
+                      <path d="M17-24c.7 4.5 2.8 6.6 7 7.2-4.2.7-6.3 2.8-7 7.2-.7-4.4-2.8-6.5-7-7.2 4.2-.6 6.3-2.7 7-7.2Z" />
+                    </svg>
+                    Sammanfatta
+                  </span>
+
+                  <span class="etikett etikett-b">
+                    <svg class="ikon snurra" viewBox="-24 -24 48 48" aria-hidden="true">
+                      <circle r="17" stroke-dasharray="78 29" />
+                    </svg>
+                    Sammanfattar
+                  </span>
+
+                  <span class="etikett etikett-c">
+                    <svg class="ikon gnista" viewBox="-24 -24 48 48" aria-hidden="true">
+                      <path d="M0-19C1.7-6.9 6.9-1.7 19 0 6.9 1.7 1.7 6.9 0 19-1.7 6.9-6.9 1.7-19 0-6.9-1.7-1.7-6.9 0-19Z" />
+                      <path d="M17-24c.7 4.5 2.8 6.6 7 7.2-4.2.7-6.3 2.8-7 7.2-.7-4.4-2.8-6.5-7-7.2 4.2-.6 6.3-2.7 7-7.2Z" />
+                    </svg>
+                    Klart
+                  </span>
+                </span>
+
+                <span class="knappar" aria-hidden="true">
+                  <svg class="ikon kugg" viewBox="-24 -24 48 48">
+                    <path fill-rule="evenodd" d="M15.40 -4.34 L20.85 -2.47 L20.85 2.47 L15.40 4.34 L13.96 7.82 L16.49 13.00 L13.00 16.49 L7.82 13.96 L4.34 15.40 L2.47 20.85 L-2.47 20.85 L-4.34 15.40 L-7.82 13.96 L-13.00 16.49 L-16.49 13.00 L-13.96 7.82 L-15.40 4.34 L-20.85 2.47 L-20.85 -2.47 L-15.40 -4.34 L-13.96 -7.82 L-16.49 -13.00 L-13.00 -16.49 L-7.82 -13.96 L-4.34 -15.40 L-2.47 -20.85 L2.47 -20.85 L4.34 -15.40 L7.82 -13.96 L13.00 -16.49 L16.49 -13.00 L13.96 -7.82 Z M7.50 0.00 L7.36 -1.46 L6.93 -2.87 L6.24 -4.17 L5.30 -5.30 L4.17 -6.24 L2.87 -6.93 L1.46 -7.36 L0.00 -7.50 L-1.46 -7.36 L-2.87 -6.93 L-4.17 -6.24 L-5.30 -5.30 L-6.24 -4.17 L-6.93 -2.87 L-7.36 -1.46 L-7.50 -0.00 L-7.36 1.46 L-6.93 2.87 L-6.24 4.17 L-5.30 5.30 L-4.17 6.24 L-2.87 6.93 L-1.46 7.36 L-0.00 7.50 L1.46 7.36 L2.87 6.93 L4.17 6.24 L5.30 5.30 L6.24 4.17 L6.93 2.87 L7.36 1.46 L7.50 0.00 Z" />
+                  </svg>
+                  <svg class="ikon korg" viewBox="-24 -24 48 48">
+                    <path d="M-18-12h36" />
+                    <path d="M-7-12v-4a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4" />
+                    <path d="M-14.5-7h29l-2.6 23.6a4 4 0 0 1-4 3.6h-15.8a4 4 0 0 1-4-3.6Z" />
+                    <path d="M-4.5-1.5v13M4.5-1.5v13" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <svg class="pekare" viewBox="0 0 84 84" aria-hidden="true">
+          <path
+            d="M4 2 46 40 27.5 42.4 37.6 62.6 28.4 67 18.6 47.4 4 59Z"
+            fill="#030712"
+            stroke="#ffffff"
+            stroke-width="4"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        /* ── Installningar ──────────────────────────────────────────────
+           VISA_BAKGRUND  false = genomskinlig bakgrund (som nu),
+                          true  = turkos/bla gradient bakom kortet
+           SPELA_I_VY     true = animationen startar nar embedden syns
+           SYNLIG_ANDEL   hur stor del av embedden som maste synas (0-1)
+           HASTIGHET      1 = originalhastighet, 0.5 = halva farten
+        ───────────────────────────────────────────────────────────────── */
+        var VISA_BAKGRUND = false;
+        var SPELA_I_VY = true;
+        var SYNLIG_ANDEL = 0.25;
+        var HASTIGHET = 1;
+
+        var scen = document.getElementById("scen");
+        var rum = document.getElementById("scenrum");
+
+        if (VISA_BAKGRUND) scen.classList.add("med-bakgrund");
+        if (HASTIGHET !== 1) {
+          scen.querySelectorAll("*").forEach(function (el) {
+            var d = getComputedStyle(el).animationDuration;
+            if (d && d !== "0s") {
+              el.style.animationDuration = d
+                .split(",")
+                .map(function (v) {
+                  return parseFloat(v) / HASTIGHET + "s";
+                })
+                .join(",");
+            }
+          });
+        }
+
+        // Skalar scenrummet (1440 x 1440) till embeddens faktiska bredd.
+        function skala() {
+          rum.style.setProperty("--k", scen.clientWidth / 1440);
+        }
+        skala();
+        if (typeof ResizeObserver !== "undefined") new ResizeObserver(skala).observe(scen);
+        else window.addEventListener("resize", skala);
+
+        // Respektera operativsystemets installning for reducerad rorelse.
+        if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          scen.classList.add("stillbild");
+          return;
+        }
+
+        if (!SPELA_I_VY || typeof IntersectionObserver === "undefined") return;
+
+        // Animationen spelar som utgangslage och pausas forst nar betraktaren
+        // rapporterar att embedden ar utanfor vyn. Uteblir rapporten - vissa
+        // inbaddade webbvyer levererar den aldrig - fortsatter den spela i
+        // stallet for att fastna i pauslage.
+        var betraktare = new IntersectionObserver(
+          function (poster) {
+            poster.forEach(function (post) {
+              scen.classList.toggle("pausad", !post.isIntersecting);
+            });
+          },
+          { threshold: SYNLIG_ANDEL }
+        );
+        betraktare.observe(scen);
+      })();
+    </script>
+  <script>
+/* Skickar hjulet vidare till vardsidan (Lenis via SevrEmbed) sa att scrollen inte
+   hackar nar muspekaren star over embedden. Aktiveras FORST efter handskakning. */
+(function(){
+  var host=false;
+  window.addEventListener('message',function(e){
+    var d=e&&e.data; if(d&&d.source==='sevr-host'&&d.type==='ready') host=true;
+  });
+  window.addEventListener('wheel',function(e){
+    if(!host) return;
+    e.preventDefault();
+    try{parent.postMessage({source:'sevr-embed',type:'wheel',deltaY:e.deltaY},'*');}catch(err){}
+  },{passive:false});
+})();
+</script>
+  </body>
+</html>
