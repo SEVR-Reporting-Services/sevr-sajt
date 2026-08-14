@@ -4232,4 +4232,16 @@ body{overflow:hidden;display:block!important}
   },{passive:false});
 })();
 </script>
+<script>
+/* Notiscentret ska ligga FÖRE Ask AI — Ask AI sist, längst ut i hörnet. */
+(function(){
+  function fix(){
+    var bell=document.querySelector('[aria-label="Notiser"]');
+    if(!bell||!bell.parentElement) return;
+    var p=bell.parentElement;
+    if(p.firstElementChild!==bell) p.insertBefore(bell,p.firstElementChild);
+  }
+  fix(); setTimeout(fix,300); setTimeout(fix,1200);
+})();
+</script>
 </html>
