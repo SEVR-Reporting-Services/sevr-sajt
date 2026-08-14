@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vatsson · Heltäckande webbsökning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --card:#ffffff; --foreground:#0f172a;
+    --muted-foreground:#64748b; --border:#e8edf3; --border-strong:#e2e8f0;
+    --input:#f1f5f9; --primary:#1d4ed8;
+    --secondary:#f0f0f7; --secondary-fg:#334155;
+    --success:#dcfce7; --success-fg:#14532d; --enc:#16a34a;
+    --icon:#94a3b8; --radius:14px;
+    --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:transparent;display:flex;align-items:flex-start;justify-content:center;
+    min-height:100%;overflow:hidden;font-family:var(--sans);color:var(--foreground);-webkit-font-smoothing:antialiased}
+
+  .modal{position:relative;width:340px;background:var(--card);
+    border:1px solid var(--border-strong);border-radius:var(--radius);
+    box-shadow:0 18px 44px -16px rgba(15,23,42,.28),0 3px 8px -3px rgba(15,23,42,.12);
+    transform-origin:top center;padding:14px 15px 13px}
+
+  /* sökfält — som appens input */
+  .search{display:flex;align-items:center;gap:9px;background:var(--input);
+    border:1px solid var(--border);border-radius:10px;padding:9px 11px}
+  .search svg{color:var(--icon);flex:none}
+  .q{font-size:12.5px;color:#0f172a;min-height:16px}
+  .caret{display:inline-block;width:2px;height:13px;background:var(--primary);vertical-align:-2px;margin-left:1px;animation:bl 1s steps(1) infinite}
+  @keyframes bl{50%{opacity:0}}
+
+  .lblrow{display:flex;align-items:center;justify-content:space-between;margin:13px 0 8px}
+  .lbl{font-size:9.5px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em}
+  .upd{font-size:9px;color:#94a3b8;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;flex:none}
+
+  /* chips = badge.tsx: default(secondary) -> success. FAST statusslot (10px) — bredden
+     ändras ALDRIG, så kortet omflödar/växer inte när checkarna dyker upp. */
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{display:inline-flex;align-items:center;gap:4px;background:var(--secondary);color:var(--secondary-fg);
+    border-radius:6px;padding:4px 8px;font-size:10.5px;font-weight:500;transition:background .3s,color .3s}
+  .chip .n{color:#94a3b8;font-weight:500}
+  .chip .slot{width:10px;height:10px;flex:none;display:flex;align-items:center;justify-content:center}
+  .chip .ck{visibility:hidden;color:var(--success-fg)}
+  .chip.scan{background:#eef2ff;color:#1e3a8a}
+  /* jordglob i tomrummet — snurrar under skanningen (= laddningsindikatorn) */
+  .globe{display:inline-flex;align-items:center;justify-content:center;color:#94a3b8;
+    width:26px;height:26px;align-self:center;transition:color .4s}
+  .globe svg{animation:none}
+  .globe.go{color:var(--primary)}
+  .globe.go svg{animation:sp 2.4s linear infinite}
+  .globe.ok{color:var(--enc)}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .chip.on{background:var(--success);color:var(--success-fg)}
+  .chip.on .n{color:#3f6212}
+  .chip.on .ck{visibility:visible;animation:pop .3s ease}
+  @keyframes pop{0%{transform:scale(.5)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+
+  /* statusrad — fast höjd; laddning = TypingDots (sevrDot), klart = grönt i SAMMA vikt/storlek */
+  .status{margin-top:13px;display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted-foreground);height:18px}
+  .dots{display:inline-flex;align-items:center;gap:4px;color:#64748b}
+  .dots i{display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;animation:sevrDot 1.05s infinite}
+  .dots i:nth-child(2){animation-delay:150ms}
+  .dots i:nth-child(3){animation-delay:300ms}
+  @keyframes sevrDot{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-3px);opacity:1}}
+  .done{display:none;align-items:center;gap:6px;font-size:11px;font-weight:400;color:var(--enc)}
+  .done svg{flex:none}
+</style>
+</head>
+<body>
+  <div class="modal" id="modal">
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <span class="q"><span id="q"></span><span class="caret" id="caret"></span></span>
+    </div>
+
+    <div class="lblrow">
+      <span class="lbl">Söker live i 48 webbkällor</span>
+      <span class="upd">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+        Uppdaterat idag
+      </span>
+    </div>
+    <div class="chips" id="chips"></div>
+
+    <div class="status" id="st">
+      <span class="dots"><i></i><i></i><i></i></span><span id="sttxt">Väntar…</span>
+    </div>
+    <div class="status done" id="done">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      Svar med källhänvisningar · alltid aktuellt
+    </div>
+  </div>
+
+<script>
+const QUERY="3:12 – nytt gränsbelopp 2026?";
+const CATS=[["Bokföringsnämnden",21],["Skatterättsnämnden",11],["Myndigheter",5],["Riksdagen",2],["Lagstiftning",2],["E-faktura",2],["Skatteverket",1],["EU-rätt",1],["Domstolar",1],["BAS",1],["Referensdata",1]];
+const checkSvg='<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+const chips=document.getElementById('chips'),q=document.getElementById('q'),caret=document.getElementById('caret'),
+  st=document.getElementById('st'),sttxt=document.getElementById('sttxt'),done=document.getElementById('done'),modal=document.getElementById('modal');
+CATS.forEach(c=>{const el=document.createElement('span');el.className='chip';
+  el.innerHTML='<span class="slot"><span class="ck">'+checkSvg+'</span></span>'+c[0]+'<span class="n">'+c[1]+'</span>';chips.appendChild(el);});
+/* jordglob i tomrummet efter sista chippen — snurrar under skanningen */
+const globe=document.createElement('span');globe.className='globe';
+globe.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>';
+chips.appendChild(globe);
+const els=[...chips.querySelectorAll('.chip')];
+
+/* paus på hover (som kort 2/3 variant A) */
+let paused=false;
+modal.addEventListener('mouseenter',()=>paused=true);
+modal.addEventListener('mouseleave',()=>paused=false);
+
+/* --- Framer-hygien: pausa BARA när fliken är dold.
+   (IntersectionObserver togs bort: i Framers preview/canvas rapporterar den ofta
+    isIntersecting=false fast kortet syns → animationen frös.) --- */
+var offscr=false;
+document.addEventListener('visibilitychange',function(){offscr=document.hidden;});
+
+function sleep(ms){return new Promise(res=>{let t=0;const step=()=>{if(t>=ms)return res();setTimeout(()=>{if(!paused&&!offscr)t+=60;step();},60);};step();});}
+
+/* FILL WIDTH som bild (samma standard som kort 2 & 3). ZOOM = finjustering. */
+const ZOOM=1;let curK=1;
+function fit(){curK=(window.innerWidth/modal.offsetWidth)*ZOOM;modal.style.transform='scale('+curK+')';}
+var _rzT=0,_lastW=window.innerWidth;
+window.addEventListener('resize',function(){
+  if(window.innerWidth===_lastW)return; _lastW=window.innerWidth;
+  clearTimeout(_rzT);_rzT=setTimeout(fit,120);});
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(fit);}
+setTimeout(fit,200);
+
+(async()=>{
+ fit();
+ while(true){
+  q.textContent="";caret.style.display='inline-block';
+  els.forEach(e=>e.classList.remove('on'));
+  globe.classList.remove('go','ok');
+  st.style.display='flex';done.style.display='none';sttxt.textContent='Väntar…';
+  await sleep(600);
+  for(const ch of QUERY){q.textContent+=ch;await sleep(46);}
+  caret.style.display='none';
+  await sleep(350);
+  globe.classList.add('go');            // jordgloben börjar snurra = live-skanning
+  let n=0;
+  for(let i=0;i<els.length;i++){
+    els[i].classList.add('scan');
+    sttxt.textContent='Kontrollerar '+CATS[i][0]+'…';
+    await sleep(520);
+    els[i].classList.remove('scan');els[i].classList.add('on');
+    n+=CATS[i][1];
+    sttxt.textContent='Analyserar '+n+' källor…';
+    await sleep(140);
+  }
+  await sleep(450);
+  globe.classList.remove('go');globe.classList.add('ok');   // stannar, blir grön
+  st.style.display='none';done.style.display='flex';
+  await sleep(3400);
+ }})();
+</script>
+<script>
+/* Skickar hjulet vidare till värdsidan (Lenis via SevrEmbed) så att scrollen inte
+   hackar när muspekaren står över embedden. Aktiveras FÖRST efter handskakning —
+   utan värd rör vi inte scrollen alls. */
+(function(){
+  var host=false;
+  window.addEventListener('message',function(e){
+    var d=e&&e.data; if(d&&d.source==='sevr-host'&&d.type==='ready') host=true;
+  });
+  window.addEventListener('wheel',function(e){
+    if(!host) return;
+    e.preventDefault();
+    try{parent.postMessage({source:'sevr-embed',type:'wheel',deltaY:e.deltaY},'*');}catch(err){}
+  },{passive:false});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vatsson · Verifierbar träffsäkerhet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --card:#ffffff; --foreground:#0f172a;
+    --muted-foreground:#64748b; --border:#e8edf3; --border-strong:#e2e8f0;
+    --band:#f6f8fb; --primary:#1d4ed8; --accent:#e2e8f0; --teal:#14b8a6;
+    --hl:#fef3c7; --hl-fg:#111827; --gold:#facc15; --chip-fg:#854d0e;
+    --chart6:#ff6900; --enc:#16a34a; --enc-bg:#dcfce7; --enc-fg:#14532d;
+    --icon:#94a3b8; --radius:16px;
+    --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  /* som kort 2: kortet "flyter" (marginal runt, contain-skala, centrerat) */
+  body{background:transparent;display:flex;align-items:flex-start;justify-content:center;
+    min-height:100%;overflow:hidden;font-family:var(--sans);color:var(--foreground);-webkit-font-smoothing:antialiased}
+
+  .modal{position:relative;width:340px;height:334px;background:var(--card);
+    border:1px solid var(--border-strong);border-radius:var(--radius);overflow:hidden;
+    box-shadow:0 18px 44px -16px rgba(15,23,42,.28),0 3px 8px -3px rgba(15,23,42,.12);transform-origin:top center}
+
+  /* ---- chatt (statisk) ---- */
+  .chat{position:absolute;inset:0;padding:13px 14px 11px;display:flex;flex-direction:column}
+  .q{align-self:flex-end;max-width:88%;background:#fff;border:1px solid var(--border-strong);
+    border-radius:11px 11px 4px 11px;padding:7px 10px;font-size:11px;color:#334155;margin-bottom:10px}
+  .who{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+  .ava{width:24px;height:24px;flex:none;display:flex}
+  .nm{font-size:11.5px;font-weight:600}
+  .body{flex:1;min-height:0}
+
+  .p{font-size:11px;line-height:1.5;color:#1e293b;margin-bottom:5px}
+  .p b{font-weight:600;color:#0f172a}
+  .li{font-size:11px;line-height:1.45;color:#1e293b;padding:1px 4px 1px 14px;position:relative;margin-bottom:4px;border-radius:4px;transition:background .45s}
+  .li::before{content:"";position:absolute;left:4px;top:7px;width:4px;height:4px;border-radius:50%;background:#94a3b8}
+  .li b{font-weight:600;color:#0f172a}
+  .li.hl{background:var(--hl);color:var(--hl-fg)}
+
+  .chip{display:inline-flex;align-items:center;gap:3px;vertical-align:baseline;
+    background:var(--hl);color:var(--chip-fg);border:1px solid var(--gold);
+    border-radius:5px;padding:0 5px 0 4px;font-size:9.5px;font-weight:700;white-space:nowrap;line-height:1.5;
+    transition:transform .12s ease, box-shadow .12s ease}
+  .chip.press{transform:scale(.93);box-shadow:0 0 0 3px rgba(250,204,21,.4)}
+
+  .composer{margin-top:auto}
+  .cinput{border:1px solid var(--border-strong);border-radius:10px;padding:8px 10px;font-size:10.5px;color:#9aa6b6;margin-bottom:7px}
+  .crow{display:flex;align-items:center;gap:8px}
+  .filt{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--border-strong);border-radius:999px;
+    padding:3px 8px;font-size:9.5px;font-weight:600;color:#334155}
+  .kd{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;color:#334155}
+  .sw{width:24px;height:14px;border-radius:999px;background:var(--primary);position:relative;flex:none}
+  .sw::after{content:"";position:absolute;top:2px;right:2px;width:10px;height:10px;border-radius:50%;background:#fff}
+  .send{margin-left:auto;width:24px;height:24px;border-radius:50%;background:#dbe4ff;color:var(--primary);
+    display:flex;align-items:center;justify-content:center;flex:none}
+
+  .scrim{position:absolute;inset:0;background:rgba(15,23,42,.03);opacity:0;transition:opacity .4s ease;pointer-events:none}
+  .scrim.on{opacity:1}
+
+  /* ---- källpanel (drawer) ---- */
+  .drawer{position:absolute;top:0;right:0;bottom:0;width:88%;background:#fff;
+    border-left:1px solid var(--border-strong);box-shadow:-14px 0 30px -16px rgba(15,23,42,.25);
+    padding:12px 14px;transform:translateX(105%);transition:transform .48s cubic-bezier(.4,.15,.2,1);
+    display:flex;flex-direction:column}
+  .drawer.open{transform:translateX(0)}
+  .d-nav{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+  .rnd{width:21px;height:21px;border-radius:50%;border:1px solid var(--border-strong);background:#fff;
+    display:flex;align-items:center;justify-content:center;color:#64748b;flex:none}
+  .d-crumb{flex:1;font-size:9.5px;font-weight:600;color:#334155;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .d-x{color:var(--icon);display:flex}
+  .tabs{display:flex;align-items:center;gap:13px;border-bottom:1px solid var(--border);margin-bottom:8px}
+  .tab{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:var(--muted-foreground);padding-bottom:6px;position:relative}
+  .tab.act{color:#0f172a}
+  .tab.act::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--teal);border-radius:2px}
+
+  .para-n{font-size:12px;font-weight:700;color:#0f172a;margin-bottom:5px}
+  .urlrow{display:flex;align-items:center;gap:5px;background:var(--band);border:1px solid var(--border);
+    border-radius:7px;padding:5px 7px;font-family:var(--mono);font-size:8px;color:#8a97a8;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:8px}
+  .srcs{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+  .s-chip{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;border-radius:5px;padding:2px 6px}
+  .s1{background:var(--hl);color:var(--chip-fg);border:1px solid var(--gold)}
+  .s2{background:var(--enc-bg);color:var(--enc-fg);border:1px solid #bbf7d0}
+
+  .qlabel{font-size:9px;font-weight:700;color:var(--chart6);letter-spacing:.03em;text-transform:uppercase;margin-bottom:4px}
+  .quote{display:flex;gap:8px}
+  .qbar{width:3px;flex:none;border-radius:2px;background:var(--chart6)}
+  .qlines{display:flex;flex-direction:column;gap:2px}
+  .qline{display:block;width:fit-content;max-width:100%;font-size:11px;line-height:1.45;color:#1f2937;
+    background:linear-gradient(var(--hl),var(--hl)) left center/0% 84% no-repeat;border-radius:2px;padding:0 2px;
+    transition:background-size .36s ease}
+  .qline.on{background-size:100% 84%}
+  .clabel{font-size:9px;font-weight:700;color:#94a3b8;letter-spacing:.03em;text-transform:uppercase;margin:9px 0 3px}
+  .kall{font-size:10px;line-height:1.5;color:#94a3b8}
+  .d-verif{margin-top:9px;display:inline-flex;align-items:center;gap:5px;
+    font-size:10.5px;font-weight:700;color:var(--enc)}
+
+  .cursor{position:absolute;left:0;top:0;width:19px;height:19px;z-index:20;pointer-events:none;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));transform:translate(140px,140px)}
+</style>
+</head>
+<body>
+  <div class="modal" id="modal">
+    <div class="chat">
+      <div class="q">Hur beskattas utdelning i fåmansföretag 2026?</div>
+      <div class="who">
+        <span class="ava"><svg width="24" height="24" viewBox="0 0 395 395" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="overflow:visible"><g><circle cx="197.5" cy="197.5" r="197.5" style="fill:var(--accent)"></circle><g clip-path="url(#vc)"><rect x="49" y="85" width="298" height="207" rx="90" fill="black"></rect><rect x="50" y="86" width="296" height="205" rx="89" stroke="white" stroke-width="2"></rect><rect x="116.8" y="150.82" width="42" height="46" rx="8" fill="#5CD5F3" filter="url(#gw)"></rect><rect x="116.8" y="150.82" width="42" height="46" rx="8" fill="white"></rect><rect x="235.05" y="150.82" width="42" height="46" rx="8" fill="#5CD5F3" filter="url(#gw)"></rect><rect x="235.05" y="150.82" width="42" height="46" rx="8" fill="white"></rect></g></g><defs><clipPath id="vc"><circle cx="197.5" cy="197.5" r="197.5"></circle></clipPath><filter id="gw" x="0" y="0" width="395" height="395"><feGaussianBlur stdDeviation="6.96"></feGaussianBlur></filter></defs></svg></span>
+        <span class="nm">VATsson</span>
+      </div>
+
+      <div class="body">
+        <div class="p">För <b>utdelning under 2026</b> på <b>kvalificerade andelar</b> gäller de nya <b>3:12-reglerna</b>:</div>
+        <div class="li"><b>Upp till gränsbeloppet</b> – effektiv skatt <b>20 %</b> (kapital).</div>
+        <div class="li" id="b2"><b>Över gränsbeloppet</b> – i <b>inkomstslaget tjänst</b>. <span class="chip" id="chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>1 · SFS</span></div>
+        <div class="p" style="margin-top:3px"><b>Gränsbeloppet 2026:</b> en beräkningsregel <span class="chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>2 · SKV</span>, grundbelopp <b>322 400 kr</b>.</div>
+      </div>
+
+      <div class="composer">
+        <div class="cinput">Fråga om regler, skatter eller redovisning…</div>
+        <div class="crow">
+          <span class="filt"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v5l-4 2v-7z"/></svg>48/48 Källor<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+          <span class="kd"><span class="sw"></span>Inkludera kunddata</span>
+          <span class="send"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="scrim" id="scrim"></div>
+
+    <div class="drawer" id="drawer">
+      <div class="d-nav">
+        <span class="rnd"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></span>
+        <span class="rnd"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+        <span class="d-crumb">SFS · Inkomstskattelag (1999:1229)</span>
+        <span class="d-x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>
+      </div>
+      <div class="tabs">
+        <span class="tab act"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>Citerad text</span>
+        <span class="tab"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>PDF-fil</span>
+      </div>
+
+      <div class="para-n">57 kap. 20 §</div>
+      <div class="urlrow">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+        data.riksdagen.se/dokument/sfs-1999-1229.json
+      </div>
+      <div class="srcs">
+        <span class="s-chip s1">[1] § 20</span>
+        <span class="s-chip s2">[2] § 20 a</span>
+      </div>
+      <div class="qlabel">Citerat utdrag</div>
+      <div class="quote">
+        <span class="qbar"></span>
+        <div class="qlines" id="qlines">
+          <span class="qline">20 § Utdelning på en kvalificerad andel ska</span>
+          <span class="qline">tas upp i inkomstslaget tjänst till den del</span>
+          <span class="qline">den överstiger gränsbeloppet.</span>
+        </div>
+      </div>
+      <div class="d-verif"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Verifierad · officiell källa (SFS)</div>
+      <div class="clabel">Källtext</div>
+      <div class="kall">Lag (2007:1419) · gränsbelopp enligt 57 kap. 11 §.</div>
+    </div>
+
+    <svg class="cursor" id="cursor" viewBox="0 0 24 24" fill="#fff" stroke="#1f2937" stroke-width="1.4" stroke-linejoin="round"><path d="M5 3.2 L5 19 L9 15.2 L11.6 20.6 L14 19.5 L11.5 14.2 L17.2 14 Z"/></svg>
+  </div>
+
+<script>
+const modal=document.getElementById('modal'),cursor=document.getElementById('cursor'),chip=document.getElementById('chip'),
+  b2=document.getElementById('b2'),drawer=document.getElementById('drawer'),scrim=document.getElementById('scrim'),
+  qlines=[...document.querySelectorAll('.qline')];
+
+let paused=false;
+modal.addEventListener('mouseenter',()=>paused=true);
+modal.addEventListener('mouseleave',()=>paused=false);
+
+/* --- Framer-hygien: pausa BARA när fliken är dold.
+   (IntersectionObserver togs bort: i Framers preview/canvas rapporterar den ofta
+    isIntersecting=false fast kortet syns → animationen frös.) --- */
+var offscr=false;
+document.addEventListener('visibilitychange',function(){offscr=document.hidden;});
+
+function sleep(ms){return new Promise(res=>{let t=0;const step=()=>{if(t>=ms)return res();setTimeout(()=>{if(!paused&&!offscr)t+=60;step();},60);};step();});}
+function moveCursor(x,y,s,d){cursor.style.transition='transform '+d+'ms cubic-bezier(.5,.1,.2,1)';cursor.style.transform='translate('+x+'px,'+y+'px) scale('+s+')';}
+
+/* FILL WIDTH som en bild: fyller alltid ramens bredd, toppförankrad.
+   Är ramen lägre än kortet klipps botten av ramen (som en beskuren bild).
+   Styr storleken med RAMEN i Framer. ZOOM = finjustering (0.9 mindre / 1.1 större). */
+const ZOOM=1;
+let curK=1;
+function fit(){const cw=window.innerWidth,sw=modal.offsetWidth;
+  curK=(cw/sw)*ZOOM;modal.style.transform='scale('+curK+')';}
+var _rzT=0,_lastW=window.innerWidth;
+window.addEventListener('resize',function(){
+  if(window.innerWidth===_lastW)return; _lastW=window.innerWidth;
+  clearTimeout(_rzT);_rzT=setTimeout(fit,120);});
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(fit);}
+setTimeout(fit,200);
+
+function chipXY(){const mr=modal.getBoundingClientRect(),cr=chip.getBoundingClientRect();
+  return{x:(cr.left-mr.left)/curK+cr.width/curK*0.5,y:(cr.top-mr.top)/curK+cr.height/curK*0.5};}
+
+function reset(){
+  b2.classList.remove('hl');qlines.forEach(l=>l.classList.remove('on'));
+  drawer.classList.remove('open');scrim.classList.remove('on');
+  moveCursor(140,140,1,0);
+}
+
+async function run(){
+  fit();reset();await sleep(1000);
+  while(true){
+    const t=chipXY();
+    moveCursor(t.x,t.y,1,700);await sleep(720);
+    chip.classList.add('press');moveCursor(t.x,t.y,0.87,100);await sleep(130);moveCursor(t.x,t.y,1,150);
+    setTimeout(()=>chip.classList.remove('press'),240);
+
+    moveCursor(t.x-36,t.y+62,1,450);
+    scrim.classList.add('on');drawer.classList.add('open');b2.classList.add('hl');
+    await sleep(560);
+    for(const l of qlines){l.classList.add('on');await sleep(300);}
+    await sleep(4000);
+
+    drawer.classList.remove('open');scrim.classList.remove('on');b2.classList.remove('hl');
+    qlines.forEach(l=>l.classList.remove('on'));
+    await sleep(700);
+    reset();await sleep(1000);
+  }
+}
+run();
+</script>
+<script>
+/* Skickar hjulet vidare till värdsidan (Lenis via SevrEmbed) så att scrollen inte
+   hackar när muspekaren står över embedden. Aktiveras FÖRST efter handskakning —
+   utan värd rör vi inte scrollen alls. */
+(function(){
+  var host=false;
+  window.addEventListener('message',function(e){
+    var d=e&&e.data; if(d&&d.source==='sevr-host'&&d.type==='ready') host=true;
+  });
+  window.addEventListener('wheel',function(e){
+    if(!host) return;
+    e.preventDefault();
+    try{parent.postMessage({source:'sevr-embed',type:'wheel',deltaY:e.deltaY},'*');}catch(err){}
+  },{passive:false});
+})();
+</script>
+</body>
+</html>
