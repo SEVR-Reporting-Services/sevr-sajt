@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Likviditetsrapport — kort</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style id="sevr-fx">
+:root{
+  /* ---------- duk och kort ---------- */
+  --card-w:680px;
+  --card-h:520px;
+  --radius:20px;
+  --pad:32px;
+
+  /* ---------- tokens ur index.css (ljust tema) ---------- */
+  --card:#ffffff;
+  --foreground:#030712;
+  --muted-foreground:#64748b;
+  --border:#e2e8f0;
+  --primary:#1d4ed8;
+  --ring:#cbd5e1;
+
+  /* ---------- seriefarger, enligt LiquidityGraph.tsx ---------- */
+  --in:#14b8a6;      /* chart-1  inflode  */
+  --ut:#ff6900;      /* chart-6  utflode  (byt till #ed568b for gamla rosa) */
+  --saldo:#6366f1;   /* chart-5  saldo    */
+
+  /* ---------- gradientregeln ---------- */
+  --stapel-topp:0.95;
+  --stapel-fot:0.55;
+  --yta-topp:0.16;
+  --yta-fot:0;
+
+  /* ---------- form ---------- */
+  --stapel:18px;      /* barSize 18 = likviditet */
+  --stapel-radie:4;
+  --linje:2.5;
+
+  /* ---------- typografi ---------- */
+  --t-titel:23px;
+  --t-underrad:15px;
+  --t-reglage:16px;
+
+  --shadow:none;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;overflow:hidden}
+body{
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--foreground);
+  display:flex;align-items:flex-start;justify-content:flex-start;
+  -webkit-font-smoothing:antialiased;
+}
+#scale{transform-origin:top left}
+
+.card{
+  position:relative;
+  width:var(--card-w);height:var(--card-h);
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:var(--pad);
+  display:flex;flex-direction:column;
+  overflow:hidden;                 /* inget far sticka ut nar det landat */
+  opacity:0;transform:scale(.985);
+  transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.30,1);
+}
+.card.in{opacity:1;transform:scale(1)}
+
+/* ---------------- rubrik ---------------- */
+.head{flex:0 0 auto;opacity:0;transform:translateY(8px);
+  transition:opacity .45s ease,transform .5s cubic-bezier(.22,1,.30,1)}
+.head.in{opacity:1;transform:none}
+.titel{font-size:var(--t-titel);font-weight:600;letter-spacing:-.01em}
+.underrad{font-size:var(--t-underrad);color:var(--muted-foreground);margin-top:5px}
+
+.reglagerad{display:flex;align-items:center;gap:13px;margin-top:20px}
+.switch{
+  width:48px;height:28px;border-radius:999px;background:var(--ring);
+  flex:0 0 auto;padding:3px;transition:background .35s ease;
+}
+.switch i{display:block;width:22px;height:22px;border-radius:50%;background:#fff;
+  box-shadow:0 1px 3px rgba(3,7,18,.28);
+  transition:transform .35s cubic-bezier(.22,1,.30,1)}
+.switch.on{background:var(--primary)}
+.switch.on i{transform:translateX(20px)}
+.reglagetext{font-size:var(--t-reglage);font-weight:500}
+
+/* ---------------- diagram ---------------- */
+.plot{flex:1 1 auto;margin-top:22px;position:relative}
+#duk{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+
+/* hela diagramgruppen ar det som flyger ut och landar */
+#kamera{transition:transform 1.15s cubic-bezier(.24,.92,.28,1)}
+
+.stapel{transform-box:fill-box;transform-origin:var(--vaxpunkt,50% 100%);
+  transform:scaleY(0);transition:transform .62s cubic-bezier(.22,1,.30,1)}
+.stapel.in{transform:scaleY(1)}
+
+#saldolinje{transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.25,1)}
+#saldoyta{opacity:0;transition:opacity .7s ease}
+#saldoyta.in{opacity:1}
+#saldopunkt{opacity:0;transition:opacity .35s ease}
+#saldopunkt.in{opacity:1}
+</style>
+</head>
+<body>
+<div id="scale">
+  <div class="card" id="card">
+
+    <div class="head" id="head">
+      <div class="titel">Likviditetsrapport</div>
+      <div class="underrad">In- och utbetalningar samt kassasaldo, 2026</div>
+      <div class="reglagerad">
+        <span class="switch on" id="switch"><i></i></span>
+        <span class="reglagetext">Visa transaktioner</span>
+      </div>
+    </div>
+
+    <div class="plot">
+      <svg id="duk" viewBox="0 0 616 354" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <!-- Stapel: samma kulor, 0.95 -> 0.55. Aldrig tva kulorer i data. -->
+          <linearGradient id="gIn" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0"   stop-color="var(--in)" stop-opacity="0.95"/>
+            <stop offset="1"   stop-color="var(--in)" stop-opacity="0.55"/>
+          </linearGradient>
+          <linearGradient id="gUt" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0"   stop-color="var(--ut)" stop-opacity="0.95"/>
+            <stop offset="1"   stop-color="var(--ut)" stop-opacity="0.55"/>
+          </linearGradient>
+          <!-- Yta under linjen: 0.16 -> 0 -->
+          <linearGradient id="gSaldo" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0"   stop-color="var(--saldo)" stop-opacity="0.16"/>
+            <stop offset="1"   stop-color="var(--saldo)" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+
+        <g id="kamera">
+          <path id="saldoyta" fill="url(#gSaldo)"/>
+          <g id="staplar"></g>
+          <!-- nollinje: ReferenceLine, var(--border), 1 px -->
+          <line id="nollinje" stroke="var(--border)" stroke-width="1"/>
+          <path id="saldolinje" fill="none" stroke="var(--saldo)"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle id="saldopunkt" r="4.5" fill="var(--saldo)"/>
+        </g>
+      </svg>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var ZOOM   = 1;
+var CARD_W = 680;   /* matchar --card-w */
+var CARD_H = 520;   /* matchar --card-h */
+function fit(){
+  var k = (window.innerWidth / CARD_W) * ZOOM;
+  document.getElementById('scale').style.transform = 'scale(' + k + ')';
+  document.body.style.height = (CARD_H * k) + 'px';
+}
+fit(); addEventListener('resize', fit);
+
+var sleep = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
+var $ = function(s){ return document.querySelector(s); };
+var NS = "http://www.w3.org/2000/svg";
+
+/* ── data ─────────────────────────────────────────────────────────────
+   in  = inbetalningar (over nollinjen)
+   ut  = utbetalningar (under), 0 = ingen stapel
+   sal = kassasaldo, ritas som linje + yta                              */
+var DATA = {
+  in : [138,  92, 190,  63, 155, 104, 172, 126, 207],
+  ut : [ 63,   0,   0,  71,   0,  40,   0,   0,  35],
+  sal: [ 21,  30,  48,  58,  85, 113, 147, 175, 209]
+};
+
+var B = { w:616, h:354, noll:250, x0:40, steg:68 };
+var STAPEL = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stapel')) || 18;
+var RADIE  = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stapel-radie')) || 4;
+
+function x(i){ return B.x0 + i * B.steg; }
+
+/* rundade horn bara i stapelns "topp" — [4,4,0,0] enligt formspraket */
+function stapelBana(cx, y, hojd, upp){
+  var v = cx - STAPEL/2, h = cx + STAPEL/2, r = Math.min(RADIE, STAPEL/2, hojd);
+  if (upp) {
+    var t = y - hojd;
+    return 'M'+v+' '+y+' L'+v+' '+(t+r)+' Q'+v+' '+t+' '+(v+r)+' '+t+
+           ' L'+(h-r)+' '+t+' Q'+h+' '+t+' '+h+' '+(t+r)+' L'+h+' '+y+' Z';
+  }
+  var b = y + hojd;
+  return 'M'+v+' '+y+' L'+v+' '+(b-r)+' Q'+v+' '+b+' '+(v+r)+' '+b+
+         ' L'+(h-r)+' '+b+' Q'+h+' '+b+' '+h+' '+(b-r)+' L'+h+' '+y+' Z';
+}
+
+/* mjuk kurva genom punkterna (cardinal spline -> bezier) */
+function mjukBana(p){
+  if (p.length < 2) return '';
+  var d = 'M' + p[0][0] + ' ' + p[0][1], sp = 0.2;
+  for (var i = 0; i < p.length - 1; i++){
+    var f = p[Math.max(i-1,0)], a = p[i], b = p[i+1], e = p[Math.min(i+2,p.length-1)];
+    d += ' C' + (a[0]+(b[0]-f[0])*sp) + ' ' + (a[1]+(b[1]-f[1])*sp) +
+         ' '  + (b[0]-(e[0]-a[0])*sp) + ' ' + (b[1]-(e[1]-a[1])*sp) +
+         ' '  + b[0] + ' ' + b[1];
+  }
+  return d;
+}
+
+function bygg(){
+  var g = $('#staplar');
+  for (var i = 0; i < DATA.in.length; i++){
+    if (DATA.in[i] > 0){
+      var pi = document.createElementNS(NS, 'path');
+      pi.setAttribute('d', stapelBana(x(i), B.noll, DATA.in[i], true));
+      pi.setAttribute('fill', 'url(#gIn)');
+      pi.setAttribute('class', 'stapel');
+      pi.style.setProperty('--vaxpunkt', '50% 100%');
+      g.appendChild(pi);
+    }
+    if (DATA.ut[i] > 0){
+      var pu = document.createElementNS(NS, 'path');
+      pu.setAttribute('d', stapelBana(x(i), B.noll, DATA.ut[i], false));
+      pu.setAttribute('fill', 'url(#gUt)');
+      pu.setAttribute('class', 'stapel');
+      pu.style.setProperty('--vaxpunkt', '50% 0%');
+      g.appendChild(pu);
+    }
+  }
+
+  $('#nollinje').setAttribute('x1', 8);
+  $('#nollinje').setAttribute('x2', B.w - 8);
+  $('#nollinje').setAttribute('y1', B.noll);
+  $('#nollinje').setAttribute('y2', B.noll);
+
+  var pts = DATA.sal.map(function(v, i){ return [x(i), B.noll - v]; });
+  var bana = mjukBana(pts);
+  var lin = $('#saldolinje');
+  lin.setAttribute('d', bana);
+  var langd = lin.getTotalLength();
+  lin.style.strokeDasharray  = langd;
+  lin.style.strokeDashoffset = langd;
+
+  $('#saldoyta').setAttribute('d',
+    bana + ' L' + pts[pts.length-1][0] + ' ' + B.noll + ' L' + pts[0][0] + ' ' + B.noll + ' Z');
+
+  $('#saldopunkt').setAttribute('cx', pts[pts.length-1][0]);
+  $('#saldopunkt').setAttribute('cy', pts[pts.length-1][1]);
+}
+
+/* ── kameran ──────────────────────────────────────────────────────────
+   Diagrammet kommer inzoomat och forskjutet, panorerar over ytan och
+   landar sedan i vila. I vila ar transformen identitet, sa ingenting
+   sticker ut — kortet har overflow:hidden och det finns ingen svans. */
+function kamera(skala, dx, dy, ms){
+  var k = $('#kamera');
+  if (ms != null) k.style.transitionDuration = (ms/1000) + 's';
+  k.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + skala + ')';
+}
+
+async function play(){
+  bygg();
+  kamera(1.75, 150, 46, 0);          /* utflugen startpose */
+
+  $('#card').classList.add('in');
+  await sleep(420);
+  $('#head').classList.add('in');
+  await sleep(420);
+
+  /* staplarna vaxer medan vi fortfarande ar inzoomade */
+  var st = Array.prototype.slice.call(document.querySelectorAll('.stapel'));
+  for (var i = 0; i < st.length; i++){ st[i].classList.add('in'); await sleep(70); }
+
+  $('#saldolinje').style.strokeDashoffset = 0;
+  $('#saldoyta').classList.add('in');
+  await sleep(420);
+
+  kamera(1.75, -190, 46, 1900);      /* panorera at vanster */
+  await sleep(1750);
+
+  kamera(1, 0, 0, 1150);             /* zooma ut och landa */
+  await sleep(1050);
+  $('#saldopunkt').classList.add('in');
+}
+
+var started = false;
+function start(){ if (started) return; started = true; play(); }
+if ('IntersectionObserver' in window){
+  var io = new IntersectionObserver(function(e){
+    if (e[0].isIntersecting){ start(); io.disconnect(); }
+  }, { threshold: 0.3 });
+  io.observe($('#card'));
+} else { start(); }
+setTimeout(start, 4000);
+</script>
+</body>
+</html>

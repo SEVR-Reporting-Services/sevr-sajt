@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Personalisering — chatt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style id="sevr-fx">
+:root{
+  /* ---------- skruva här ---------- */
+  --card-size:680px;
+  --radius:20px;
+  --pad:32px;
+
+  /* riktiga tokens ur index.css (light) */
+  --primary:#1d4ed8;
+  --background:#ffffff;
+  --card:#ffffff;
+  --foreground:#030712;
+  --secondary:#f0f0f7;
+  --muted:#f1f5f9;
+  --muted-foreground:#64748b;
+  --accent:#e2e8f0;
+  --accent-foreground:#111827;
+  --border:#e2e8f0;
+  --input:#f8fafc;
+  --ring:#cbd5e1;
+  --teal:#14b8a6;
+  --chart-6:#ff6900;
+  --eye:#5CD5F3;
+  --shadow:none;
+
+  --t-msg:18px;
+  --t-ui:15px;
+  --t-chip:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;overflow:hidden}
+body{
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--foreground);
+  display:flex;align-items:flex-start;justify-content:flex-start;
+  -webkit-font-smoothing:antialiased;
+}
+#scale{transform-origin:top left}
+
+.card{
+  position:relative;
+  width:var(--card-size);height:var(--card-size);
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:var(--pad);
+  display:flex;flex-direction:column;
+  opacity:0;transform:scale(.985);
+  transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.30,1);
+}
+.card.in{opacity:1;transform:scale(1)}
+
+/* ================= chatt ================= */
+.thread{flex:1 1 auto;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:6px}
+
+.userrow{display:flex;justify-content:flex-end}
+.bubble{
+  background:var(--muted);border-radius:16px 16px 4px 16px;
+  padding:11px 16px;font-size:var(--t-msg);line-height:1.45;max-width:74%;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .35s ease,transform .45s cubic-bezier(.22,1,.30,1);
+}
+.bubble.in{opacity:1;transform:none}
+
+.airow{display:flex;gap:14px;margin-top:24px;align-items:flex-start}
+.ava{flex:0 0 auto;width:40px;height:40px;overflow:visible;
+  opacity:0;transform:translateY(6px);transition:opacity .4s ease,transform .45s ease}
+.ava.in{opacity:1;transform:none}
+#vEyes{transform-box:view-box;transform-origin:197.5px 173.82px;animation:blink 5.2s infinite}
+@keyframes blink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.08)}97%{transform:scaleY(1)}}
+
+.reply{flex:1 1 auto;position:relative;min-height:196px}
+
+.tag{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:13px;font-weight:500;padding:4px 11px;border-radius:999px;
+  background:var(--muted);color:var(--muted-foreground);
+  transition:background .4s ease,color .4s ease;
+  opacity:0;transform:translateY(6px);
+}
+.tag.in{opacity:1;transform:none;transition:opacity .35s ease,transform .4s ease,background .4s ease,color .4s ease}
+.tag .dot{width:6px;height:6px;border-radius:50%;background:#cbd5e1;transition:background .4s ease}
+.tag.on{background:#eef3ff;color:var(--primary)}
+.tag.on .dot{background:var(--primary)}
+
+.pane{position:absolute;left:0;right:0;top:36px}
+.ln{
+  font-size:var(--t-msg);line-height:1.6;margin-top:10px;
+  opacity:0;transform:translateY(6px);
+  transition:opacity .4s ease,transform .5s cubic-bezier(.22,1,.30,1);
+}
+.ln.in{opacity:1;transform:none}
+#generic .ln{color:var(--muted-foreground)}
+#generic{transition:opacity .45s ease,filter .45s ease,transform .45s ease}
+#generic.out{opacity:0;filter:blur(3px);transform:translateY(-6px)}
+b{font-weight:600}
+.hl{color:var(--primary);font-weight:600}
+.hlo{color:var(--chart-6);font-weight:600}
+
+/* ================= personaliseringsrad ================= */
+.pbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:84px;align-content:center;margin-bottom:12px}
+
+.ppill{
+  display:inline-flex;align-items:center;gap:8px;
+  height:34px;padding:0 14px;border-radius:999px;
+  border:1px dashed var(--ring);background:var(--input);
+  font-size:var(--t-chip);font-weight:500;color:#334155;
+  transition:border-color .35s ease,background .35s ease,color .35s ease,border-style .35s ease;
+}
+.ppill.done{border-style:solid;border-color:#c7d7fb;background:#eef3ff;color:var(--primary)}
+.ppill svg{width:14px;height:15px;flex:0 0 auto}
+.ppill .chev{width:12px;height:12px;opacity:.55}
+
+.pchip{
+  display:inline-flex;align-items:center;height:34px;padding:0 13px;border-radius:999px;
+  border:1px solid var(--border);background:#fff;color:#334155;
+  font-size:var(--t-chip);white-space:nowrap;
+  opacity:0;transform:translateY(10px) scale(.94);
+  transition:opacity .3s ease,transform .42s cubic-bezier(.22,1,.30,1);
+}
+.pchip.in{opacity:1;transform:none}
+
+/* ================= komponerare ================= */
+.composer{
+  border:1px solid var(--border);border-radius:14px;background:var(--card);
+  padding:14px 14px 12px;
+}
+.field{font-size:var(--t-ui);color:var(--muted-foreground);padding:6px 2px 16px}
+
+.crow{display:flex;align-items:center;gap:14px}
+.plus{
+  width:34px;height:34px;border-radius:50%;background:var(--muted);
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto;color:#475569;
+}
+.plus svg{width:16px;height:16px}
+
+.tool{
+  position:relative;display:inline-flex;align-items:center;gap:7px;
+  font-size:var(--t-ui);color:var(--muted-foreground);
+  padding:6px 8px;border-radius:9px;
+  transition:background .25s ease,color .25s ease;
+}
+.tool.hot{background:var(--muted);color:#334155}
+.tool svg{width:14px;height:14px;opacity:.8}
+.tool .spark{width:13px;height:15px;opacity:.9}
+.dotstate{
+  width:7px;height:7px;border-radius:50%;background:#cbd5e1;
+  transition:background .35s ease,box-shadow .35s ease;
+}
+.dotstate.on{background:var(--primary);box-shadow:0 0 0 3px rgba(29,78,216,.12)}
+
+.send{
+  margin-left:auto;width:38px;height:38px;border-radius:50%;
+  background:var(--primary);display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+}
+.send svg{width:17px;height:17px;color:#fff}
+
+.disclaimer{text-align:center;font-size:13px;color:var(--muted-foreground);margin-top:14px}
+
+/* ---- popover med switchen ---- */
+.pop{
+  position:absolute;left:-10px;bottom:44px;width:236px;
+  background:#fff;border:1px solid var(--border);border-radius:12px;
+  box-shadow:0 10px 30px -12px rgba(3,7,18,.22);
+  padding:12px 13px;z-index:6;
+  opacity:0;transform:translateY(6px) scale(.97);transform-origin:bottom left;
+  transition:opacity .22s ease,transform .28s cubic-bezier(.22,1,.30,1);
+  pointer-events:none;
+}
+.pop.in{opacity:1;transform:none}
+.poprow{display:flex;align-items:center;gap:10px}
+.poptxt{font-size:14px;color:var(--foreground);font-weight:500}
+.pophint{font-size:12.5px;color:var(--muted-foreground);margin-top:7px;line-height:1.45}
+.switch{
+  margin-left:auto;width:38px;height:22px;border-radius:999px;background:var(--ring);
+  flex:0 0 auto;padding:2px;transition:background .3s ease;
+}
+.switch i{display:block;width:18px;height:18px;border-radius:50%;background:#fff;
+  box-shadow:0 1px 2px rgba(3,7,18,.25);
+  transition:transform .3s cubic-bezier(.22,1,.30,1)}
+.switch.on{background:var(--primary)}
+.switch.on i{transform:translateX(16px)}
+
+/* ---- pekare ---- */
+.pointer{position:absolute;left:0;top:0;width:22px;height:22px;
+  opacity:0;pointer-events:none;z-index:9;
+  transition:transform .6s cubic-bezier(.34,.9,.3,1),opacity .3s ease;
+  filter:drop-shadow(0 2px 5px rgba(3,7,18,.3))}
+.pointer.in{opacity:1}
+.pointer.tap{transform:scale(.86)}
+.ripple{position:absolute;left:0;top:0;width:40px;height:40px;border-radius:50%;
+  border:2px solid var(--primary);opacity:0;pointer-events:none;z-index:8;margin:-20px 0 0 -20px}
+.ripple.go{animation:rip .55s ease-out}
+@keyframes rip{
+  0%{opacity:.5;transform:translate(var(--rx,0),var(--ry,0)) scale(.35)}
+  100%{opacity:0;transform:translate(var(--rx,0),var(--ry,0)) scale(1.15)}
+}
+</style>
+</head>
+<body>
+<div id="scale">
+  <div class="card" id="card">
+
+    <!-- ================= chatt ================= -->
+    <div class="thread">
+      <div class="userrow">
+        <div class="bubble" id="bubble">Hur ser vår bruttomarginal ut?</div>
+      </div>
+
+      <div class="airow">
+        <svg class="ava" id="ava" viewBox="0 0 395 395" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="197.5" cy="197.5" r="197.5" fill="#e2e8f0"/>
+          <g clip-path="url(#vClip)">
+            <g filter="url(#vInner)">
+              <rect x="49" y="85" width="298" height="207" rx="90" fill="black"/>
+            </g>
+            <rect x="50" y="86" width="296" height="205" rx="89" stroke="#fff" stroke-width="2"/>
+            <g id="vEyes">
+              <rect x="116.8" y="150.82" width="42" height="46" rx="8" fill="#5CD5F3" filter="url(#vGlowW)"/>
+              <rect x="235.05" y="150.82" width="42" height="46" rx="8" fill="#5CD5F3" filter="url(#vGlowW)"/>
+              <rect x="116.8" y="150.82" width="42" height="46" rx="8" fill="#5CD5F3" filter="url(#vGlowT)"/>
+              <rect x="235.05" y="150.82" width="42" height="46" rx="8" fill="#5CD5F3" filter="url(#vGlowT)"/>
+              <rect x="116.8" y="150.82" width="42" height="46" rx="8" fill="#fff"/>
+              <rect x="235.05" y="150.82" width="42" height="46" rx="8" fill="#fff"/>
+            </g>
+          </g>
+          <defs>
+            <clipPath id="vClip"><circle cx="197.5" cy="197.5" r="197.5"/></clipPath>
+            <filter id="vInner" x="49" y="85" width="298" height="207" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="bg"/>
+              <feBlend mode="normal" in="SourceGraphic" in2="bg" result="shape"/>
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+              <feMorphology radius="4" operator="erode" in="SourceAlpha" result="e1"/>
+              <feOffset/><feGaussianBlur stdDeviation="1"/>
+              <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 0.0313726 0 0 0 0 0.721569 0 0 0 0 0.709804 0 0 0 0.28 0"/>
+              <feBlend mode="normal" in2="shape"/>
+            </filter>
+            <filter id="vGlowW" x="0" y="0" width="395" height="395" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feGaussianBlur stdDeviation="6.96078"/>
+            </filter>
+            <filter id="vGlowT" x="0" y="0" width="395" height="395" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feGaussianBlur stdDeviation="2.2"/>
+            </filter>
+          </defs>
+        </svg>
+
+        <div class="reply">
+          <span class="tag" id="tag"><span class="dot"></span><span id="tagText">Utan personalisering</span></span>
+
+          <div class="pane" id="generic">
+            <div class="ln">Bruttomarginal är bruttovinst delat med nettoomsättning.</div>
+            <div class="ln">Vad som räknas som normalt varierar kraftigt mellan branscher.</div>
+          </div>
+
+          <div class="pane" id="personal">
+            <div class="ln">Er bruttomarginal är <span class="hl">31,4 %</span> — 2,1 procentenheter under snittet för grosshandel.</div>
+            <div class="ln">Största avvikelsen: <span class="hlo">frakt +18 %</span> mot samma period i fjol.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= personaliseringsrad ================= -->
+    <div class="pbar" id="pbar">
+      <span class="ppill" id="ppill">
+        <svg viewBox="0 0 15 17" fill="currentColor"><path d="M8.12109 5.45898C8.28972 6.48642 9.07761 7.30195 10.0986 7.50586L13.8252 8.25L10.0986 8.99414C9.07761 9.19805 8.28971 10.0136 8.12109 11.041L7.22559 16.5L6.3291 11.041C6.16048 10.0136 5.37259 9.19805 4.35156 8.99414L0.625 8.25L4.35156 7.50586C5.37259 7.30195 6.16048 6.48642 6.3291 5.45898L7.22559 0L8.12109 5.45898ZM11.8877 2.16211C11.9356 2.42893 12.1445 2.63881 12.4111 2.6875L14.125 3L12.4111 3.3125C12.1445 3.36119 11.9356 3.57107 11.8877 3.83789L11.5 6L11.1123 3.83789C11.0644 3.57107 10.8555 3.36119 10.5889 3.3125L8.875 3L10.5889 2.6875C10.8555 2.63881 11.0644 2.42893 11.1123 2.16211L11.5 0L11.8877 2.16211Z"/></svg>
+        <span id="ppillText">Personalisera företaget</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </span>
+      <span class="pchip">Grosshandel</span>
+      <span class="pchip">Få stora kunder</span>
+      <span class="pchip">Inköp och frakt</span>
+      <span class="pchip">Fokus: kassaflöde</span>
+    </div>
+
+    <!-- ================= komponerare ================= -->
+    <div class="composer">
+      <div class="field">Vad vill du förstå eller ta fram idag?</div>
+      <div class="crow">
+        <span class="plus">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+
+        <span class="tool" id="tool">
+          <span class="dotstate" id="dotstate"></span>
+          Kunddata
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 9 12 5 16 9"/><polyline points="16 15 12 19 8 15"/></svg>
+
+          <span class="pop" id="pop">
+            <span class="poprow">
+              <span class="poptxt">Använd kunddata</span>
+              <span class="switch" id="switch"><i></i></span>
+            </span>
+            <span class="pophint">Svaren räknas på era egna siffror i stället för branschgenomsnitt.</span>
+          </span>
+        </span>
+
+        <span class="tool">
+          <svg class="spark" viewBox="0 0 15 17" fill="currentColor"><path d="M8.12109 5.45898C8.28972 6.48642 9.07761 7.30195 10.0986 7.50586L13.8252 8.25L10.0986 8.99414C9.07761 9.19805 8.28971 10.0136 8.12109 11.041L7.22559 16.5L6.3291 11.041C6.16048 10.0136 5.37259 9.19805 4.35156 8.99414L0.625 8.25L4.35156 7.50586C5.37259 7.30195 6.16048 6.48642 6.3291 5.45898L7.22559 0L8.12109 5.45898ZM11.8877 2.16211C11.9356 2.42893 12.1445 2.63881 12.4111 2.6875L14.125 3L12.4111 3.3125C12.1445 3.36119 11.9356 3.57107 11.8877 3.83789L11.5 6L11.1123 3.83789C11.0644 3.57107 10.8555 3.36119 10.5889 3.3125L8.875 3L10.5889 2.6875C10.8555 2.63881 11.0644 2.42893 11.1123 2.16211L11.5 0L11.8877 2.16211Z"/></svg>
+          Välj
+        </span>
+
+        <span class="send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <div class="disclaimer">AI-genererat innehåll bör alltid verifieras.</div>
+
+    <div class="ripple" id="ripple"></div>
+    <svg class="pointer" id="pointer" viewBox="0 0 24 24" fill="#030712" stroke="#fff" stroke-width="1.4">
+      <path d="M5 3l14 8.5-6.2 1.3-2.6 5.9z"/>
+    </svg>
+
+  </div>
+</div>
+
+<script>
+var ZOOM = 1;
+function fit(){
+  var k = (window.innerWidth / 680) * ZOOM;
+  document.getElementById('scale').style.transform = 'scale(' + k + ')';
+  document.body.style.height = (680 * k) + 'px';
+}
+fit(); addEventListener('resize', fit);
+
+var sleep = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
+var $  = function(s){ return document.querySelector(s); };
+var $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+
+function moveTo(el, dx, dy){
+  var c = $('#card').getBoundingClientRect();
+  var r = el.getBoundingClientRect();
+  var x = r.left - c.left + (dx === undefined ? r.width / 2 : dx);
+  var y = r.top  - c.top  + (dy === undefined ? r.height / 2 : dy);
+  $('#pointer').style.transform = 'translate(' + x + 'px,' + y + 'px)';
+  return { x:x, y:y };
+}
+function tap(pos){
+  var rp = $('#ripple');
+  rp.style.setProperty('--rx', pos.x + 'px');
+  rp.style.setProperty('--ry', pos.y + 'px');
+  rp.classList.remove('go'); void rp.offsetWidth; rp.classList.add('go');
+}
+async function click(el, dx, dy){
+  var pos = moveTo(el, dx, dy);
+  await sleep(640);
+  $('#pointer').classList.add('tap');
+  tap(pos);
+  await sleep(150);
+  $('#pointer').classList.remove('tap');
+}
+
+async function play(){
+  $('#card').classList.add('in');
+  await sleep(420);
+
+  /* frågan och det opersonliga svaret står redan */
+  $('#bubble').classList.add('in');
+  await sleep(420);
+  $('#ava').classList.add('in');
+  $('#tag').classList.add('in');
+  await sleep(300);
+  var g = $$('#generic .ln');
+  for (var i = 0; i < g.length; i++){ g[i].classList.add('in'); await sleep(240); }
+  await sleep(750);
+
+  /* pekaren klickar personaliseringsraden — chipsen fylls i */
+  $('#pointer').classList.add('in');
+  await click($('#ppill'), 26);
+  $('#ppill').classList.add('done');
+  $('#ppillText').textContent = 'Företagsprofil';
+  var chips = $$('#pbar .pchip');
+  for (var j = 0; j < chips.length; j++){ chips[j].classList.add('in'); await sleep(165); }
+  await sleep(420);
+
+  /* menyn med reglaget */
+  await click($('#tool'), 30);
+  $('#tool').classList.add('hot');
+  $('#pop').classList.add('in');
+  await sleep(520);
+  await click($('#switch'));
+  $('#switch').classList.add('on');
+  $('#dotstate').classList.add('on');
+  await sleep(700);
+  $('#pop').classList.remove('in');
+  $('#tool').classList.remove('hot');
+  $('#pointer').classList.remove('in');
+  await sleep(360);
+
+  /* svaret skrivs om */
+  $('#generic').classList.add('out');
+  $('#tag').classList.add('on');
+  await sleep(200);
+  $('#tagText').textContent = 'Med personalisering';
+  await sleep(260);
+  var p = $$('#personal .ln');
+  for (var m = 0; m < p.length; m++){ p[m].classList.add('in'); await sleep(400); }
+}
+
+var started = false;
+function start(){ if (started) return; started = true; play(); }
+if ('IntersectionObserver' in window){
+  var io = new IntersectionObserver(function(e){
+    if (e[0].isIntersecting){ start(); io.disconnect(); }
+  }, { threshold: 0.3 });
+  io.observe($('#card'));
+} else { start(); }
+setTimeout(start, 4000);
+</script>
+</body>
+</html>

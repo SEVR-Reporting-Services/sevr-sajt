@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Agenter · tidslinje</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style id="sevr-fx">
+:root{
+  /* ---------- duk ---------- */
+  --card-w:680px;
+  --card-h:660px;
+  --pad:30px;
+
+  /* ---------- tokens ur index.css (ljust) ---------- */
+  --card:#ffffff;
+  --foreground:#030712;
+  --muted:#f1f5f9;
+  --muted-foreground:#64748b;
+  --accent:#e2e8f0;
+  --border:#e2e8f0;
+  --input:#f8fafc;
+  --primary:#1d4ed8;
+  --ring-c:#cbd5e1;
+  --success:#dcfce7;
+  --success-foreground:#14532d;
+  --klar:#16a34a;
+
+  --chart-1:#14b8a6;
+  --chart-2:#0ea5e9;
+  --chart-4:#8b5cf6;
+  --chart-5:#6366f1;
+  --chart-6:#ff6900;
+
+  /* ---------- form ---------- */
+  --ikon:48px;              /* ikonrutan, som i agents-promo */
+  --ikon-r:12px;
+  --platta-r:14px;
+  --rad-gap:16px;
+  --skugga:0 1px 2px rgba(16,24,40,.05);
+
+  /* ---------- typografi, samma som agents-promo ---------- */
+  --t-namn:17px;
+  --t-desc:14px;
+  --t-status:13px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;overflow:hidden}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--foreground);display:flex;align-items:flex-start;justify-content:flex-start;
+  -webkit-font-smoothing:antialiased}
+#scale{transform-origin:top left}
+
+.duk{position:relative;width:var(--card-w);height:var(--card-h);padding:var(--pad)}
+
+/* ---------- traden som gar nedat ---------- */
+.trad{
+  position:absolute;left:calc(var(--pad) + var(--ikon)/2 - 1px);
+  width:2px;background:var(--border);border-radius:2px;
+  height:0;
+  transition:height .5s cubic-bezier(.4,0,.25,1);
+}
+
+/* ---------- en rad = en agent ---------- */
+.rad{display:flex;align-items:stretch;gap:18px;margin-bottom:var(--rad-gap);position:relative}
+
+.ikon{
+  width:var(--ikon);height:var(--ikon);flex:none;border-radius:var(--ikon-r);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:scale(.72);
+  transition:opacity .3s ease,transform .45s cubic-bezier(.34,1.4,.5,1);
+  z-index:2;
+}
+.rad.pa .ikon{opacity:1;transform:scale(1)}
+.ikon svg{width:24px;height:24px;stroke:currentColor;fill:none;
+  stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.platta{
+  flex:1 1 auto;min-width:0;
+  background:var(--card);border:1px solid var(--border);border-radius:var(--platta-r);
+  box-shadow:var(--skugga);
+  padding:13px 16px;display:flex;align-items:center;gap:14px;
+  opacity:0;transform:translateX(18px);
+  transition:opacity .34s ease,transform .48s cubic-bezier(.22,1,.30,1),
+             border-color .35s ease,box-shadow .35s ease;
+}
+.rad.pa .platta{opacity:1;transform:none}
+.rad.kor .platta{border-color:#c7d7fb;box-shadow:0 0 0 3px rgba(29,78,216,.07)}
+
+.text{flex:1 1 auto;min-width:0}
+.namn{font-size:var(--t-namn);font-weight:600;line-height:1.25;display:flex;align-items:center;gap:9px}
+.desc{font-size:var(--t-desc);line-height:1.4;color:var(--muted-foreground);margin-top:3px}
+
+/* Live-pricken, samma som i agents-promo */
+.live{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--chart-1)}
+.live i{width:7px;height:7px;border-radius:999px;background:var(--chart-1);
+  animation:puls 1.6s infinite}
+@keyframes puls{
+  0%  {box-shadow:0 0 0 0 rgba(20,184,166,.55)}
+  70% {box-shadow:0 0 0 7px rgba(20,184,166,0)}
+  100%{box-shadow:0 0 0 0 rgba(20,184,166,0)}
+}
+
+/* ---------- statuskolumnen: kör → klart ---------- */
+.status{flex:none;width:152px;display:flex;justify-content:flex-end;align-items:center}
+.lage{display:inline-flex;align-items:center;gap:7px;font-size:var(--t-status);font-weight:600;
+  white-space:nowrap;opacity:0;transform:translateY(3px);
+  transition:opacity .28s ease,transform .3s ease}
+.lage.se{opacity:1;transform:none}
+.lage.vantar{color:var(--muted-foreground)}
+.lage.kor{color:var(--primary)}
+.lage.kor svg{animation:snurr .85s linear infinite;transform-origin:50% 50%}
+@keyframes snurr{to{transform:rotate(360deg)}}
+.lage svg{width:14px;height:14px;flex:none}
+
+.lage.klar{
+  color:var(--success-foreground);background:var(--success);
+  border-radius:999px;padding:4px 11px;
+}
+.lage.klar svg{stroke:var(--klar);stroke-width:3}
+/* bocken ritas — den ska kannas som en bock, inte som en ikon som tonar in */
+.lage.klar path{stroke-dasharray:22;stroke-dashoffset:22;
+  transition:stroke-dashoffset .32s cubic-bezier(.4,0,.25,1)}
+.lage.klar.se path{stroke-dashoffset:0}
+
+.stat{font-size:var(--t-status);color:var(--muted-foreground);white-space:nowrap}
+.stat b{color:var(--foreground);font-weight:650}
+
+/* ---------- avslutet ---------- */
+.slut{
+  margin-left:calc(var(--ikon) + 18px);
+  display:flex;align-items:center;gap:10px;
+  background:var(--card);border:1px solid var(--border);border-radius:var(--platta-r);
+  box-shadow:var(--skugga);padding:13px 16px;
+  font-size:15px;font-weight:600;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .4s ease,transform .5s cubic-bezier(.22,1,.30,1);
+}
+.slut.se{opacity:1;transform:none}
+.slut .rund{width:22px;height:22px;border-radius:50%;background:var(--success);
+  display:flex;align-items:center;justify-content:center;flex:none}
+.slut .rund svg{width:13px;height:13px;stroke:var(--klar);stroke-width:3;fill:none;
+  stroke-linecap:round;stroke-linejoin:round}
+.slut span{color:var(--muted-foreground);font-weight:400}
+</style>
+</head>
+<body>
+<div id="scale">
+  <div class="duk" id="duk">
+    <div class="trad" id="trad"></div>
+    <div id="rader"></div>
+    <div class="slut" id="slut">
+      <span class="rund"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+      Perioden stängd
+      <span>· 6 av 6 agenter klara</span>
+    </div>
+  </div>
+</div>
+
+<script>
+var ZOOM = 1, CARD_W = 680, CARD_H = 660;
+function fit(){
+  var k = (window.innerWidth / CARD_W) * ZOOM;
+  document.getElementById('scale').style.transform = 'scale(' + k + ')';
+  document.body.style.height = (CARD_H * k) + 'px';
+}
+fit(); addEventListener('resize', fit);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+
+var sleep = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
+var $ = function(s){ return document.querySelector(s); };
+
+/* ── ikonerna, ordagrant fran agents-promo.html ──────────────────────── */
+var IK = {
+  db:      '<svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>',
+  avvik:   '<svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V5z"/><path d="m9 12 2 2 4-4"/></svg>',
+  receipt: '<svg viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1V2l-2 1-2-1-2 1-2-1-2 1-2-1z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>',
+  list:    '<svg viewBox="0 0 24 24"><path d="m3 5 2 2 3-3"/><path d="m3 12 2 2 3-3"/><path d="m3 19 2 2 3-3"/><path d="M13 6h8M13 12h8M13 18h8"/></svg>',
+  book:    '<svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+  trend:   '<svg viewBox="0 0 24 24"><path d="M22 7 13.5 15.5l-5-5L2 17"/><path d="M16 7h6v6"/></svg>'
+};
+
+/* ── de sex riktiga agenterna, i processordning uppifran och ned ──────
+   Namn, beskrivningar och ikoner ar tagna ur agents-promo/plannedAgents.
+   Ordningen foljer arbetet: fran verifikat till prognos.              */
+var AGENTER = [
+  { ik:IK.db,      f:'var(--chart-5)', nm:'Verifikatanalys',
+    desc:'Testar hela verifikatpopulationen — inget stickprov.',
+    klar:'<b>2 481</b> verifikat' },
+
+  { ik:IK.avvik,   f:'var(--primary)', nm:'Avvikelsegranskning', live:true,
+    desc:'Scannar bokföringen kontinuerligt och flaggar avvikelser.',
+    klar:'<b>156</b> granskade · <b>3</b> avvikelser' },
+
+  { ik:IK.receipt, f:'var(--chart-6)', nm:'Momsdeklaration',
+    desc:'Bygger deklarationen och stämmer av mot bokföringen.',
+    klar:'Redo att lämnas' },
+
+  { ik:IK.list,    f:'var(--chart-1)', nm:'Månadsstängning',
+    desc:'Kör månadsbokslutets kontroller och ger ett omdöme.',
+    klar:'<b>18</b> kontroller' },
+
+  { ik:IK.book,    f:'var(--chart-4)', nm:'Årsbokslut',
+    desc:'Frågar om bedömningar och bokför till färdiga verifikat.',
+    klar:'K2 · utkast klart' },
+
+  { ik:IK.trend,   f:'var(--chart-2)', nm:'FP&A-agenten',
+    desc:'Bygger budget och prognos på kontogruppsnivå.',
+    klar:'Prognos 12 mån' }
+];
+
+var SNURRA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.55"/></svg>';
+var BOCK   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+/* ── bygg raderna ────────────────────────────────────────────────────── */
+var rader = $('#rader');
+AGENTER.forEach(function(a, i){
+  var d = document.createElement('div');
+  d.className = 'rad'; d.id = 'rad' + i;
+  d.innerHTML =
+    '<div class="ikon" style="background:color-mix(in srgb, ' + a.f + ' 14%, var(--card));color:' + a.f + '">' + a.ik + '</div>' +
+    '<div class="platta">' +
+      '<div class="text">' +
+        '<div class="namn">' + a.nm +
+          (a.live ? '<span class="live"><i></i>Live</span>' : '') +
+        '</div>' +
+        '<div class="desc">' + a.desc + '</div>' +
+      '</div>' +
+      '<div class="status"><span class="lage" id="lage' + i + '"></span></div>' +
+    '</div>';
+  rader.appendChild(d);
+});
+
+/* traden startar i forsta ikonens mitt */
+function ikonMitt(i){
+  var d = $('#duk').getBoundingClientRect();
+  var r = document.getElementById('rad' + i).querySelector('.ikon').getBoundingClientRect();
+  return r.top - d.top + r.height / 2;
+}
+$('#trad').style.top = ikonMitt(0) + 'px';
+
+function lage(i, klass, html){
+  var el = document.getElementById('lage' + i);
+  el.className = 'lage ' + klass;
+  el.innerHTML = html;
+  void el.offsetWidth;
+  el.classList.add('se');
+}
+
+async function play(){
+  for (var i = 0; i < AGENTER.length; i++){
+    /* traden vaxer ned till nasta agent */
+    $('#trad').style.height = (ikonMitt(i) - ikonMitt(0)) + 'px';
+    await sleep(i === 0 ? 260 : 400);
+
+    /* ikonen poppar, plattan glider in */
+    document.getElementById('rad' + i).classList.add('pa');
+    await sleep(300);
+
+    /* agenten jobbar */
+    document.getElementById('rad' + i).classList.add('kor');
+    lage(i, 'kor', SNURRA + 'Kör…');
+    await sleep(620);
+
+    /* bock */
+    document.getElementById('rad' + i).classList.remove('kor');
+    lage(i, 'klar', BOCK + 'Klart');
+    var st = document.createElement('span');
+    st.className = 'stat';
+    st.innerHTML = AGENTER[i].klar;
+    st.style.marginRight = '10px';
+    document.getElementById('lage' + i).parentNode.insertBefore(st, document.getElementById('lage' + i));
+    await sleep(300);
+  }
+
+  /* traden ned till avslutet */
+  $('#trad').style.height = (ikonMitt(AGENTER.length - 1) - ikonMitt(0) + 58) + 'px';
+  await sleep(360);
+  $('#slut').classList.add('se');
+}
+
+var started = false;
+function start(){ if (started) return; started = true; play(); }
+if ('IntersectionObserver' in window){
+  var io = new IntersectionObserver(function(e){
+    if (e[0].isIntersecting){ start(); io.disconnect(); }
+  }, { threshold: 0.25 });
+  io.observe($('#duk'));
+} else { start(); }
+setTimeout(start, 4000);
+</script>
+</body>
+</html>

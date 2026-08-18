@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SEVR — embeds</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--card:#fff;--foreground:#030712;--muted-foreground:#64748b;--border:#e2e8f0;--input:#f8fafc;--primary:#1d4ed8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,-apple-system,"Segoe UI",sans-serif;background:#f1f5f9;color:var(--foreground);padding:48px 24px}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:28px;font-weight:700;letter-spacing:-.01em}
+p.sub{color:var(--muted-foreground);margin-top:6px;font-size:15px}
+.rad{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;
+  background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-top:12px}
+.namn{font-size:15px;font-weight:600}
+.desc{font-size:13px;color:var(--muted-foreground);margin-top:3px}
+.matt{font-size:12px;color:var(--muted-foreground);font-variant-numeric:tabular-nums;
+  background:var(--input);border:1px solid var(--border);border-radius:999px;padding:5px 11px;white-space:nowrap}
+a.oppna{font-size:13px;font-weight:650;color:var(--primary);text-decoration:none;white-space:nowrap;margin-left:14px}
+.h{display:flex;align-items:center;gap:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>SEVR — animerade embeds</h1>
+  <p class="sub">Självbärande HTML med transparent bakgrund. I Framer: Embed → URL, bakgrund None, Fill width.</p>
+  <div id="lista"></div>
+</div>
+<script>
+var F = [
+  ['agent-stack.html','Agentkarusell med underrad','680 × 720'],
+  ['agent-stack-ren.html','Agentkarusell, ren','680 × 560'],
+  ['agent-karusell.html','Tre glidande band','680 × 440'],
+  ['agent-tidslinje.html','Lodrät tidslinje','680 × 660'],
+  ['agent-loop.html','Ringlopp','680 × 680'],
+  ['bruttovinst-sammanfattning.html','Bruttovinst → Sammanfattning','680 × 660'],
+  ['dataskydd-skold.html','Dataskydd, pixelmoln och sköld','680 × 680'],
+  ['vatsson-kalla.html','Vatsson med källkort','680 × 680'],
+  ['personalisera-pill.html','Personalisera din AI-kollega','680 × 448'],
+  ['personalisera-chatt.html','Chatt med kunddata','680 × 680'],
+  ['likviditet-kort.html','Likviditetskortet','680 × 520'],
+  ['an3-2c77f5f74f.html','Likviditet, Lottie (a)','—'],
+  ['an3b-2334dd0513.html','Likviditet, Lottie (b)','—']
+];
+document.getElementById('lista').innerHTML = F.map(function(f){
+  return '<div class="rad"><div><div class="namn">' + f[1] + '</div>' +
+         '<div class="desc">' + f[0] + '</div></div>' +
+         '<div class="h"><span class="matt">' + f[2] + '</span>' +
+         '<a class="oppna" href="' + f[0] + '" target="_blank">Öppna →</a></div></div>';
+}).join('');
+</script>
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>VATsson · verifierbar träffsäkerhet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style id="sevr-fx">
+:root{
+  /* ---------- duk ---------- */
+  --card-w:680px;
+  --card-h:680px;
+
+  /* ---------- tokens ur index.css ---------- */
+  --card:#ffffff;
+  --foreground:#030712;
+  --muted-foreground:#64748b;
+  --border:#e2e8f0;
+  --band:#f6f8fb;
+  --primary:#1d4ed8;
+  --accent:#e2e8f0;
+  --teal:#14b8a6;
+  --hl:#fef3c7;          /* --source-highlight */
+  --hl-fg:#111827;
+  --gold:#facc15;
+  --chip-fg:#854d0e;
+  --chart6:#ff6900;
+  --enc:#16a34a;
+  --icon:#94a3b8;
+
+  /* ---------- kallkortet ---------- */
+  --panel-w:600px;
+  --panel-r:22px;
+  --panel-shadow:0 24px 60px -20px rgba(3,7,18,.30), 0 4px 12px -4px rgba(3,7,18,.12);
+
+  /* ---------- typografi ---------- */
+  --t-fraga:17px;
+  --t-svar:17px;
+  --t-panel:15px;
+  --t-citat:16px;
+
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;overflow:hidden}
+body{font-family:var(--sans);color:var(--foreground);
+  display:flex;align-items:flex-start;justify-content:flex-start;-webkit-font-smoothing:antialiased}
+#scale{transform-origin:top left}
+
+.duk{position:relative;width:var(--card-w);height:var(--card-h);padding:34px 30px}
+
+/* ═══════════ 1. chatten — inget kort, den svavar fritt ═══════════ */
+.chat{display:flex;flex-direction:column;transition:opacity .5s ease,filter .5s ease}
+.chat.dim{opacity:.28;filter:saturate(.6)}
+
+.qrad{display:flex;justify-content:flex-end}
+.q{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px 16px 5px 16px;padding:11px 15px;
+  font-size:var(--t-fraga);line-height:1.45;color:#334155;max-width:82%;
+  box-shadow:0 2px 6px -2px rgba(3,7,18,.06);
+  opacity:0;transform:translateY(8px);
+  transition:opacity .38s ease,transform .48s cubic-bezier(.22,1,.30,1);
+}
+.q.in{opacity:1;transform:none}
+
+.vem{display:flex;align-items:center;gap:10px;margin:24px 0 12px;
+  opacity:0;transform:translateY(6px);transition:opacity .38s ease,transform .45s ease}
+.vem.in{opacity:1;transform:none}
+.ava{width:34px;height:34px;flex:none;overflow:visible}
+#vEyes{transform-box:view-box;transform-origin:197.5px 173.82px;animation:blink 5.2s infinite}
+@keyframes blink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.08)}97%{transform:scaleY(1)}}
+.namn{font-size:15px;font-weight:600}
+
+/* Svaret ligger i en egen vit bubbla — pa sektionens graa bakgrund
+   forsvinner losa textrader annars. Spegelvand mot fragan. */
+.svar{
+  align-self:flex-start;max-width:94%;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px 16px 16px 5px;padding:16px 18px 8px;
+  box-shadow:0 2px 6px -2px rgba(3,7,18,.06);
+  opacity:0;transform:translateY(8px);
+  transition:opacity .38s ease,transform .48s cubic-bezier(.22,1,.30,1);
+}
+.svar.in{opacity:1;transform:none}
+
+.rad{
+  font-size:var(--t-svar);line-height:1.55;color:#1e293b;margin-bottom:9px;
+  opacity:0;transform:translateY(6px);
+  transition:opacity .38s ease,transform .48s cubic-bezier(.22,1,.30,1),background .45s ease;
+  border-radius:5px;padding:1px 3px;
+}
+.rad.in{opacity:1;transform:none}
+.rad b{font-weight:600;color:var(--foreground)}
+.rad.trafF{background:var(--hl);color:var(--hl-fg)}
+
+.punkt{position:relative;padding-left:19px}
+.punkt::before{content:"";position:absolute;left:4px;top:11px;width:5px;height:5px;
+  border-radius:50%;background:var(--icon)}
+
+.chip{
+  display:inline-flex;align-items:center;gap:4px;vertical-align:baseline;
+  background:var(--hl);color:var(--chip-fg);border:1px solid var(--gold);
+  border-radius:6px;padding:1px 7px 1px 6px;
+  font-size:13px;font-weight:700;white-space:nowrap;line-height:1.5;margin-left:3px;
+  transition:transform .12s ease,box-shadow .12s ease;
+}
+.chip svg{width:12px;height:12px}
+.chip.tryck{transform:scale(.92);box-shadow:0 0 0 4px rgba(250,204,21,.45)}
+
+/* ═══════════ 2. kallkortet — lagger sig ovanpa ═══════════ */
+.panel{
+  position:absolute;left:50%;bottom:34px;width:var(--panel-w);
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--panel-r);box-shadow:var(--panel-shadow);
+  padding:20px 22px 22px;
+  opacity:0;transform:translate(-50%,26px) scale(.96);transform-origin:50% 100%;
+  transition:opacity .42s ease,transform .55s cubic-bezier(.22,1,.30,1);
+  pointer-events:none;
+}
+.panel.in{opacity:1;transform:translate(-50%,0) scale(1)}
+
+.pnav{display:flex;align-items:center;gap:9px;margin-bottom:13px}
+.rnd{width:26px;height:26px;border-radius:50%;border:1px solid var(--border);background:#fff;
+  display:flex;align-items:center;justify-content:center;color:var(--muted-foreground);flex:none}
+.rnd svg{width:13px;height:13px}
+.smula{flex:1;font-size:13px;font-weight:600;color:#334155;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stang{color:var(--icon);display:flex}
+.stang svg{width:16px;height:16px}
+
+.flikar{display:flex;align-items:center;gap:18px;border-bottom:1px solid var(--border);margin-bottom:14px}
+.flik{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;
+  color:var(--muted-foreground);padding-bottom:9px;position:relative}
+.flik svg{width:13px;height:13px}
+.flik.akt{color:var(--foreground)}
+.flik.akt::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;
+  background:var(--teal);border-radius:2px}
+
+.paragraf{font-size:var(--t-panel);font-weight:700;margin-bottom:8px}
+.urlrad{display:flex;align-items:center;gap:7px;background:var(--band);border:1px solid var(--border);
+  border-radius:9px;padding:7px 10px;font-family:var(--mono);font-size:11px;color:#8a97a8;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:13px}
+.urlrad svg{width:12px;height:12px;flex:none}
+
+.kallor{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.kchip{display:inline-flex;align-items:center;font-size:12px;font-weight:700;border-radius:6px;padding:3px 8px}
+.k1{background:var(--hl);color:var(--chip-fg);border:1px solid var(--gold)}
+.k2{background:#dcfce7;color:#14532d;border:1px solid #bbf7d0}
+
+.etikett{font-size:11.5px;font-weight:700;color:var(--chart6);letter-spacing:.04em;
+  text-transform:uppercase;margin-bottom:7px}
+.citat{display:flex;gap:11px}
+.stapel{width:3px;flex:none;border-radius:2px;background:var(--chart6)}
+.citatrader{display:flex;flex-direction:column;gap:3px}
+
+/* Varje RAD markeras for sig — inte hela stycket.
+   Gulet vaxer fran vanster via background-size, en rad i taget. */
+.crad{
+  display:block;width:fit-content;max-width:100%;
+  font-size:var(--t-citat);line-height:1.5;color:#1f2937;
+  background:linear-gradient(var(--hl),var(--hl)) left center/0% 86% no-repeat;
+  border-radius:3px;padding:0 3px;
+  transition:background-size .40s ease;
+}
+.crad.pa{background-size:100% 86%}
+
+.verifierad{margin-top:14px;display:inline-flex;align-items:center;gap:7px;
+  font-size:14px;font-weight:700;color:var(--enc);
+  opacity:0;transform:translateY(4px);transition:opacity .35s ease,transform .4s ease}
+.verifierad.in{opacity:1;transform:none}
+.verifierad svg{width:15px;height:15px}
+.ketikett{font-size:11.5px;font-weight:700;color:var(--icon);letter-spacing:.04em;
+  text-transform:uppercase;margin:14px 0 5px}
+.ktext{font-size:13px;line-height:1.5;color:var(--icon)}
+
+/* ═══════════ pekare ═══════════ */
+.pekare{position:absolute;left:0;top:0;width:22px;height:22px;z-index:30;pointer-events:none;
+  opacity:0;filter:drop-shadow(0 2px 5px rgba(3,7,18,.3));
+  transition:transform .62s cubic-bezier(.34,.9,.3,1),opacity .35s ease}
+.pekare.in{opacity:1}
+.pekare.tryck{transform:var(--pos) scale(.86)}
+.ring{position:absolute;left:0;top:0;width:44px;height:44px;border-radius:50%;
+  border:2px solid var(--gold);opacity:0;pointer-events:none;z-index:29;margin:-22px 0 0 -22px}
+.ring.ga{animation:ringa .55s ease-out}
+@keyframes ringa{
+  0%{opacity:.6;transform:translate(var(--rx,0),var(--ry,0)) scale(.35)}
+  100%{opacity:0;transform:translate(var(--rx,0),var(--ry,0)) scale(1.15)}
+}
+</style>
+</head>
+<body>
+<div id="scale">
+  <div class="duk" id="duk">
+
+    <!-- ═══ chatten, utan kort bakom ═══ -->
+    <div class="chat" id="chat">
+      <div class="qrad">
+        <div class="q" id="q">Hur beskattas utdelning i fåmansföretag 2026?</div>
+      </div>
+
+      <div class="vem" id="vem">
+        <svg class="ava" viewBox="0 0 395 395" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="197.5" cy="197.5" r="197.5" fill="#e2e8f0"/>
+          <g clip-path="url(#vClip)">
+            <g filter="url(#vInner)"><rect x="49" y="85" width="298" height="207" rx="90" fill="black"/></g>
+            <rect x="50" y="86" width="296" height="205" rx="89" stroke="#fff" stroke-width="2"/>
+            <g id="vEyes">
+              <rect x="116.8" y="150.82" width="42" height="46" rx="8" fill="#5CD5F3" filter="url(#vGlow)"/>
+              <rect x="235.05" y="150.82" width="42" height="46" rx="8" fill="#5CD5F3" filter="url(#vGlow)"/>
+              <rect x="116.8" y="150.82" width="42" height="46" rx="8" fill="#fff"/>
+              <rect x="235.05" y="150.82" width="42" height="46" rx="8" fill="#fff"/>
+            </g>
+          </g>
+          <defs>
+            <clipPath id="vClip"><circle cx="197.5" cy="197.5" r="197.5"/></clipPath>
+            <filter id="vInner" x="49" y="85" width="298" height="207" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="bg"/>
+              <feBlend mode="normal" in="SourceGraphic" in2="bg" result="shape"/>
+              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="ha"/>
+              <feMorphology radius="4" operator="erode" in="SourceAlpha"/>
+              <feOffset/><feGaussianBlur stdDeviation="1"/>
+              <feComposite in2="ha" operator="arithmetic" k2="-1" k3="1"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 0.0313726 0 0 0 0 0.721569 0 0 0 0 0.709804 0 0 0 0.28 0"/>
+              <feBlend mode="normal" in2="shape"/>
+            </filter>
+            <filter id="vGlow" x="0" y="0" width="395" height="395" filterUnits="userSpaceOnUse">
+              <feGaussianBlur stdDeviation="6.96"/>
+            </filter>
+          </defs>
+        </svg>
+        <span class="namn">VATsson</span>
+      </div>
+
+      <div class="svar" id="svar">
+      <div class="rad" data-svar>För <b>utdelning under 2026</b> på <b>kvalificerade andelar</b> gäller de nya <b>3:12-reglerna</b>:</div>
+      <div class="rad punkt" data-svar><b>Upp till gränsbeloppet</b> — effektiv skatt <b>20 %</b> i inkomstslaget kapital.</div>
+      <div class="rad punkt" data-svar id="rad2"><b>Över gränsbeloppet</b> — beskattas i <b>inkomstslaget tjänst</b>.<span class="chip" id="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>1 · SFS</span></div>
+      <div class="rad" data-svar><b>Gränsbeloppet 2026:</b> grundbelopp <b>322 400 kr</b>, tak 90 IBB.</div>
+      </div>
+    </div>
+
+    <!-- ═══ kallkortet, ovanpa ═══ -->
+    <div class="panel" id="panel">
+      <div class="pnav">
+        <span class="rnd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></span>
+        <span class="rnd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+        <span class="smula">SFS · Inkomstskattelag (1999:1229)</span>
+        <span class="stang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span>
+      </div>
+
+      <div class="flikar">
+        <span class="flik akt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>Citerad text</span>
+        <span class="flik"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Öppna källa</span>
+      </div>
+
+      <div class="paragraf">57 kap. 20 §</div>
+      <div class="urlrad">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+        data.riksdagen.se/dokument/sfs-1999-1229.json
+      </div>
+
+      <div class="kallor">
+        <span class="kchip k1">[1] § 20</span>
+        <span class="kchip k2">[2] § 20 a</span>
+      </div>
+
+      <div class="etikett">Citerat utdrag</div>
+      <div class="citat">
+        <span class="stapel"></span>
+        <div class="citatrader" id="citatrader">
+          <span class="crad">20 § Utdelning på en kvalificerad andel ska</span>
+          <span class="crad">tas upp i inkomstslaget tjänst till den del</span>
+          <span class="crad">den överstiger gränsbeloppet.</span>
+        </div>
+      </div>
+
+      <div class="verifierad" id="verifierad">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        Verifierad · officiell källa (SFS)
+      </div>
+
+      <div class="ketikett">Källtext</div>
+      <div class="ktext">Lag (2007:1419) · gränsbelopp enligt 57 kap. 11 §.</div>
+    </div>
+
+    <div class="ring" id="ring"></div>
+    <svg class="pekare" id="pekare" viewBox="0 0 24 24" fill="#030712" stroke="#fff" stroke-width="1.4">
+      <path d="M5 3l14 8.5-6.2 1.3-2.6 5.9z"/>
+    </svg>
+
+  </div>
+</div>
+
+<script>
+var ZOOM   = 1;
+var CARD_W = 680;   /* matchar --card-w */
+var CARD_H = 680;   /* matchar --card-h */
+function fit(){
+  var k = (window.innerWidth / CARD_W) * ZOOM;
+  document.getElementById('scale').style.transform = 'scale(' + k + ')';
+  document.body.style.height = (CARD_H * k) + 'px';
+}
+fit(); addEventListener('resize', fit);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+
+var sleep = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
+var $  = function(s){ return document.querySelector(s); };
+var $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+
+/* Pilens spets sitter pa (5,3) i en 24-viewBox som ritas 22 px bred.
+   Utan den har korrigeringen hamnar spetsen 4-5 px fel — det ser ut som
+   att den klickar bredvid. */
+var SPETS_X = 5 / 24 * 22, SPETS_Y = 3 / 24 * 22;
+
+function mitten(el){
+  var d = $('#duk').getBoundingClientRect(), r = el.getBoundingClientRect();
+  return { x: r.left - d.left + r.width / 2, y: r.top - d.top + r.height / 2 };
+}
+function till(x, y, direkt){
+  var p = $('#pekare');
+  var t = 'translate(' + (x - SPETS_X) + 'px,' + (y - SPETS_Y) + 'px)';
+  if (direkt) p.style.transition = 'none';
+  p.style.setProperty('--pos', t);
+  p.style.transform = t;
+  if (direkt){ void p.offsetWidth; p.style.transition = ''; }
+}
+function ringa(x, y){
+  var r = $('#ring');
+  r.style.setProperty('--rx', x + 'px');
+  r.style.setProperty('--ry', y + 'px');
+  r.classList.remove('ga'); void r.offsetWidth; r.classList.add('ga');
+}
+
+async function play(){
+  $('#q').classList.add('in');
+  await sleep(600);
+  $('#vem').classList.add('in');
+  await sleep(380);
+
+  $('#svar').classList.add('in');
+  await sleep(320);
+
+  var rader = $$('[data-svar]');
+  for (var i = 0; i < rader.length; i++){ rader[i].classList.add('in'); await sleep(260); }
+  await sleep(500);
+
+  /* Pekaren placeras forst strax bredvid chipet och glider dit — annars
+     tonar den in mitt i bilden och drar over hela ytan. */
+  var mal = mitten($('#chip'));
+  till(mal.x + 74, mal.y + 96, true);
+  $('#pekare').classList.add('in');
+  await sleep(220);
+  till(mal.x, mal.y);
+  await sleep(700);
+
+  $('#pekare').classList.add('tryck');
+  $('#chip').classList.add('tryck');
+  ringa(mal.x, mal.y);
+  await sleep(170);
+  $('#pekare').classList.remove('tryck');
+  $('#chip').classList.remove('tryck');
+
+  /* chatten tonas ned, kallkortet lagger sig ovanpa */
+  $('#rad2').classList.add('trafF');
+  $('#chat').classList.add('dim');
+  $('#panel').classList.add('in');
+  await sleep(300);
+  $('#pekare').classList.remove('in');   /* tonar bort dar den star, ingen vandring */
+  await sleep(320);
+
+  /* EN RAD I TAGET — inte hela stycket */
+  var crader = $$('.crad');
+  for (var j = 0; j < crader.length; j++){ crader[j].classList.add('pa'); await sleep(420); }
+
+  await sleep(260);
+  $('#verifierad').classList.add('in');
+}
+
+var started = false;
+function start(){ if (started) return; started = true; play(); }
+if ('IntersectionObserver' in window){
+  var io = new IntersectionObserver(function(e){
+    if (e[0].isIntersecting){ start(); io.disconnect(); }
+  }, { threshold: 0.3 });
+  io.observe($('#duk'));
+} else { start(); }
+setTimeout(start, 4000);
+</script>
+</body>
+</html>

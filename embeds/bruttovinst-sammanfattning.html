@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Bruttovinst → Sammanfattning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style id="sevr-fx">
+:root{
+  /* ---------- duk ---------- */
+  --card-w:680px;
+  --card-h:660px;
+
+  /* ---------- tokens ur index.css (ljust) ---------- */
+  --card:#ffffff;
+  --foreground:#030712;
+  --muted:#f1f5f9;
+  --muted-foreground:#64748b;
+  --border:#e2e8f0;
+  --input:#f8fafc;
+  --primary:#1d4ed8;
+  --ring:#cbd5e1;
+  --chart-4:#8b5cf6;     /* bruttovinst, violett */
+  --chart-6:#ff6900;
+  --fara:#e11d48;
+
+  /* ---------- korten ---------- */
+  --kort-w:600px;
+  --kort-r:18px;
+  --skugga:0 14px 38px -18px rgba(3,7,18,.22), 0 2px 6px -2px rgba(3,7,18,.05);
+
+  /* ---------- rorelse ---------- */
+  --zoom-in:1.10;        /* hur mycket kortet ar uppforstorat medan det laddar */
+  --zoom-vila:1;         /* landar i normalstorlek — korten ska vara likvardiga */
+  --blur-ladda:9px;      /* mjuk oskarpa under laddningen */
+  --blur-bak:0px;        /* ingen kvarvarande oskarpa, korten ar jamlika */
+
+  /* ---------- typografi ---------- */
+  --t-titel:20px;
+  --t-underrad:13px;
+  --t-brod:15px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;overflow:hidden}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--foreground);display:flex;align-items:flex-start;justify-content:flex-start;
+  -webkit-font-smoothing:antialiased}
+#scale{transform-origin:top left}
+
+.duk{position:relative;width:var(--card-w);height:var(--card-h);
+  padding:30px;display:flex;flex-direction:column;align-items:center}
+
+/* ═════════ kort 1 — diagrammet ═════════ */
+.kort{
+  width:var(--kort-w);background:var(--card);
+  border:1px solid var(--border);border-radius:var(--kort-r);
+  box-shadow:var(--skugga);padding:18px 20px 14px;
+  transform-origin:50% 18%;
+}
+#kort1{
+  opacity:0;
+  transform:scale(var(--zoom-in));
+  filter:blur(var(--blur-ladda));
+  transition:opacity .55s ease,
+             transform .85s cubic-bezier(.22,1,.30,1),
+             filter .75s ease;
+}
+#kort1.laddat{opacity:1;filter:blur(0)}
+#kort1.bakat{transform:scale(var(--zoom-vila));filter:blur(var(--blur-bak));opacity:1}
+
+.topp{display:flex;align-items:flex-start;gap:12px}
+.rubrik{flex:1 1 auto;min-width:0}
+.titel{font-size:var(--t-titel);font-weight:600;letter-spacing:-.01em}
+.underrad{font-size:var(--t-underrad);color:var(--muted-foreground);margin-top:3px}
+
+/* verktygsraden — har sitter knappen */
+.verktyg{
+  display:flex;align-items:center;gap:10px;flex:0 0 auto;
+  background:var(--input);border:1px solid var(--border);
+  border-radius:11px;padding:6px 9px;
+}
+.grepp{display:grid;grid-template-columns:repeat(2,3px);gap:3px;flex:none}
+.grepp i{width:3px;height:3px;border-radius:50%;background:var(--ring);display:block}
+.knapp{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:600;color:#334155;
+  padding:3px 9px;border-radius:8px;background:#fff;border:1px solid var(--border);
+  white-space:nowrap;
+  transition:transform .14s ease,box-shadow .18s ease,background .25s ease,color .25s ease;
+}
+.knapp svg{width:13px;height:14px}
+.knapp.tryck{transform:scale(.93);box-shadow:0 0 0 4px rgba(3,7,18,.10)}
+/* Laddlage: knappen ar klar sist av allt pa kortet. */
+.knapp.laddar{color:#9aa6b6;background:var(--input);border-color:var(--border)}
+.knapp .gnista{display:none}
+.knapp .snurr{display:block;animation:snurr .85s linear infinite;transform-origin:50% 50%}
+.knapp:not(.laddar) .gnista{display:block}
+.knapp:not(.laddar) .snurr{display:none}
+@keyframes snurr{to{transform:rotate(360deg)}}
+.knapp.aktiv{background:var(--muted);border-color:var(--ring)}
+.ikon{color:var(--ring);display:flex}
+.ikon svg{width:16px;height:16px}
+.ikon.fara{color:var(--fara);opacity:.75}
+
+/* diagram */
+.diagram{margin-top:14px}
+#duk1{width:100%;display:block;overflow:visible}
+
+.stapel{transform-box:fill-box;transform-origin:50% 100%;
+  transform:scaleY(0);transition:transform .72s cubic-bezier(.22,1,.30,1)}
+.stapel.in{transform:scaleY(1)}
+#linje{transition:stroke-dashoffset 1.45s cubic-bezier(.35,0,.3,1)}
+.punkt{opacity:0;transition:opacity .3s ease}
+.punkt.in{opacity:1}
+.axel{opacity:0;transition:opacity .5s ease}
+.axel.in{opacity:1}
+
+.forklaring{display:flex;align-items:center;justify-content:center;gap:22px;margin-top:10px;
+  font-size:11.5px;color:var(--muted-foreground);
+  opacity:0;transition:opacity .45s ease}
+.forklaring.in{opacity:1}
+.fnyckel{display:inline-flex;align-items:center;gap:6px}
+.fruta{width:9px;height:9px;border-radius:2px;background:var(--chart-4)}
+.flinje{width:15px;height:2px;border-radius:2px;background:var(--foreground)}
+
+/* ═════════ kort 2 — sammanfattningen ═════════ */
+#kort2{
+  position:relative;                    /* barare for lopande kantljus */
+  margin-top:16px;                      /* rutnat: samma bredd, samma hojd */
+  display:flex;flex-direction:column;
+  opacity:0;transform:translateY(14px) scale(.96);
+  transform-origin:50% 0%;
+  pointer-events:none;
+}
+
+/* Lopande kantljus — en tunn violett komet gar runt kortet medan
+   sammanfattningen skrivs. Ringen ar en konisk gradient som maskas
+   ner till 1,6 px langs kanten; --vinkel vrids av rAF i skriptet.
+   Nar texten star klar tonar ljuset bort och den vanliga graa
+   ramen ar det enda som blir kvar.                                   */
+#kort2::before{
+  content:'';position:absolute;inset:-1px;
+  border-radius:calc(var(--kort-r) + 1px);
+  padding:1.6px;
+  background:conic-gradient(from var(--vinkel,0deg),
+      rgba(139,92,246,0)   0deg,
+      rgba(139,92,246,0)   238deg,
+      rgba(139,92,246,.18) 286deg,
+      rgba(139,92,246,.85) 332deg,
+      #c4b5fd              352deg,
+      rgba(139,92,246,0)   360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+          mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:0;transition:opacity .5s ease;pointer-events:none;
+}
+#kort2.kant::before{opacity:1}
+/* Kortet flyter upp en aning for mycket och lagger sig sedan pa plats. */
+#kort2.in{animation:stig .82s cubic-bezier(.22,1,.30,1) forwards}
+@keyframes stig{
+  0%  {opacity:0;transform:translateY(16px) scale(.96)}
+  58% {opacity:1;transform:translateY(-7px) scale(1.028)}
+  100%{opacity:1;transform:translateY(0)    scale(1)}
+}
+.s-titel{font-size:var(--t-titel);font-weight:600;margin-bottom:4px}
+.s-underrad{font-size:var(--t-underrad);color:var(--muted-foreground);margin-bottom:14px}
+.s-rad{
+  font-size:var(--t-brod);line-height:1.62;color:#1e293b;
+  opacity:0;transform:translateY(5px);
+  transition:opacity .4s ease,transform .45s cubic-bezier(.22,1,.30,1);
+}
+.s-rad.in{opacity:1;transform:none}
+.s-rad b{font-weight:600;color:var(--foreground)}
+/* nyckeltalen langst ned — hjalper korten att bli lika hoga */
+.nyckel{display:flex;gap:9px;margin-top:auto;padding-top:14px;
+  border-top:1px solid var(--border);
+  opacity:0;transform:translateY(5px);
+  transition:opacity .4s ease,transform .45s cubic-bezier(.22,1,.30,1)}
+.nyckel.in{opacity:1;transform:none}
+.nchip{font-size:12.5px;font-weight:600;color:#334155;
+  background:var(--input);border:1px solid var(--border);border-radius:999px;padding:5px 11px}
+
+/* skelett medan sammanfattningen skrivs */
+.skelett{display:flex;flex-direction:column;gap:11px;margin-bottom:2px}
+.sk{height:11px;border-radius:5px;background:var(--muted);animation:puls 1.1s ease-in-out infinite}
+.sk:nth-child(2){width:92%;animation-delay:.12s}
+.sk:nth-child(3){width:78%;animation-delay:.24s}
+.sk:nth-child(4){width:86%;animation-delay:.36s}
+@keyframes puls{0%,100%{opacity:1}50%{opacity:.45}}
+.skelett.bort{display:none}
+
+/* ═════════ pekare ═════════ */
+.pekare{position:absolute;left:0;top:0;width:22px;height:22px;z-index:30;pointer-events:none;
+  opacity:0;filter:drop-shadow(0 2px 5px rgba(3,7,18,.3));
+  transition:transform .92s cubic-bezier(.32,.72,.24,1),opacity .3s ease}
+.pekare.in{opacity:1}
+.pekare.tryck{transform:var(--pos) scale(.86)}
+.ring{position:absolute;left:0;top:0;width:44px;height:44px;border-radius:50%;
+  border:2px solid var(--ring);opacity:0;pointer-events:none;z-index:29;margin:-22px 0 0 -22px}
+.ring.ga{animation:ringa .55s ease-out}
+@keyframes ringa{
+  0%{opacity:.5;transform:translate(var(--rx,0),var(--ry,0)) scale(.35)}
+  100%{opacity:0;transform:translate(var(--rx,0),var(--ry,0)) scale(1.15)}
+}
+</style>
+</head>
+<body>
+<div id="scale">
+  <div class="duk" id="duk">
+
+    <!-- ═══ kort 1 ═══ -->
+    <div class="kort" id="kort1">
+      <div class="topp">
+        <div class="rubrik">
+          <div class="titel">Bruttovinst (R12)</div>
+          <div class="underrad">Bruttovinst per månad med marginal (R12)</div>
+        </div>
+        <div class="verktyg">
+          <span class="grepp"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          <span class="knapp" id="knapp">
+            <svg class="snurr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.55"/></svg>
+            <svg class="gnista" viewBox="0 0 15 17" fill="currentColor"><path d="M8.12109 5.45898C8.28972 6.48642 9.07761 7.30195 10.0986 7.50586L13.8252 8.25L10.0986 8.99414C9.07761 9.19805 8.28971 10.0136 8.12109 11.041L7.22559 16.5L6.3291 11.041C6.16048 10.0136 5.37259 9.19805 4.35156 8.99414L0.625 8.25L4.35156 7.50586C5.37259 7.30195 6.16048 6.48642 6.3291 5.45898L7.22559 0L8.12109 5.45898ZM11.8877 2.16211C11.9356 2.42893 12.1445 2.63881 12.4111 2.6875L14.125 3L12.4111 3.3125C12.1445 3.36119 11.9356 3.57107 11.8877 3.83789L11.5 6L11.1123 3.83789C11.0644 3.57107 10.8555 3.36119 10.5889 3.3125L8.875 3L10.5889 2.6875C10.8555 2.63881 11.0644 2.42893 11.1123 2.16211L11.5 0L11.8877 2.16211Z"/></svg>
+            Sammanfatta
+          </span>
+          <!-- lucide "settings" — hela kugghjulet, inte en avklippt bana -->
+          <span class="ikon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></span>
+          <!-- lucide "trash-2" — med de tva strecken i korgen -->
+          <span class="ikon fara"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg></span>
+        </div>
+      </div>
+
+      <div class="diagram">
+        <svg id="duk1" viewBox="0 0 560 170" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <!-- Stapel: samma kulor, 0.95 -> 0.55, alltid vertikal -->
+            <linearGradient id="gStapel" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="var(--chart-4)" stop-opacity="0.95"/>
+              <stop offset="1" stop-color="var(--chart-4)" stop-opacity="0.55"/>
+            </linearGradient>
+          </defs>
+          <g class="axel" id="axlar"></g>
+          <g id="staplar"></g>
+          <path id="linje" fill="none" stroke="var(--foreground)" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+          <g id="punkter"></g>
+        </svg>
+      </div>
+
+      <div class="forklaring" id="forklaring">
+        <span class="fnyckel"><span class="fruta"></span>Bruttovinst, SEK</span>
+        <span class="fnyckel"><span class="flinje"></span>Bruttomarginal, %</span>
+      </div>
+    </div>
+
+    <!-- ═══ kort 2 ═══ -->
+    <div class="kort" id="kort2">
+      <div class="s-titel">Sammanfattning</div>
+      <div class="s-underrad">Genererad ur Bruttovinst (R12)</div>
+
+      <div class="skelett" id="skelett"><span class="sk"></span><span class="sk"></span><span class="sk"></span><span class="sk"></span></div>
+
+      <div class="s-rad">Bruttoresultatet för <b>Nordisk Handel AB</b> har varit stabilt över rullande</div>
+      <div class="s-rad">tolv månader, men med tydliga svackor i <b>juli</b> och <b>december 2025</b>.</div>
+      <div class="s-rad">Mönstret upprepas båda åren och tyder på säsongsvariation snarare</div>
+      <div class="s-rad">än en trendmässig försämring.</div>
+      <div class="s-rad">Marginalen har samtidigt stigit från <b>61,8 %</b> till <b>69,4 %</b>, vilket</div>
+      <div class="s-rad">talar för bättre inköpsvillkor och lägre fraktkostnad per order.</div>
+
+      <div class="nyckel" id="nyckel">
+        <span class="nchip">R12 · +12 %</span>
+        <span class="nchip">Svagast: juli 2025</span>
+        <span class="nchip">Marginal +7,6 p.e.</span>
+      </div>
+    </div>
+
+    <div class="ring" id="ring"></div>
+    <svg class="pekare" id="pekare" viewBox="0 0 24 24" fill="#030712" stroke="#fff" stroke-width="1.4">
+      <path d="M5 3l14 8.5-6.2 1.3-2.6 5.9z"/>
+    </svg>
+
+  </div>
+</div>
+
+<script>
+var ZOOM   = 1;
+var CARD_W = 680;   /* matchar --card-w */
+var CARD_H = 660;   /* matchar --card-h */
+function fit(){
+  var k = (window.innerWidth / CARD_W) * ZOOM;
+  document.getElementById('scale').style.transform = 'scale(' + k + ')';
+  document.body.style.height = (CARD_H * k) + 'px';
+}
+fit(); addEventListener('resize', fit);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+
+var sleep = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
+var $  = function(s){ return document.querySelector(s); };
+var $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+var NS = "http://www.w3.org/2000/svg";
+
+/* ── data ─────────────────────────────────────────────────────────── */
+var MANAD = ['Mar 2025','Apr 2025','Maj 2025','Jun 2025','Jul 2025','Aug 2025',
+             'Sep 2025','Okt 2025','Nov 2025','Dec 2025','Jan 2026','Feb 2026'];
+var VINST  = [1.80,1.85,1.82,1.90,1.35,1.55,1.65,1.85,1.95,2.05,2.10,2.20];   /* MSEK */
+var MARGIN = [61.8,63.2,62.8,64.5,65.6,66.3,66.8,67.4,67.9,68.4,68.9,69.4];   /* %    */
+
+var G = { x0:60, steg:40, bas:142, topp:12, bredd:24, maxV:2.4, minP:60, maxP:70 };
+function xa(i){ return G.x0 + i * G.steg; }
+function yv(v){ return G.bas - (v / G.maxV) * (G.bas - G.topp); }
+function yp(p){ return G.bas - ((p - G.minP) / (G.maxP - G.minP)) * (G.bas - G.topp); }
+
+function el(t, attr, txt){
+  var e = document.createElementNS(NS, t);
+  for (var k in attr) e.setAttribute(k, attr[k]);
+  if (txt != null) e.textContent = txt;
+  return e;
+}
+
+function bygg(){
+  var ax = $('#axlar');
+
+  /* vanster y-axel: inga axellinjer, bara ticks */
+  [0, 0.6, 1.2, 1.8, 2.4].forEach(function(v){
+    ax.appendChild(el('text', {x:46, y:yv(v)+3, 'text-anchor':'end',
+      'font-size':9.5, fill:'var(--muted-foreground)'}, v.toFixed(1) + 'M'));
+  });
+  /* hoger y-axel: procent */
+  [60, 63, 66, 70].forEach(function(p){
+    ax.appendChild(el('text', {x:530, y:yp(p)+3, 'text-anchor':'start',
+      'font-size':9.5, fill:'var(--muted-foreground)'}, p + '%'));
+  });
+  /* x-axeln: enda linjen i diagrammet */
+  ax.appendChild(el('line', {x1:52, x2:524, y1:G.bas, y2:G.bas,
+    stroke:'var(--border)', 'stroke-width':1}));
+  MANAD.forEach(function(m, i){
+    ax.appendChild(el('text', {x:xa(i), y:G.bas+15, 'text-anchor':'middle',
+      'font-size':7.6, fill:'var(--muted-foreground)',
+      'font-weight': i === MANAD.length-1 ? 700 : 400}, m));
+  });
+
+  /* staplar — radie [6,6,0,0] */
+  var g = $('#staplar');
+  VINST.forEach(function(v, i){
+    var h = G.bas - yv(v), x = xa(i) - G.bredd/2, y = yv(v), r = 6;
+    var d = 'M'+x+' '+G.bas+' L'+x+' '+(y+r)+' Q'+x+' '+y+' '+(x+r)+' '+y+
+            ' L'+(x+G.bredd-r)+' '+y+' Q'+(x+G.bredd)+' '+y+' '+(x+G.bredd)+' '+(y+r)+
+            ' L'+(x+G.bredd)+' '+G.bas+' Z';
+    g.appendChild(el('path', {d:d, fill:'url(#gStapel)', 'class':'stapel'}));
+  });
+
+  /* marginallinje + punkter */
+  var d = MARGIN.map(function(p, i){ return (i ? 'L' : 'M') + xa(i) + ' ' + yp(p); }).join(' ');
+  var lin = $('#linje');
+  lin.setAttribute('d', d);
+  var len = lin.getTotalLength();
+  /* Utgangslaget maste sattas UTAN transition — annars animerar webblasaren
+     fran 0 till full offset, dvs. linjen ritas baklanges vid start. */
+  lin.style.transition = 'none';
+  lin.style.strokeDasharray  = len;
+  lin.style.strokeDashoffset = len;
+  void lin.getBoundingClientRect();
+  lin.style.transition = '';
+
+  var pg = $('#punkter');
+  MARGIN.forEach(function(p, i){
+    pg.appendChild(el('circle', {cx:xa(i), cy:yp(p), r:3.4,
+      fill:'#fff', stroke:'var(--foreground)', 'stroke-width':1.6, 'class':'punkt'}));
+  });
+}
+
+/* ── pekare ───────────────────────────────────────────────────────── */
+var SPETS_X = 5/24*22, SPETS_Y = 3/24*22;
+function mitten(e){
+  var d = $('#duk').getBoundingClientRect(), r = e.getBoundingClientRect();
+  return { x: r.left - d.left + r.width/2, y: r.top - d.top + r.height/2 };
+}
+function till(x, y, direkt){
+  var p = $('#pekare'), t = 'translate(' + (x-SPETS_X) + 'px,' + (y-SPETS_Y) + 'px)';
+  if (direkt) p.style.transition = 'none';
+  p.style.setProperty('--pos', t);
+  p.style.transform = t;
+  /* OBS: offsetWidth finns inte pa SVG-element — reflowen maste tvingas
+     med getBoundingClientRect, annars glommer webblasaren startlaget och
+     pekaren flyger in fran kortets ovre vanstra horn.                    */
+  if (direkt){ p.getBoundingClientRect(); p.style.transition = ''; }
+}
+function ringa(x, y){
+  var r = $('#ring');
+  r.style.setProperty('--rx', x+'px'); r.style.setProperty('--ry', y+'px');
+  r.classList.remove('ga'); void r.offsetWidth; r.classList.add('ga');
+}
+
+/* ── lopande kantljus pa kort 2 ───────────────────────────────────── */
+var kantId = null;
+function kantIgang(varv){
+  var k = $('#kort2'), t0 = null;
+  k.classList.add('kant');
+  function steg(ts){
+    if (t0 === null) t0 = ts;
+    k.style.setProperty('--vinkel', (((ts - t0) / varv) * 360).toFixed(1) + 'deg');
+    kantId = requestAnimationFrame(steg);
+  }
+  kantId = requestAnimationFrame(steg);
+}
+function kantStopp(){
+  if (kantId) cancelAnimationFrame(kantId);
+  kantId = null;
+  $('#kort2').classList.remove('kant');      /* tonar bort → graa ramen kvar */
+}
+
+async function play(){
+  bygg();
+
+  /* 1. Bara diagrammet laddar. Knappen star still i sitt fardiga lage —
+        den har ingenting att gora an, sa den ska inte snurra.           */
+  $('#kort1').classList.add('laddat');
+  await sleep(620);
+
+  $('#axlar').classList.add('in');
+  await sleep(380);
+
+  /* Staplar och linje laddar SAMTIDIGT, vanster till hoger. */
+  $('#linje').style.strokeDashoffset = 0;
+  var st = $$('.stapel');
+  for (var i = 0; i < st.length; i++){ st[i].classList.add('in'); await sleep(88); }
+  await sleep(600);
+
+  $$('.punkt').forEach(function(p, i){ setTimeout(function(){ p.classList.add('in'); }, i*46); });
+  await sleep(360);
+  $('#forklaring').classList.add('in');
+
+  /* 2. Diagrammet ar klart → en kort andning, sedan gar handen mot knappen.
+        Pausen ar precis sa lang att ogat hinner lasa "klart" innan nasta
+        handelse borjar — inte langre.                                    */
+  await sleep(240);
+  var mal = mitten($('#knapp'));
+  till(mal.x + 72, mal.y + 100, true);
+  $('#pekare').classList.add('in');
+  await sleep(60);
+  till(mal.x, mal.y);
+  await sleep(940);                          /* = pekarens transition */
+
+  $('#pekare').classList.add('tryck');
+  $('#knapp').classList.add('tryck');
+  ringa(mal.x, mal.y);
+  await sleep(150);
+  $('#pekare').classList.remove('tryck');
+  $('#knapp').classList.remove('tryck');
+  $('#knapp').classList.add('aktiv');
+  await sleep(130);
+  $('#pekare').classList.remove('in');
+
+  /* 3. FORST NU har knappen ett jobb — den snurrar medan sammanfattningen
+        skrivs. Kort 1 backar undan och kort 2 vaxer fram.                */
+  $('#knapp').classList.add('laddar');
+  $('#kort1').classList.add('bakat');
+  await sleep(260);
+
+  $('#kort2').style.height = $('#kort1').offsetHeight + 'px';
+  $('#kort2').classList.add('in');
+  kantIgang(1600);                           /* ljuset borjar ga runt kanten */
+  await sleep(900);                          /* skelettet pulsar */
+
+  $('#skelett').classList.add('bort');
+  var rader = $$('.s-rad');
+  for (var j = 0; j < rader.length; j++){ rader[j].classList.add('in'); await sleep(210); }
+  $('#knapp').classList.remove('laddar');    /* sammanfattningen ar skriven */
+  await sleep(180);
+  $('#nyckel').classList.add('in');
+  await sleep(420);
+  kantStopp();                               /* ljuset slocknar, ramen blir graa */
+}
+
+var started = false;
+function start(){ if (started) return; started = true; play(); }
+if ('IntersectionObserver' in window){
+  var io = new IntersectionObserver(function(e){
+    if (e[0].isIntersecting){ start(); io.disconnect(); }
+  }, { threshold: 0.3 });
+  io.observe($('#duk'));
+} else { start(); }
+setTimeout(start, 4000);
+</script>
+</body>
+</html>

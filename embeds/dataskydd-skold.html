@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Dataskydd · skölden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style id="sevr-fx">
+:root{
+  /* ---------- duk ---------- */
+  --card-w:680px;
+  --card-h:680px;
+
+  /* ---------- tokens ur index.css (ljust) ---------- */
+  --card:#ffffff;
+  --foreground:#030712;
+  --muted:#f1f5f9;
+  --muted-foreground:#64748b;
+  --border:#e2e8f0;
+  --input:#f8fafc;
+  --ring:#cbd5e1;
+  --chart-1:#14b8a6;      /* trygghetskuloren — samma teal som Vatssons blick */
+
+  /* ---------- chippen ---------- */
+  --chip-h:44px;
+  --chip-r:11px;
+  --chip-gap:13px;
+  --kol-b:208px;
+  --kol-gap:16px;
+
+  /* ---------- fart, medvetet osynkade ---------- */
+  --fart-1:32s;
+  --fart-2:40s;
+  --fart-3:36s;
+
+  /* ---------- auran ---------- */
+  --aura:470px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;overflow:hidden}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--foreground);display:flex;align-items:flex-start;justify-content:flex-start;
+  -webkit-font-smoothing:antialiased}
+#scale{transform-origin:top left}
+
+.duk{position:relative;width:var(--card-w);height:var(--card-h);overflow:hidden}
+
+/* ═════════ 1. datafloodet ═════════ */
+.strom{
+  position:absolute;inset:0;
+  display:flex;justify-content:center;gap:var(--kol-gap);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%);
+          mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%);
+}
+.kol{width:var(--kol-b);flex:none;overflow:hidden}
+.spar{display:flex;flex-direction:column;gap:var(--chip-gap);will-change:transform}
+@keyframes rinn{ from{transform:translateY(0)} to{transform:translateY(-50%)} }
+#kol1 .spar{animation:rinn var(--fart-1) linear infinite}
+#kol2 .spar{animation:rinn var(--fart-2) linear infinite;animation-delay:-11s}
+#kol3 .spar{animation:rinn var(--fart-3) linear infinite;animation-delay:-21s}
+
+.chip{
+  height:var(--chip-h);flex:none;
+  display:flex;align-items:center;gap:9px;
+  padding:0 14px;overflow:hidden;
+  background:var(--card);border:1px solid var(--border);border-radius:var(--chip-r);
+  box-shadow:0 1px 2px rgba(16,24,40,.04);
+}
+.chip svg{width:16px;height:16px;flex:none;stroke:var(--muted-foreground);
+  fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+/* Etiketten ar en canvas — det ar den som pixleras pa riktigt. */
+.chip canvas{display:block;flex:none;image-rendering:pixelated}
+
+/* Riktig oskarpa i over- och underkant */
+.dis{position:absolute;left:0;right:0;height:180px;pointer-events:none;z-index:2;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.dis.upp{top:0;
+  -webkit-mask-image:linear-gradient(180deg,#000 10%,transparent 100%);
+          mask-image:linear-gradient(180deg,#000 10%,transparent 100%)}
+.dis.ner{bottom:0;
+  -webkit-mask-image:linear-gradient(0deg,#000 10%,transparent 100%);
+          mask-image:linear-gradient(0deg,#000 10%,transparent 100%)}
+
+/* ═════════ 2. molnet ═════════
+   Ingen ren cirkel — ett pixelmoln. Canvasen ar 40x40 riktiga pixlar
+   som CSS skalar upp med narmaste granne, sa varje ruta blir ett
+   17 px block. Kanten ar brusig, sa molnet fransar ut i stallet for
+   att sluta i en skarp radie.                                       */
+.moln{
+  position:absolute;left:0;top:0;width:100%;height:100%;z-index:3;pointer-events:none;
+  image-rendering:pixelated;image-rendering:crisp-edges;
+  opacity:0;transition:opacity 1s ease;
+}
+.moln.in{opacity:1}
+
+.puls{
+  position:absolute;left:50%;top:50%;width:300px;height:300px;margin:-150px 0 0 -150px;
+  border-radius:50%;border:1.5px solid var(--ring);opacity:0;z-index:4;pointer-events:none;
+}
+.puls.ga{animation:pulsa 1.6s cubic-bezier(.22,1,.30,1) forwards}
+@keyframes pulsa{
+  0%  {opacity:.42;transform:scale(.7)}
+  100%{opacity:0; transform:scale(1.55)}
+}
+
+/* ═════════ 3. skolden — genomskinligt glas ═════════
+   Kroppen ar ett eget lager med clip-path + backdrop-filter, sa att
+   datat bakom syns igenom men suddas och ljusnar. Ovanpa ligger
+   SVG:n med kanten, dagern, bocken och gnistan.                     */
+.skoldwrap{
+  position:absolute;left:50%;top:50%;width:200px;height:224px;z-index:5;
+  transform:translate(-50%,-50%) scale(.86);
+  opacity:0;
+  filter:drop-shadow(0 26px 48px rgba(3,7,18,.16))
+         drop-shadow(0 6px 14px rgba(3,7,18,.07));
+}
+.skoldwrap.in{animation:landa .95s cubic-bezier(.22,1,.30,1) forwards}
+@keyframes landa{
+  0%  {opacity:0;transform:translate(-50%,-45%) scale(.86)}
+  62% {opacity:1;transform:translate(-50%,-51.5%) scale(1.22)}
+  100%{opacity:1;transform:translate(-50%,-50%) scale(1.18)}
+}
+.glaskropp{
+  position:absolute;inset:0;
+  -webkit-backdrop-filter:blur(9px) saturate(1.1) brightness(1.05);
+          backdrop-filter:blur(9px) saturate(1.1) brightness(1.05);
+  background:linear-gradient(158deg,
+      rgba(255,255,255,.88) 0%,
+      rgba(255,255,255,.46) 36%,
+      rgba(255,255,255,.16) 68%,
+      rgba(148,163,184,.26) 100%);
+  clip-path:path("M100 8 C118 8 150 20 172 24 C180 25.5 184 30 184 38 V106 C184 158 150 196 104 214 C101.5 215 98.5 215 96 214 C50 196 16 158 16 106 V38 C16 30 20 25.5 28 24 C50 20 82 8 100 8 Z");
+}
+.skold{position:absolute;inset:0;width:200px;height:224px}
+#bock{transition:stroke-dashoffset .72s cubic-bezier(.35,0,.28,1)}
+#gnista{opacity:0;transform-box:fill-box;transform-origin:50% 50%;
+  transform:scale(.35) rotate(-30deg);
+  transition:opacity .42s ease, transform .62s cubic-bezier(.22,1,.30,1)}
+#gnista.in{opacity:1;transform:scale(1) rotate(0deg)}
+</style>
+</head>
+<body>
+<div id="scale">
+  <div class="duk" id="duk">
+
+    <div class="strom">
+      <div class="kol" id="kol1"><div class="spar"></div></div>
+      <div class="kol" id="kol2"><div class="spar"></div></div>
+      <div class="kol" id="kol3"><div class="spar"></div></div>
+    </div>
+
+    <div class="dis upp"></div>
+    <div class="dis ner"></div>
+
+    <canvas class="moln" id="moln" width="40" height="40"></canvas>
+    <div class="puls" id="puls"></div>
+
+    <div class="skoldwrap" id="skold">
+      <div class="glaskropp"></div>
+      <svg class="skold" viewBox="0 0 200 224" fill="none">
+        <defs>
+          <!-- Kanten: vit dager uppe till vanster som gar over i teal.
+               Samma kulor i bada tealstoppen, bara opaciteten andras.  -->
+          <linearGradient id="gKant" x1="0.15" y1="0" x2="0.85" y2="1">
+            <stop offset="0"    stop-color="#ffffff" stop-opacity="0.98"/>
+            <stop offset="0.38" stop-color="#e2e8f0" stop-opacity="0.95"/>
+            <stop offset="1"    stop-color="#94a3b8" stop-opacity="0.92"/>
+          </linearGradient>
+          <linearGradient id="gBock" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#475569" stop-opacity="0.82"/>
+            <stop offset="1" stop-color="#475569" stop-opacity="0.42"/>
+          </linearGradient>
+          <linearGradient id="gDager" x1="0" y1="0" x2="0.6" y2="1">
+            <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+            <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+          </linearGradient>
+          <clipPath id="cKropp">
+            <path d="M100 8 C118 8 150 20 172 24 C180 25.5 184 30 184 38 V106 C184 158 150 196 104 214 C101.5 215 98.5 215 96 214 C50 196 16 158 16 106 V38 C16 30 20 25.5 28 24 C50 20 82 8 100 8 Z"/>
+          </clipPath>
+        </defs>
+
+        <!-- dagern: ett mjukt ljusstrak over glasets ovre vanstra halva -->
+        <g clip-path="url(#cKropp)">
+          <path d="M-10 -10 H210 L60 240 H-10 Z" fill="url(#gDager)" opacity="0.32"/>
+          <ellipse cx="66" cy="46" rx="58" ry="26" fill="#ffffff" opacity="0.42"
+                   transform="rotate(-19 66 46)"/>
+        </g>
+
+        <!-- glaskanten: en tunn innerlinje + den kulorta ytterkanten -->
+        <path d="M100 8 C118 8 150 20 172 24 C180 25.5 184 30 184 38 V106 C184 158 150 196 104 214 C101.5 215 98.5 215 96 214 C50 196 16 158 16 106 V38 C16 30 20 25.5 28 24 C50 20 82 8 100 8 Z"
+              fill="none" stroke="#ffffff" stroke-opacity="0.75" stroke-width="5.5"
+              stroke-linejoin="round" clip-path="url(#cKropp)"/>
+        <path d="M100 8 C118 8 150 20 172 24 C180 25.5 184 30 184 38 V106 C184 158 150 196 104 214 C101.5 215 98.5 215 96 214 C50 196 16 158 16 106 V38 C16 30 20 25.5 28 24 C50 20 82 8 100 8 Z"
+              fill="none" stroke="url(#gKant)" stroke-width="2.6" stroke-linejoin="round"/>
+
+        <path id="bock" d="M62 112 L88 140 L140 80"
+          stroke="url(#gBock)" stroke-width="11" stroke-linecap="round"
+          stroke-linejoin="round" fill="none"/>
+
+        <!-- SPARKLE_PATH ur AvatarRenderer, viewBox 0 0 15 17.
+             Placeringen ligger i den YTTRE gruppen — CSS-transformen pa
+             #gnista skulle annars skriva over transform-attributet.    -->
+        <g transform="translate(142 16) scale(2.9)"><g id="gnista">
+          <path fill="#94a3b8" fill-opacity="0.9" d="M8.12109 5.45898C8.28972 6.48642 9.07761 7.30195 10.0986 7.50586L13.8252 8.25L10.0986 8.99414C9.07761 9.19805 8.28971 10.0136 8.12109 11.041L7.22559 16.5L6.3291 11.041C6.16048 10.0136 5.37259 9.19805 4.35156 8.99414L0.625 8.25L4.35156 7.50586C5.37259 7.30195 6.16048 6.48642 6.3291 5.45898L7.22559 0L8.12109 5.45898ZM11.8877 2.16211C11.9356 2.42893 12.1445 2.63881 12.4111 2.6875L14.125 3L12.4111 3.3125C12.1445 3.36119 11.9356 3.57107 11.8877 3.83789L11.5 6L11.1123 3.83789C11.0644 3.57107 10.8555 3.36119 10.5889 3.3125L8.875 3L10.5889 2.6875C10.8555 2.63881 11.0644 2.42893 11.1123 2.16211L11.5 0L11.8877 2.16211Z"/>
+        </g></g>
+      </svg>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var ZOOM = 1, CARD_W = 680, CARD_H = 680;
+function fit(){
+  var k = (window.innerWidth / CARD_W) * ZOOM;
+  document.getElementById('scale').style.transform = 'scale(' + k + ')';
+  document.body.style.height = (CARD_H * k) + 'px';
+}
+fit(); addEventListener('resize', fit);
+
+var $ = function(s){ return document.querySelector(s); };
+var sleep = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
+
+/* ── smaikoner, lucide ────────────────────────────────────────────── */
+var I = {
+  fil:   '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h6"/><path d="m9 15 2 2 4-4"/>',
+  hus:   '<path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/>',
+  kvitto:'<path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1V2l-2 1-2-1-2 1-2-1-2 1-2-1z"/><path d="M8 7h8M8 11h8M8 15h5"/>',
+  folk:  '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/>',
+  bank:  '<path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6l7-3 7 3"/><path d="M6 10v11M10 10v11M14 10v11M18 10v11"/>',
+  bok:   '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+  kort:  '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>',
+  lager: '<path d="m12 2 9 5-9 5-9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/>',
+  las:   '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>'
+};
+
+/* Riktiga underlag ur bokforingen. Tredje talet = antal maskade rutor,
+   dvs. varden som redan ar dolda (personnummer, kontonummer, loner).  */
+var DATA = [
+  ['SIE-fil','fil',0],              ['Personnummer','las',6],
+  ['Verifikat','kvitto',0],         ['Kontonummer','bank',7],
+  ['Huvudbok','bok',0],             ['Lön','folk',5],
+  ['Momsrapport','fil',0],          ['E-post','folk',6],
+  ['Bankkontoutdrag','bank',0],     ['Kundnummer','las',5],
+  ['Kundfaktura','kvitto',0],       ['Saldo','bank',6],
+  ['Fortnox','lager',0],            ['Org.nr','hus',5],
+  ['Balansräkning','bok',0],        ['Adress','hus',6],
+  ['Lönebesked','folk',0],          ['Kortnummer','kort',6],
+  ['Kontoplan BAS','bok',0],        ['Bankgiro','bank',5],
+  ['Anläggningsregister','lager',0],['Moms','fil',5],
+  ['Leverantörsfaktura','kvitto',0],['Visma','lager',0],
+  ['Resultaträkning','bok',0],      ['Reskontra','kvitto',0]
+];
+
+/* ── pixleringen ──────────────────────────────────────────────────────
+   Etiketten ritas i en canvas. For niva N ritas den forst i en canvas
+   som ar N ganger mindre och skalas sedan upp med avstangd utjamning —
+   det ger riktiga, hårda pixelblock, inte oskarpa.
+   N valjs av avstandet till skoldens mitt: ju narmare auran, desto
+   grovre block.                                                       */
+var NIVA  = [1, 2, 3, 4, 6, 9];
+var R_YTT = 268;   /* utanfor: knivskarpt   */
+var R_INN = 70;    /* innanfor: grovst      */
+var BRED  = 1.45;  /* auran nar lite langre at sidorna an uppat */
+var SKRAP = document.createElement('canvas');
+var MATT  = document.createElement('canvas').getContext('2d');
+var CHIPS = [];
+
+function fontstr(px){ return '500 ' + px + 'px Inter, -apple-system, sans-serif'; }
+
+function mala(g, d, w, h){
+  g.font = fontstr(13);
+  g.textBaseline = 'middle';
+  g.fillStyle = '#334155';
+  g.fillText(d[0], 0, h/2 + 0.5);
+  if (d[2]){
+    var x = MATT.measureText(d[0]).width + 9;
+    g.fillStyle = '#cbd5e1';
+    for (var i = 0; i < d[2]; i++){
+      var bx = x + i * 9;
+      g.beginPath();
+      if (g.roundRect) g.roundRect(bx, h/2 - 3.5, 6.5, 7, 1.5);
+      else g.rect(bx, h/2 - 3.5, 6.5, 7);
+      g.fill();
+    }
+  }
+}
+
+function rita(c){
+  var cv = c.cv, w = c.w, h = 20, dpr = 2, lvl = NIVA[c.n];
+  cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+  cv.style.width = w + 'px'; cv.style.height = h + 'px';
+  var g = cv.getContext('2d');
+  g.clearRect(0, 0, cv.width, cv.height);
+
+  if (lvl <= 1){
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    mala(g, c.d, w, h);
+    return;
+  }
+  var sw = Math.max(2, Math.round(w / lvl)), sh = Math.max(2, Math.round(h / lvl));
+  SKRAP.width = sw; SKRAP.height = sh;
+  var sg = SKRAP.getContext('2d');
+  sg.clearRect(0, 0, sw, sh);
+  sg.setTransform(sw / w, 0, 0, sh / h, 0, 0);
+  mala(sg, c.d, w, h);
+  g.imageSmoothingEnabled = false;
+  g.drawImage(SKRAP, 0, 0, sw, sh, 0, 0, cv.width, cv.height);
+}
+
+function chip(d){
+  var s = document.createElement('span');
+  s.className = 'chip';
+  s.innerHTML = '<svg viewBox="0 0 24 24">' + I[d[1]] + '</svg>';
+  var cv = document.createElement('canvas');
+  s.appendChild(cv);
+  MATT.font = fontstr(13);
+  var w = Math.ceil(MATT.measureText(d[0]).width) + (d[2] ? 9 + d[2] * 9 : 0) + 2;
+  var post = { el:s, cv:cv, d:d, w:Math.min(w, 152), n:-1 };
+  CHIPS.push(post);
+  return s;
+}
+
+function fyll(id, start){
+  var spar = document.querySelector('#' + id + ' .spar');
+  var ett = document.createDocumentFragment(), lista = [];
+  for (var i = 0; i < 12; i++) lista.push(DATA[(start + i * 5) % DATA.length]);
+  /* Listan laggs dubbelt — -50 % blir da en somlos vandning. */
+  for (var v = 0; v < 2; v++)
+    for (var j = 0; j < lista.length; j++) ett.appendChild(chip(lista[j]));
+  spar.appendChild(ett);
+}
+fyll('kol1', 0);
+fyll('kol2', 7);
+fyll('kol3', 16);
+
+/* Avstandet till mitten avgor pixelnivan. Alla rutor lases i en svep
+   och skrivs i nasta — annars tvingas layouten om per chip.          */
+function uppdatera(){
+  var k = window.innerWidth / CARD_W;
+  var d = $('#duk').getBoundingClientRect();
+  var cx = d.left + d.width / 2, cy = d.top + d.height / 2;
+  var vill = [];
+  for (var i = 0; i < CHIPS.length; i++){
+    var r = CHIPS[i].el.getBoundingClientRect();
+    if (r.width === 0){ vill.push(-1); continue; }
+    var dx = (r.left + r.width / 2 - cx) / (k * BRED), dy = (r.top + r.height / 2 - cy) / k;
+    var rad = Math.sqrt(dx * dx + dy * dy);
+    var t = (R_YTT - rad) / (R_YTT - R_INN);
+    vill.push(Math.max(0, Math.min(NIVA.length - 1, Math.round(t * (NIVA.length - 1)))));
+  }
+  for (var j = 0; j < CHIPS.length; j++){
+    if (vill[j] >= 0 && vill[j] !== CHIPS[j].n){ CHIPS[j].n = vill[j]; rita(CHIPS[j]); }
+  }
+}
+
+function start_pixel(){
+  uppdatera();
+  setInterval(uppdatera, 110);
+}
+if (document.fonts && document.fonts.ready){
+  document.fonts.ready.then(function(){ fit(); start_pixel(); });
+} else { start_pixel(); }
+
+/* ── pixelmolnet ──────────────────────────────────────────────────────
+   40x40 rutor. Genomskinligheten faller av mot kanten, men varje ruta
+   far ett brustillskott — sa molnet slutar aldrig i en ren radie utan
+   fransar ut i losa block. Ytterbandet byter brus langsamt, sa kanten
+   lever utan att flimra.                                              */
+var N_RUT = 40;
+var molnG = document.getElementById('moln').getContext('2d');
+
+function brus(i, j, s){
+  var n = Math.sin(i * 127.1 + j * 311.7 + s * 74.7) * 43758.5453;
+  return n - Math.floor(n);
+}
+
+function ritaMoln(vaxt, fro){
+  molnG.clearRect(0, 0, N_RUT, N_RUT);
+  var m = N_RUT / 2;
+  for (var i = 0; i < N_RUT; i++){
+    for (var j = 0; j < N_RUT; j++){
+      var dx = (i + 0.5 - m) / m / 1.32;      /* lite bredare an hog */
+      var dy = (j + 0.5 - m) / m;
+      var r  = Math.sqrt(dx * dx + dy * dy) / vaxt;
+
+      var a = (0.96 - r) / 0.66;              /* 1 i mitten, 0 ute      */
+      if (a <= 0) continue;
+      if (a > 1) a = 1;
+      a = a * a;
+
+      /* Brus bara i ytterbandet — mitten ska vara tat och lugn. */
+      var kant = 1 - Math.abs(a - 0.34) / 0.34;
+      if (kant > 0) a += (brus(i, j, fro) - 0.5) * 0.74 * kant;
+
+      if (a <= 0.05) continue;
+      if (a > 0.88) a = 0.88;
+      a = Math.round(a * 6) / 6;              /* trappa — inte mjuk toning */
+      if (a <= 0) continue;
+
+      /* Nastan vitt med en aning teal langst in — ingen gron platta. */
+      molnG.fillStyle = 'rgba(240,253,250,' + a.toFixed(3) + ')';
+      molnG.fillRect(i, j, 1, 1);
+    }
+  }
+}
+
+var molnFro = 0;
+function moln_igang(){
+  var t0 = null;
+  function steg(ts){
+    if (t0 === null) t0 = ts;
+    var p = Math.min(1, (ts - t0) / 950);
+    var e = 1 - Math.pow(1 - p, 3);           /* mjuk utblasning */
+    ritaMoln(0.42 + e * 0.58, molnFro);
+    if (p < 1) requestAnimationFrame(steg);
+    else setInterval(function(){ ritaMoln(1, ++molnFro); }, 620);
+  }
+  requestAnimationFrame(steg);
+}
+ritaMoln(0.42, 0);
+
+/* ── bocken ritas, inte fadas ─────────────────────────────────────── */
+var bock = $('#bock'), len = bock.getTotalLength();
+bock.style.transition = 'none';
+bock.style.strokeDasharray  = len;
+bock.style.strokeDashoffset = len;
+bock.getBoundingClientRect();          /* SVG saknar offsetWidth */
+bock.style.transition = '';
+
+async function play(){
+  await sleep(520);
+  $('#moln').classList.add('in');
+  moln_igang();
+  await sleep(430);
+  $('#skold').classList.add('in');
+  await sleep(640);
+  bock.style.strokeDashoffset = 0;
+  await sleep(440);
+  $('#gnista').classList.add('in');
+  await sleep(260);
+  $('#puls').classList.add('ga');
+}
+
+var started = false;
+function start(){ if (started) return; started = true; play(); }
+if ('IntersectionObserver' in window){
+  var io = new IntersectionObserver(function(e){
+    if (e[0].isIntersecting){ start(); io.disconnect(); }
+  }, { threshold: 0.3 });
+  io.observe($('#duk'));
+} else { start(); }
+setTimeout(start, 4000);
+</script>
+</body>
+</html>

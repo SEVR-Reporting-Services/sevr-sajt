@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Agenter · stapel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style id="sevr-fx">
+:root{
+  /* ---------- duk (hojden sätts av varianten, se skriptet) ---------- */
+  --card-w:680px;
+  --card-h:720px;
+
+  /* ---------- tokens ur index.css (ljust) ---------- */
+  --card:#ffffff;
+  --foreground:#030712;
+  --muted:#f1f5f9;
+  --muted-foreground:#64748b;
+  --border:#e2e8f0;
+  --ring-c:#cbd5e1;
+
+  --chart-4:#8b5cf6;
+  --chart-5:#6366f1;
+  --chart-6:#ff6900;
+
+  /* ---------- kortet ---------- */
+  --kort-w:452px;
+  --kort-h:108px;      /* sätts om av varianten */
+  --kort-r:18px;
+
+  /* Ikonrutan är identisk med originalet (agents-promo / Agentpanelen):
+     ruta 48 px, radie 12 px, ton = color-mix(kulör 14 %, card).
+     Punktrutnätet 6x4 px + 5x2 px = 34 px → 34/48 ≈ 0,71.
+     Alla sex ikoner delar exakt dessa mått — inget skalas per agent.  */
+  --ikon:48px;
+  --ikon-r:12px;
+  --prick:4px;
+  --prick-gap:2px;
+
+  /* ---------- stapeln ---------- */
+  --steg:98px;         /* avstand mellan tva platser, sätts om av varianten */
+  --takt:2400ms;       /* hur ofta stapeln klickar ett steg */
+  --glid:900ms;        /* hur langsamt sjalva forflyttningen gar */
+
+  /* ---------- typografi ---------- */
+  --t-namn:18px;
+  --t-sub:13px;
+  --t-tagg:10.5px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;overflow:hidden}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--foreground);display:flex;align-items:flex-start;justify-content:flex-start;
+  -webkit-font-smoothing:antialiased}
+#scale{transform-origin:top left}
+
+.duk{position:relative;width:var(--card-w);height:var(--card-h)}
+
+/* ---------- ett kort i stapeln ---------- */
+.kort{
+  position:absolute;left:50%;top:50%;
+  width:var(--kort-w);height:var(--kort-h);
+  margin:calc(var(--kort-h) / -2) 0 0 calc(var(--kort-w) / -2);
+  background:var(--card);border:1px solid var(--border);border-radius:var(--kort-r);
+  display:flex;align-items:center;gap:18px;padding:0 28px;
+  transform-origin:50% 50%;
+  transition:transform var(--glid) cubic-bezier(.34,.84,.28,1),
+             opacity   var(--glid) cubic-bezier(.34,.84,.28,1),
+             filter    var(--glid) cubic-bezier(.34,.84,.28,1),
+             box-shadow var(--glid) ease;
+  will-change:transform,opacity,filter;
+}
+.text{min-width:0}
+.namn{font-size:var(--t-namn);font-weight:600;letter-spacing:-.01em;white-space:nowrap;line-height:1.25}
+.sub{font-size:var(--t-sub);line-height:1.4;color:var(--muted-foreground);margin-top:4px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+.taggar{display:flex;align-items:center;gap:6px;margin-top:9px}
+.tagg{display:inline-flex;align-items:center;gap:4px;
+  font-size:var(--t-tagg);font-weight:600;border-radius:6px;padding:3px 8px;white-space:nowrap}
+.tagg.grå{background:var(--muted);color:var(--muted-foreground)}
+/* AI-taggen bär vår egen gnista, samma path som i AvatarRenderer */
+.tagg .gnista{width:9px;height:10px;flex:none;fill:currentColor}
+
+/* ---------- punktikonen ur SevrDotIcon ----------
+   Släckt punkt = 20 % av kulören mot kortets bakgrund, tänd = full kulör.
+   Samma regel, samma mått och samma rutnät för alla sex agenter.      */
+.doticon{
+  display:grid;
+  grid-template-columns:repeat(6,var(--prick));
+  grid-auto-rows:var(--prick);
+  gap:var(--prick-gap);
+  justify-content:center;align-content:center;
+  width:var(--ikon);height:var(--ikon);flex:none;border-radius:var(--ikon-r);
+  background:color-mix(in srgb, var(--cat) 14%, var(--card));
+}
+.doticon i{width:var(--prick);height:var(--prick);border-radius:9999px;display:block;
+  background:color-mix(in srgb, var(--cat) 20%, var(--card))}
+.doticon i.on{background:var(--cat)}
+</style>
+</head>
+<body>
+<div id="scale">
+  <div class="duk" id="duk"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   VARIANT
+   true  = namn + underrad + taggar (den fylligare)
+   false = bara ikon och namn (den rena, som i referensen)
+   ═══════════════════════════════════════════════════════════════════ */
+var DETALJ = false;
+
+/* steg < kortH ⇒ korten lägger sig omlott, som i referensen */
+var MATT = DETALJ
+  ? { kortH:122, steg:104, dukH:740 }
+  : { kortH:86,  steg:74,  dukH:580 };
+
+var rot = document.documentElement;
+rot.style.setProperty('--kort-h', MATT.kortH + 'px');
+rot.style.setProperty('--steg',   MATT.steg  + 'px');
+rot.style.setProperty('--card-h', MATT.dukH  + 'px');
+
+var ZOOM = 1, CARD_W = 680, CARD_H = MATT.dukH;
+function fit(){
+  var k = (window.innerWidth / CARD_W) * ZOOM;
+  document.getElementById('scale').style.transform = 'scale(' + k + ')';
+  document.body.style.height = (CARD_H * k) + 'px';
+}
+fit(); addEventListener('resize', fit);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+
+/* ── de sex agenterna, avlasta ur Agentpanelen (d3y) ──────────────────
+   Namn, underrad, taggar, kulor och punktmask kommer direkt ur den
+   publicerade panelen. Masken ar 6x6: 1 = tand punkt, 0 = slackt.     */
+var AGENTER = [
+  { namn:'Avvikelsegranskning',  cat:'var(--chart-5)',
+    sub:'Granskar alla verifikat och flaggar avvikelser du bör titta på.',
+    taggar:[['Redovisning','var(--chart-5)'],['AI','ai']],
+    mask:'001100011110101101101101010010001100' },
+
+  { namn:'Månadsstängning',      cat:'var(--chart-5)',
+    sub:'Kör månadsbokslutets kontroller per balansdag och ger ett omdöme.',
+    taggar:[['Redovisning','var(--chart-5)']],
+    mask:'010010111111100001101101101101111111' },
+
+  { namn:'Årsbokslut',           cat:'var(--chart-5)',
+    sub:'Bokför årets avslut till färdiga verifikat efter dina bedömningar.',
+    taggar:[['Redovisning','var(--chart-5)']],
+    mask:'110011111111101101101101111111110011' },
+
+  { namn:'Momsdeklaration',      cat:'var(--chart-6)',
+    sub:'Bygger hela momsdeklarationen och stämmer av mot bokföringen.',
+    taggar:[['Skatt','var(--chart-6)'],['Beta','grå']],
+    mask:'110001110010000100001000010011100011' },
+
+  { namn:'Verifikatanalys',      cat:'var(--chart-4)',
+    sub:'Testar hela verifikatpopulationen — inget stickprov.',
+    taggar:[['Revision','var(--chart-4)']],
+    mask:'011110111111011110111111011110111111' },
+
+  { namn:'Koncernkonsolidering', cat:'var(--chart-5)',
+    sub:'Konsoliderar koncernen och eliminerar interna mellanhavanden.',
+    taggar:[['Redovisning','var(--chart-5)'],['Beta','grå']],
+    mask:'111100100100101111111101001001001111' }
+];
+
+/* Vår egen gnista — samma path som AvatarRenderer använder. */
+var GNISTA = '<svg class="gnista" viewBox="0 0 15 17"><path d="M8.12109 5.45898C8.28972 6.48642 9.07761 7.30195 10.0986 7.50586L13.8252 8.25L10.0986 8.99414C9.07761 9.19805 8.28971 10.0136 8.12109 11.041L7.22559 16.5L6.3291 11.041C6.16048 10.0136 5.37259 9.19805 4.35156 8.99414L0.625 8.25L4.35156 7.50586C5.37259 7.30195 6.16048 6.48642 6.3291 5.45898L7.22559 0L8.12109 5.45898ZM11.8877 2.16211C11.9356 2.42893 12.1445 2.63881 12.4111 2.6875L14.125 3L12.4111 3.3125C12.1445 3.36119 11.9356 3.57107 11.8877 3.83789L11.5 6L11.1123 3.83789C11.0644 3.57107 10.8555 3.36119 10.5889 3.3125L8.875 3L10.5889 2.6875C10.8555 2.63881 11.0644 2.42893 11.1123 2.16211L11.5 0L11.8877 2.16211Z"/></svg>';
+
+/* ── stapelns utseende per plats fran mitten ─────────────────────────── */
+var NIVA = [
+  { skala:1.00, opacitet:1.00, blur:0,   skugga:'0 18px 44px -18px rgba(3,7,18,.26), 0 2px 8px -3px rgba(3,7,18,.08)' },
+  { skala:0.93, opacitet:0.78, blur:0.7, skugga:'0 10px 26px -18px rgba(3,7,18,.20)' },
+  { skala:0.86, opacitet:0.40, blur:2.0, skugga:'none' },
+  { skala:0.78, opacitet:0.09, blur:4.4, skugga:'none' }
+];
+var SYNLIGA = NIVA.length - 1;          /* ±3 platser */
+
+var duk = document.getElementById('duk');
+function css(n){ return parseFloat(getComputedStyle(rot).getPropertyValue(n)); }
+var STEG = css('--steg') || 98;
+var TAKT = css('--takt') || 2400;
+
+/* Tva varv av listan i DOM:en racker for att fylla fonstret hela varvet. */
+var N = AGENTER.length * 2;
+var noder = [];
+
+function tagg(t){
+  if (t[1] === 'ai')  return '<span class="tagg" style="background:color-mix(in srgb,var(--chart-4) 12%,var(--card));color:var(--chart-4)">' + GNISTA + t[0] + '</span>';
+  if (t[1] === 'grå') return '<span class="tagg grå">' + t[0] + '</span>';
+  return '<span class="tagg" style="background:color-mix(in srgb,' + t[1] + ' 12%,var(--card));color:' + t[1] + '">' + t[0] + '</span>';
+}
+
+for (var i = 0; i < N; i++){
+  var a = AGENTER[i % AGENTER.length];
+  var el = document.createElement('div');
+  el.className = 'kort';
+
+  var prickar = '';
+  for (var d = 0; d < 36; d++) prickar += '<i class="' + (a.mask[d] === '1' ? 'on' : '') + '"></i>';
+
+  var text = '<div class="namn">' + a.namn + '</div>';
+  if (DETALJ){
+    text += '<div class="sub">' + a.sub + '</div>' +
+            '<div class="taggar">' + a.taggar.map(tagg).join('') + '</div>';
+  }
+
+  el.innerHTML = '<span class="doticon" style="--cat:' + a.cat + '">' + prickar + '</span>' +
+                 '<div class="text">' + text + '</div>';
+  duk.appendChild(el);
+  noder.push(el);
+}
+
+/* Kortaste vagen runt ringen: kortet som lamnat toppen kommer in underifran. */
+function runt(o){
+  o = ((o % N) + N) % N;
+  return o > N / 2 ? o - N : o;
+}
+
+function stall(fokus, direkt){
+  for (var i = 0; i < N; i++){
+    var off = runt(i - fokus), steg = Math.abs(off), el = noder[i];
+    if (direkt) el.style.transition = 'none';
+
+    if (steg > SYNLIGA){
+      var sida = off > 0 ? 1 : -1;
+      el.style.transform = 'translateY(' + (sida * (SYNLIGA + 1) * STEG) + 'px) scale(' + NIVA[SYNLIGA].skala + ')';
+      el.style.opacity = 0;
+      el.style.filter = 'blur(4px)';
+      el.style.boxShadow = 'none';
+      el.style.zIndex = 0;
+    } else {
+      var n = NIVA[steg];
+      el.style.transform = 'translateY(' + (off * STEG) + 'px) scale(' + n.skala + ')';
+      el.style.opacity = n.opacitet;
+      el.style.filter = 'blur(' + n.blur + 'px)';
+      el.style.boxShadow = n.skugga;
+      el.style.zIndex = 20 - steg;
+    }
+    if (direkt){ void el.offsetWidth; el.style.transition = ''; }
+  }
+}
+
+var fokus = 0;
+stall(fokus, true);
+
+var timer = null;
+function start(){
+  if (timer) return;
+  timer = setInterval(function(){ fokus = (fokus + 1) % N; stall(fokus); }, TAKT);
+}
+if ('IntersectionObserver' in window){
+  var io = new IntersectionObserver(function(e){
+    if (e[0].isIntersecting){ start(); io.disconnect(); }
+  }, { threshold: 0.25 });
+  io.observe(duk);
+} else { start(); }
+setTimeout(start, 4000);
+</script>
+</body>
+</html>

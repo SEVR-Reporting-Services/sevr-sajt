@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Agenter · en period som loop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style id="sevr-fx">
+:root{
+  /* ---------- duk ---------- */
+  --card-w:680px;
+  --card-h:680px;
+
+  /* ---------- tokens ur index.css (ljust) ---------- */
+  --card:#ffffff;
+  --foreground:#030712;
+  --muted:#f1f5f9;
+  --muted-foreground:#64748b;
+  --border:#e2e8f0;
+  --input:#f8fafc;
+  --primary:#1d4ed8;
+  --ring-c:#cbd5e1;
+  --teal:#14b8a6;
+  --chart6:#ff6900;
+
+  /* ---------- ringen ---------- */
+  --bana:#e2e8f0;          /* sjalva ringen */
+  --agent:#1d4ed8;         /* den snabba punkten */
+  --manuell:#94a3b8;       /* den langsamma punkten */
+
+  /* ---------- fart ---------- */
+  --varv-agent:5;          /* sekunder per varv, med agenter */
+  --varv-manuell:60;       /* sekunder per varv, manuellt    */
+
+  /* ---------- typografi ---------- */
+  --t-station:13px;
+  --t-chip:12.5px;
+  --t-rakn:15px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;overflow:hidden}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--foreground);display:flex;align-items:flex-start;justify-content:flex-start;
+  -webkit-font-smoothing:antialiased}
+#scale{transform-origin:top left}
+
+.duk{position:relative;width:var(--card-w);height:var(--card-h)}
+#rit{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+
+/* ---------- stationsetiketter (HTML ovanpa svg) ---------- */
+.station{
+  position:absolute;transform:translate(-50%,-50%);
+  font-size:var(--t-station);font-weight:600;color:#334155;
+  background:var(--card);border:1px solid var(--border);border-radius:999px;
+  padding:6px 13px;white-space:nowrap;
+  box-shadow:0 2px 6px -2px rgba(3,7,18,.06);
+  transition:border-color .25s ease,box-shadow .25s ease,color .25s ease;
+}
+.station.puls{border-color:#c7d7fb;color:var(--primary);
+  box-shadow:0 0 0 4px rgba(29,78,216,.10)}
+.station.vanta{border-color:#fde68a;color:#854d0e;background:#fffbeb}
+
+/* ---------- agentchips i mitten ---------- */
+.mitt{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;width:250px;
+}
+.mrubrik{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--muted-foreground);margin-bottom:3px}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:7px}
+.chip{
+  font-size:var(--t-chip);font-weight:600;color:#64748b;
+  background:var(--input);border:1px solid var(--border);border-radius:999px;
+  padding:5px 11px;white-space:nowrap;
+  transition:background .3s ease,color .3s ease,border-color .3s ease,box-shadow .3s ease;
+}
+.chip.het{background:#eef3ff;border-color:#c7d7fb;color:var(--primary);
+  box-shadow:0 0 0 3px rgba(29,78,216,.08)}
+
+/* ---------- avvikelse-flagga ---------- */
+.flagga{
+  position:absolute;transform:translate(-50%,-130%);
+  font-size:12px;font-weight:600;color:#9a3412;
+  background:#fff7ed;border:1px solid #fed7aa;border-radius:999px;
+  padding:4px 11px;white-space:nowrap;
+  opacity:0;transition:opacity .25s ease,transform .35s cubic-bezier(.22,1,.30,1);
+  pointer-events:none;
+}
+.flagga.se{opacity:1;transform:translate(-50%,-165%)}
+
+/* ---------- raknarna ---------- */
+.rakn{
+  position:absolute;left:50%;bottom:26px;transform:translateX(-50%);
+  display:flex;gap:14px;
+}
+.rkort{
+  display:flex;align-items:center;gap:10px;
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:11px 17px;box-shadow:0 2px 6px -2px rgba(3,7,18,.06);
+  font-size:var(--t-rakn);
+}
+.rprick{width:9px;height:9px;border-radius:50%;flex:none}
+.rprick.a{background:var(--agent)}
+.rprick.m{background:var(--manuell)}
+.rtal{font-weight:700;font-variant-numeric:tabular-nums;min-width:20px;text-align:right}
+.retikett{color:var(--muted-foreground);white-space:nowrap}
+</style>
+</head>
+<body>
+<div id="scale">
+  <div class="duk" id="duk">
+
+    <svg id="rit" viewBox="0 0 680 680">
+      <defs>
+        <!-- svansen bakom agentpunkten: samma kulor, fallande opacitet -->
+        <linearGradient id="gSvans" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="var(--agent)" stop-opacity="0"/>
+          <stop offset="1" stop-color="var(--agent)" stop-opacity="0.55"/>
+        </linearGradient>
+      </defs>
+      <circle id="bana" cx="340" cy="330" r="210" fill="none"
+              stroke="var(--bana)" stroke-width="2"/>
+      <path id="svans" fill="none" stroke="url(#gSvans)" stroke-width="4" stroke-linecap="round"/>
+      <circle id="pManuell" r="8" fill="var(--manuell)"/>
+      <circle id="pAgent" r="9" fill="var(--agent)"/>
+    </svg>
+
+    <!-- stationer laggs ut av skriptet -->
+
+    <div class="mitt">
+      <div class="mrubrik">Agenter</div>
+      <div class="chips">
+        <span class="chip" data-a="lopande">Löpande bokföring</span>
+        <span class="chip" data-a="lon">Lön</span>
+        <span class="chip" data-a="moms">Moms</span>
+        <span class="chip" data-a="konsolidering">Konsolidering</span>
+        <span class="chip" data-a="bokslut">Bokslut</span>
+        <span class="chip" data-a="skatt">Skatt</span>
+      </div>
+    </div>
+
+    <div class="flagga" id="flagga">1 att granska</div>
+
+    <div class="rakn">
+      <div class="rkort"><span class="rprick a"></span><span class="rtal" id="talA">0</span><span class="retikett">perioder · med agenter</span></div>
+      <div class="rkort"><span class="rprick m"></span><span class="rtal" id="talM">0</span><span class="retikett">perioder · manuellt</span></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var ZOOM = 1, CARD_W = 680, CARD_H = 680;
+function fit(){
+  var k = (window.innerWidth / CARD_W) * ZOOM;
+  document.getElementById('scale').style.transform = 'scale(' + k + ')';
+  document.body.style.height = (CARD_H * k) + 'px';
+}
+fit(); addEventListener('resize', fit);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+
+var $ = function(s){ return document.querySelector(s); };
+var CX = 340, CY = 330, R = 210;
+
+/* ── stationerna: processens fem steg, medurs fran klockan 12 ─────────
+   Detta AR ordningen i verkligheten: underlag kommer in, konteras,
+   blir verifikat, stams av, rapporteras. Agenterna ar INTE steg —
+   de ar formagor och bor darfor i mitten, inte pa ringen.            */
+var STATIONER = [
+  { namn:'Underlag',   agenter:['lopande'] },
+  { namn:'Kontering',  agenter:['lopande'] },
+  { namn:'Verifikat',  agenter:['lopande','lon','moms'] },
+  { namn:'Avstämning', agenter:['konsolidering'] },
+  { namn:'Rapport',    agenter:['bokslut','skatt'] }
+];
+var AVSTAMNING = 3;                   /* har stannar agentpunkten ibland */
+
+function vinkel(i){ return -Math.PI/2 + i * 2*Math.PI/STATIONER.length; }
+function pos(v){ return { x: CX + R*Math.cos(v), y: CY + R*Math.sin(v) }; }
+
+/* stationsetiketter strax utanfor ringen */
+STATIONER.forEach(function(st, i){
+  var v = vinkel(i), p = pos(v);
+  var el = document.createElement('div');
+  el.className = 'station'; el.id = 'st' + i; el.textContent = st.namn;
+  el.style.left = (CX + (R + 46) * Math.cos(v)) + 'px';
+  el.style.top  = (CY + (R + 46) * Math.sin(v)) + 'px';
+  $('#duk').appendChild(el);
+});
+
+/* ── tva punkter, samma bana, olika varvtid ──────────────────────────
+   Agentpunkten stannar en kort stund vid Avstamning vartannat varv —
+   dar granskar en manniska en avvikelse. Allt annat flyter.          */
+var rot = getComputedStyle(document.documentElement);
+var VARV_A = parseFloat(rot.getPropertyValue('--varv-agent'))   || 5;
+var VARV_M = parseFloat(rot.getPropertyValue('--varv-manuell')) || 60;
+var STOPP  = 0.55;                     /* s, paus vid avvikelsen */
+
+var tA = 0, tM = 0, varvA = 0, varvM = 0;
+var senastStation = -1, stoppTill = 0, flaggaTill = 0;
+
+function rita(punkt, andel){
+  var v = -Math.PI/2 + andel * 2*Math.PI;
+  var p = pos(v);
+  punkt.setAttribute('cx', p.x); punkt.setAttribute('cy', p.y);
+  return v;
+}
+
+function svans(v){
+  var LANGD = 0.85;                    /* radianer bakom punkten */
+  var steg = 14, d = '';
+  for (var i = 0; i <= steg; i++){
+    var vv = v - LANGD + (LANGD * i / steg);
+    var p = pos(vv);
+    d += (i ? ' L' : 'M') + p.x.toFixed(1) + ' ' + p.y.toFixed(1);
+  }
+  var s = $('#svans');
+  s.setAttribute('d', d);
+  var p0 = pos(v - LANGD), p1 = pos(v);
+  var g = document.getElementById('gSvans');
+  g.setAttribute('x1', p0.x); g.setAttribute('y1', p0.y);
+  g.setAttribute('x2', p1.x); g.setAttribute('y2', p1.y);
+}
+
+function blinka(i){
+  var st = document.getElementById('st' + i);
+  st.classList.add('puls');
+  setTimeout(function(){ st.classList.remove('puls'); }, 420);
+  STATIONER[i].agenter.forEach(function(a){
+    var c = document.querySelector('[data-a="' + a + '"]');
+    c.classList.add('het');
+    setTimeout(function(){ c.classList.remove('het'); }, 480);
+  });
+}
+
+var forra = null;
+function tick(nu){
+  if (forra == null) forra = nu;
+  var dt = Math.min((nu - forra) / 1000, 0.05);
+  forra = nu;
+
+  /* manuellt: konstant kryp — och "vantar" vid varje station */
+  tM += dt / VARV_M;
+  if (tM >= 1){ tM -= 1; varvM++; $('#talM').textContent = varvM; }
+  rita($('#pManuell'), tM);
+  var mSt = Math.floor(tM * STATIONER.length + 0.5) % STATIONER.length;
+  var mNara = Math.abs((tM * STATIONER.length + 0.5) % 1 - 0.5) < 0.10;
+  STATIONER.forEach(function(_, i){
+    document.getElementById('st' + i).classList.toggle('vanta', mNara && i === mSt);
+  });
+
+  /* med agenter: fort, med ett kort manskligt stopp vid avvikelsen */
+  if (nu < stoppTill){ /* pausad vid Avstamning */ }
+  else {
+    tA += dt / VARV_A;
+    if (tA >= 1){ tA -= 1; varvA++; $('#talA').textContent = varvA; }
+  }
+  var vA = rita($('#pAgent'), tA);
+  svans(vA);
+
+  var iSt = Math.floor(tA * STATIONER.length + 0.5) % STATIONER.length;
+  var nara = Math.abs((tA * STATIONER.length + 0.5) % 1 - 0.5) < 0.06;
+  if (nara && iSt !== senastStation){
+    senastStation = iSt;
+    blinka(iSt);
+    /* vid Avstamning, vartannat varv: en avvikelse att granska */
+    if (iSt === AVSTAMNING && varvA % 2 === 1 && nu > flaggaTill){
+      stoppTill = nu + STOPP * 1000;
+      flaggaTill = nu + 2000;
+      var p = pos(vinkel(AVSTAMNING));
+      var f = $('#flagga');
+      f.style.left = p.x + 'px'; f.style.top = p.y + 'px';
+      f.classList.add('se');
+      setTimeout(function(){ f.classList.remove('se'); }, 1400);
+    }
+  }
+  if (!nara && senastStation === iSt) senastStation = -1;
+
+  requestAnimationFrame(tick);
+}
+
+/* startar nar den syns, loopar sedan i all oandlighet */
+var igang = false;
+function start(){ if (igang) return; igang = true; requestAnimationFrame(tick); }
+if ('IntersectionObserver' in window){
+  var io = new IntersectionObserver(function(e){
+    if (e[0].isIntersecting){ start(); io.disconnect(); }
+  }, { threshold: 0.3 });
+  io.observe($('#duk'));
+} else { start(); }
+setTimeout(start, 4000);
+</script>
+</body>
+</html>
