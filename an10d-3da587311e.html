@@ -33,8 +33,6 @@
       /* Helt dod embed: ingen mus, ingen scroll, ingen markering. */
       html, body {
         pointer-events: none;
-        touch-action: none;
-        overscroll-behavior: none;
         -webkit-user-select: none;
         user-select: none;
         -webkit-tap-highlight-color: transparent;
@@ -110,5 +108,20 @@
       })();
     </script>
   
-  </body>
+  <script>
+/* Skickar hjulet vidare till vardsidan (Lenis via SevrEmbed) sa att scrollen inte
+   hackar nar muspekaren star over embedden. Aktiveras FORST efter handskakning. */
+(function(){
+  var host=false;
+  window.addEventListener('message',function(e){
+    var d=e&&e.data; if(d&&d.source==='sevr-host'&&d.type==='ready') host=true;
+  });
+  window.addEventListener('wheel',function(e){
+    if(!host) return;
+    e.preventDefault();
+    try{parent.postMessage({source:'sevr-embed',type:'wheel',deltaY:e.deltaY},'*');}catch(err){}
+  },{passive:false});
+})();
+</script>
+</body>
 </html>
