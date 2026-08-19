@@ -11,7 +11,8 @@
 body{font-family:Inter,-apple-system,"Segoe UI",sans-serif;background:#f1f5f9;color:var(--foreground);padding:48px 24px}
 .wrap{max-width:1080px;margin:0 auto}
 h1{font-size:28px;font-weight:700;letter-spacing:-.01em}
-p.sub{color:var(--muted-foreground);margin-top:6px;font-size:15px}
+p.sub{color:var(--muted-foreground);margin-top:6px;font-size:15px;line-height:1.5}
+p.sub code{background:var(--input);border:1px solid var(--border);border-radius:5px;padding:1px 5px;font-size:13px}
 .rad{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;
   background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-top:12px}
 .namn{font-size:15px;font-weight:600}
@@ -19,36 +20,48 @@ p.sub{color:var(--muted-foreground);margin-top:6px;font-size:15px}
 .matt{font-size:12px;color:var(--muted-foreground);font-variant-numeric:tabular-nums;
   background:var(--input);border:1px solid var(--border);border-radius:999px;padding:5px 11px;white-space:nowrap}
 a.oppna{font-size:13px;font-weight:650;color:var(--primary);text-decoration:none;white-space:nowrap;margin-left:14px}
-.h{display:flex;align-items:center;gap:10px}
+a.film{font-size:13px;font-weight:650;color:#334155;text-decoration:none;white-space:nowrap;margin-left:12px}
+a.film.av{color:#cbd5e1;pointer-events:none}
+.h{display:flex;align-items:center;gap:2px}
+h2{font-size:14px;font-weight:650;color:var(--muted-foreground);margin:30px 0 -2px;letter-spacing:.02em}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>SEVR — animerade embeds</h1>
-  <p class="sub">Självbärande HTML med transparent bakgrund. I Framer: Embed → URL, bakgrund None, Fill width.</p>
+  <p class="sub">Självbärande HTML med transparent bakgrund. I Framer: Embed → URL, bakgrund <code>None</code>, Fill width.<br>
+  MP4-filerna ligger i <code>video/</code> och har vit botten — video kan inte bära alfa.</p>
   <div id="lista"></div>
 </div>
 <script>
 var F = [
-  ['agent-stack.html','Agentkarusell med underrad','680 × 720'],
-  ['agent-stack-ren.html','Agentkarusell, ren','680 × 560'],
-  ['agent-karusell.html','Tre glidande band','680 × 440'],
-  ['agent-tidslinje.html','Lodrät tidslinje','680 × 660'],
-  ['agent-loop.html','Ringlopp','680 × 680'],
-  ['bruttovinst-sammanfattning.html','Bruttovinst → Sammanfattning','680 × 660'],
-  ['dataskydd-skold.html','Dataskydd, pixelmoln och sköld','680 × 680'],
-  ['vatsson-kalla.html','Vatsson med källkort','680 × 680'],
-  ['personalisera-pill.html','Personalisera din AI-kollega','680 × 448'],
-  ['personalisera-chatt.html','Chatt med kunddata','680 × 680'],
-  ['likviditet-kort.html','Likviditetskortet','680 × 520'],
-  ['an3-2c77f5f74f.html','Likviditet, Lottie (a)','—'],
-  ['an3b-2334dd0513.html','Likviditet, Lottie (b)','—']
+  ['h','Agenter'],
+  ['agent-stack.html','Agentkarusell med underrad','680 × 720','agent-stack.mp4'],
+  ['agent-stack-ren.html','Agentkarusell, ren','680 × 560','agent-stack-ren.mp4'],
+  ['agent-karusell.html','Tre glidande band','680 × 440','agent-karusell.mp4'],
+  ['agent-tidslinje.html','Lodrät tidslinje','680 × 660','agent-tidslinje.mp4'],
+  ['agent-loop.html','Ringlopp','680 × 680','agent-loop.mp4'],
+  ['h','Rapporter och data'],
+  ['bruttovinst-sammanfattning.html','Bruttovinst → Sammanfattning','680 × 660','bruttovinst-sammanfattning.mp4'],
+  ['likviditet-kort.html','Likviditetskortet','680 × 520','likviditet-kort.mp4'],
+  ['dataskydd-skold.html','Dataskydd, pixelmoln och sköld','680 × 680','dataskydd-skold.mp4'],
+  ['h','Vatsson och personalisering'],
+  ['vatsson-kalla.html','Vatsson med källkort','680 × 680','vatsson-kalla.mp4'],
+  ['personalisera-pill.html','Personalisera din AI-kollega','680 × 448','personalisera-pill.mp4'],
+  ['personalisera-chatt.html','Chatt med kunddata','680 × 680','personalisera-chatt.mp4'],
+  ['h','Lottie, lappade'],
+  ['an3-2c77f5f74f.html','Likviditet (a) — rundade hörn, ram, gradienter','—',''],
+  ['an3b-2334dd0513.html','Likviditet (b) — samma, 1440/1287','—','']
 ];
 document.getElementById('lista').innerHTML = F.map(function(f){
+  if (f[0] === 'h') return '<h2>' + f[1] + '</h2>';
+  var film = f[3]
+    ? '<a class="film" href="video/' + f[3] + '" target="_blank">MP4</a>'
+    : '<a class="film av">MP4</a>';
   return '<div class="rad"><div><div class="namn">' + f[1] + '</div>' +
          '<div class="desc">' + f[0] + '</div></div>' +
          '<div class="h"><span class="matt">' + f[2] + '</span>' +
-         '<a class="oppna" href="' + f[0] + '" target="_blank">Öppna →</a></div></div>';
+         '<a class="oppna" href="' + f[0] + '" target="_blank">Öppna →</a>' + film + '</div></div>';
 }).join('');
 </script>
 </body>
